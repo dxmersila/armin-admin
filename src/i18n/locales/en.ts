@@ -5,7 +5,10 @@ const en = {
     save: 'Save',
     cancel: 'Cancel',
     loading: 'Loading...',
+    language: 'Language',
+    theme: 'Theme',
   },
+
   navigation: {
     dashboard: 'Dashboard',
     users: 'Users',
@@ -18,6 +21,7 @@ const en = {
     payments: 'Payments',
     subscriptions: 'Subscriptions',
   },
+
   auth: {
     title: 'Armin Admin',
     subtitle: 'Sign in to continue.',
@@ -27,6 +31,17 @@ const en = {
     signingIn: 'Signing in...',
     invalidCredentials: 'Invalid email or password.',
     notAuthorized: 'You are not authorized to access the admin panel.',
+  },
+
+  theme: {
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+  },
+
+  dashboard: {
+    title: 'Dashboard',
+    welcome: 'Welcome to Armin Admin.',
   },
 }
 

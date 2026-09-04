@@ -1,16 +1,21 @@
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router'
 
 const navigation = [
-  { label: 'Dashboard', to: '/admin/dashboard' },
-  { label: 'Items', to: '/admin/items' },
-  { label: 'Orders', to: '/admin/orders' },
-]
+  { key: 'dashboard', to: '/admin/dashboard' },
+  { key: 'items', to: '/admin/items' },
+  { key: 'orders', to: '/admin/orders' },
+] as const
 
 export default function Sidebar() {
+  const { t } = useTranslation()
+
   return (
-    <aside className="w-64 shrink-0 border-l bg-white">
-      <div className="border-b px-6 py-4">
-        <h1 className="text-lg font-semibold">Armin Admin</h1>
+    <aside className="w-64 shrink-0 border-e border-border bg-surface">
+      <div className="border-b border-border px-6 py-4">
+        <h1 className="text-lg font-semibold text-foreground">
+          Armin Admin
+        </h1>
       </div>
 
       <nav className="space-y-1 p-4">
@@ -20,14 +25,14 @@ export default function Sidebar() {
             to={item.to}
             className={({ isActive }) =>
               [
-                'block rounded-lg px-3 py-2 text-sm font-medium',
+                'block rounded-md px-3 py-2 text-sm font-medium transition',
                 isActive
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                  ? 'bg-muted text-foreground'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground',
               ].join(' ')
             }
           >
-            {item.label}
+            {t(`navigation.${item.key}`)}
           </NavLink>
         ))}
       </nav>

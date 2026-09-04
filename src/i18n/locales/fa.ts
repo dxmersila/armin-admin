@@ -5,7 +5,10 @@ const fa = {
     save: 'ذخیره',
     cancel: 'لغو',
     loading: 'در حال بارگذاری...',
+    language: 'زبان',
+    theme: 'تم',
   },
+
   navigation: {
     dashboard: 'داشبورد',
     users: 'کاربران',
@@ -18,6 +21,7 @@ const fa = {
     payments: 'پرداخت‌ها',
     subscriptions: 'اشتراک‌ها',
   },
+
   auth: {
     title: 'Armin Admin',
     subtitle: 'برای ادامه وارد حساب کاربری شوید.',
@@ -28,6 +32,17 @@ const fa = {
     invalidCredentials: 'ایمیل یا رمز عبور نادرست است.',
     notAuthorized: 'شما اجازه دسترسی به پنل مدیریت را ندارید.',
   },
+
+  theme: {
+    light: 'روشن',
+    dark: 'تاریک',
+    system: 'سیستم',
+  },
+
+  dashboard: {
+    title: 'داشبورد',
+    welcome: 'به پنل مدیریت Armin خوش آمدید.',
+  },
 }
-    
+
 export default fa

@@ -1,10 +1,14 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
+import LanguageSwitcher from './LanguageSwitcher'
+import ThemeSwitcher from './ThemeSwitcher'
 
 export default function Header() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -24,20 +28,23 @@ export default function Header() {
   }
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-white px-6">
+    <header className="flex min-h-16 flex-wrap items-center justify-between gap-4 border-b border-border bg-surface px-6 py-3">
       <div>
-        <h2 className="text-sm font-medium text-gray-500">
-          Administration
+        <h2 className="text-sm font-medium text-muted-foreground">
+          {t('navigation.dashboard')}
         </h2>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
+        <LanguageSwitcher />
+        <ThemeSwitcher />
+
         <div className="text-right">
-          <p className="text-sm font-medium text-gray-900">
+          <p className="text-sm font-medium text-foreground">
             {user?.name}
           </p>
 
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             {user?.email}
           </p>
         </div>
@@ -46,9 +53,9 @@ export default function Header() {
           type="button"
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-md border border-border px-3 py-2 text-sm font-medium text-foreground transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isLoggingOut ? 'Signing out...' : 'Sign out'}
+          {isLoggingOut ? t('common.loading') : t('common.logout')}
         </button>
       </div>
     </header>

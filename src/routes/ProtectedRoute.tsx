@@ -2,13 +2,13 @@ import { Navigate, Outlet, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth'
 
 export default function ProtectedRoute() {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { user, isAuthenticated, isLoading } = useAuth()
   const location = useLocation()
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-gray-600">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
+        Loading...
       </div>
     )
   }
@@ -21,6 +21,10 @@ export default function ProtectedRoute() {
         state={{ from: location }}
       />
     )
+  }
+
+  if (user?.role !== 'admin') {
+    return <Navigate to="/login" replace />
   }
 
   return <Outlet />

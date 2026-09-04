@@ -4,7 +4,7 @@ import Sidebar from '../components/layout/Sidebar'
 
 export default function AdminLayout() {
   return (
-    <div dir="rtl" className="flex min-h-screen bg-gray-100">
+    <div dir="rtl" className="flex min-h-screen bg-background">
       <Sidebar />
 
       <div className="flex min-w-0 flex-1 flex-col">

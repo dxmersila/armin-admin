@@ -1,41 +1,65 @@
 import { useEffect, useState } from 'react'
-import type { AppTheme } from '../config/app'
-import { appConfig } from '../config/app'
+import { appConfig, type AppTheme } from '../config/app'
+import {
+  getStoredTheme,
+  setStoredTheme,
+} from '../utils/preferences'
 import { ThemeContext } from './ThemeContext'
 
 interface ThemeProviderProps {
   children: React.ReactNode
 }
 
-function resolveTheme(theme: AppTheme): 'light' | 'dark' {
-  if (theme !== 'system') {
-    return theme
-  }
-
+function getSystemTheme(): 'light' | 'dark' {
   return window.matchMedia('(prefers-color-scheme: dark)').matches
     ? 'dark'
     : 'light'
 }
 
-function applyTheme(theme: AppTheme) {
+function resolveTheme(theme: AppTheme): 'light' | 'dark' {
+  return theme === 'system' ? getSystemTheme() : theme
+}
+
+function applyTheme(theme: AppTheme): void {
   const resolvedTheme = resolveTheme(theme)
 
   document.documentElement.classList.toggle(
     'dark',
     resolvedTheme === 'dark',
   )
+
+  document.documentElement.style.colorScheme = resolvedTheme
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<AppTheme>(
-    appConfig.defaultTheme,
+    getStoredTheme() ?? appConfig.defaultTheme,
   )
 
   useEffect(() => {
     applyTheme(theme)
+    setStoredTheme(theme)
+
+    if (theme !== 'system') {
+      return
+    }
+
+    const mediaQuery = window.matchMedia(
+      '(prefers-color-scheme: dark)',
+    )
+
+    const handleChange = () => {
+      applyTheme('system')
+    }
+
+    mediaQuery.addEventListener('change', handleChange)
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange)
+    }
   }, [theme])
 
-  function setTheme(nextTheme: AppTheme) {
+  function setTheme(nextTheme: AppTheme): void {
     setThemeState(nextTheme)
   }
 
