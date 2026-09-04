@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Vazirmatn Variable", sans-serif;
+
+  --color-background: oklch(0.985 0 0);
+  --color-foreground: oklch(0.15 0 0);
+
+  --color-surface: oklch(1 0 0);
+  --color-surface-foreground: oklch(0.15 0 0);
+
+  --color-primary: oklch(0.18 0 0);
+  --color-primary-foreground: oklch(0.98 0 0);
+
+  --color-muted: oklch(0.96 0 0);
+  --color-muted-foreground: oklch(0.45 0 0);
+
+  --color-border: oklch(0.9 0 0);
+  --color-input: oklch(0.9 0 0);
+  --color-ring: oklch(0.18 0 0);
+
+  --color-success: oklch(0.62 0.16 145);
+  --color-warning: oklch(0.72 0.14 75);
+  --color-danger: oklch(0.62 0.2 25);
+  --color-info: oklch(0.62 0.16 250);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
