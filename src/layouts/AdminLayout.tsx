@@ -1,23 +1,19 @@
-import { NavLink, Outlet } from 'react-router'
+import { Outlet } from 'react-router'
+import Header from '../components/layout/Header'
+import Sidebar from '../components/layout/Sidebar'
 
 export default function AdminLayout() {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="border-b bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <h1 className="text-lg font-semibold">Armin Admin</h1>
+    <div dir="rtl" className="flex min-h-screen bg-gray-100">
+      <Sidebar />
 
-          <nav className="flex gap-4 text-sm">
-            <NavLink to="/admin/dashboard">Dashboard</NavLink>
-            <NavLink to="/admin/items">Items</NavLink>
-            <NavLink to="/admin/orders">Orders</NavLink>
-          </nav>
-        </div>
-      </header>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Header />
 
-      <main className="mx-auto max-w-7xl px-6 py-8">
-        <Outlet />
-      </main>
+        <main className="flex-1 p-6">
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }
