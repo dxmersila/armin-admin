@@ -1,68 +1,71 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { authService } from '../services/authService'
-import type { User } from '../types/auth'
 import { getToken, removeToken } from '../utils/token'
-import { AuthContext, type AuthContextValue } from './AuthContext'
+import type { LoginPayload, User } from '../types/auth'
+import { AuthContext } from './AuthContext'
 
 interface AuthProviderProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(() => Boolean(getToken()))
 
   useEffect(() => {
     const token = getToken()
 
     if (!token) {
-      setIsLoading(false)
       return
     }
 
-    authService
-      .me()
-      .then((currentUser) => {
+    async function restoreSession() {
+      try {
+        const currentUser = await authService.me()
         setUser(currentUser)
-      })
-      .catch(() => {
+      } catch {
         removeToken()
         setUser(null)
-      })
-      .finally(() => {
+      } finally {
         setIsLoading(false)
-      })
+      }
+    }
+
+    void restoreSession()
   }, [])
 
-  const login = useCallback(
-    async (email: string, password: string): Promise<User> => {
-      const response = await authService.login({
-        email,
-        password,
-      })
+  async function login(email: string, password: string): Promise<User> {
+    const payload: LoginPayload = {
+      email,
+      password,
+    }
 
-      setUser(response.user)
+    const response = await authService.login(payload)
 
-      return response.user
-    },
-    [],
-  )
+    setUser(response.user)
 
-  const logout = useCallback(async (): Promise<void> => {
-    await authService.logout()
-    setUser(null)
-  }, [])
+    return response.user
+  }
 
-  const value: AuthContextValue = {
-    user,
-    isAuthenticated: user !== null,
-    isLoading,
-    login,
-    logout,
+  async function logout(): Promise<void> {
+    try {
+      await authService.logout()
+    } finally {
+      setUser(null)
+      removeToken()
+    }
   }
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated: user !== null,
+        isLoading,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
