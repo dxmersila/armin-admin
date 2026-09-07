@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   Eye,
+  Filter,
   FolderTree,
   Pencil,
   Plus,
@@ -10,7 +11,11 @@ import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import FilterBar from '../../components/ui/FilterBar'
+import Input from '../../components/ui/Input'
 import Pagination from '../../components/ui/Pagination'
+import Select from '../../components/ui/Select'
+import Spinner from '../../components/ui/feedback/Spinner'
 import Table, {
   type TableColumn,
 } from '../../components/ui/Table'
@@ -23,6 +28,25 @@ import {
 } from '../../services/categoryService'
 import type { AdminCategory } from '../../types/category'
 import type { PaginatedResponse } from '../../types/item'
+
+interface CategoryFilters {
+  search: string
+  sort: 'latest' | 'oldest' | 'name'
+}
+
+const emptyFilters: CategoryFilters = {
+  search: '',
+  sort: 'name',
+}
+
+const sortOptions: Array<{
+  value: CategoryFilters['sort']
+  label: string
+}> = [
+  { value: 'latest', label: 'جدیدترین' },
+  { value: 'oldest', label: 'قدیمی‌ترین' },
+  { value: 'name', label: 'نام' },
+]
 
 interface CategoryActionsProps {
   category: AdminCategory
@@ -128,6 +152,10 @@ export default function CategoriesPage() {
   const navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(1)
+  const [filters, setFilters] =
+    useState<CategoryFilters>(emptyFilters)
+  const [appliedFilters, setAppliedFilters] =
+    useState<CategoryFilters>(emptyFilters)
   const [deletingCategoryId, setDeletingCategoryId] =
     useState<number | null>(null)
 
@@ -139,14 +167,40 @@ export default function CategoriesPage() {
   } = useAsync<PaginatedResponse<AdminCategory>>()
 
   const loadCategories = useCallback(
-    (page = currentPage) =>
-      execute(() => getAdminCategories(page)),
-    [currentPage, execute],
+    (page = currentPage, activeFilters = appliedFilters) =>
+      execute(() =>
+        getAdminCategories(page, {
+          search: activeFilters.search.trim() || undefined,
+          sort: activeFilters.sort,
+        }),
+      ),
+    [currentPage, appliedFilters, execute],
   )
 
   useEffect(() => {
-    void loadCategories(currentPage)
-  }, [currentPage, loadCategories])
+    void loadCategories(currentPage, appliedFilters)
+  }, [currentPage, appliedFilters, loadCategories])
+
+  function handleFilterChange<K extends keyof CategoryFilters>(
+    field: K,
+    value: CategoryFilters[K],
+  ) {
+    setFilters((current) => ({
+      ...current,
+      [field]: value,
+    }))
+  }
+
+  function handleApplyFilters() {
+    setCurrentPage(1)
+    setAppliedFilters(filters)
+  }
+
+  function handleClearFilters() {
+    setCurrentPage(1)
+    setFilters(emptyFilters)
+    setAppliedFilters(emptyFilters)
+  }
 
   async function handleDelete(category: AdminCategory) {
     const accepted = await confirm({
@@ -175,7 +229,7 @@ export default function CategoriesPage() {
         return
       }
 
-      await loadCategories(currentPage)
+      await loadCategories(currentPage, appliedFilters)
     } catch {
       await toast.error('حذف دسته‌بندی انجام نشد.')
     } finally {
@@ -206,9 +260,80 @@ export default function CategoriesPage() {
         </Button>
       </div>
 
-      <Card className="p-3 sm:p-4 md:p-6">
+      <Card className="p-4 sm:p-6">
+        <FilterBar>
+          <div className="flex items-center gap-2">
+            <Filter className="size-5 text-muted-foreground" />
+
+            <div>
+              <h2 className="text-lg font-semibold text-foreground">
+                فیلترها
+              </h2>
+
+              <p className="mt-1 text-sm text-muted-foreground">
+                دسته‌بندی‌ها را بر اساس جستجو و ترتیب نمایش فیلتر کنید.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <Input
+              id="category-search-filter"
+              label="جستجو"
+              placeholder="نام یا slug دسته‌بندی"
+              value={filters.search}
+              onChange={(event) =>
+                handleFilterChange(
+                  'search',
+                  event.target.value,
+                )
+              }
+            />
+
+            <Select
+              id="category-sort-filter"
+              label="مرتب‌سازی"
+              value={filters.sort}
+              onChange={(event) =>
+                handleFilterChange(
+                  'sort',
+                  event.target.value as CategoryFilters['sort'],
+                )
+              }
+            >
+              {sortOptions.map((option) => (
+                <option
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleClearFilters}
+            >
+              پاک کردن
+            </Button>
+
+            <Button
+              type="button"
+              onClick={handleApplyFilters}
+            >
+              اعمال فیلتر
+            </Button>
+          </div>
+        </FilterBar>
+      </Card>
+
+      <Card className="overflow-hidden">
         {error !== null && (
-          <div className="mb-6">
+          <div className="p-4 sm:p-6">
             <Alert variant="error">
               خطا در دریافت یا حذف دسته‌بندی.
             </Alert>
@@ -216,7 +341,12 @@ export default function CategoriesPage() {
             <div className="mt-3">
               <Button
                 variant="secondary"
-                onClick={() => void loadCategories(currentPage)}
+                onClick={() =>
+                  void loadCategories(
+                    currentPage,
+                    appliedFilters,
+                  )
+                }
               >
                 تلاش مجدد
               </Button>
@@ -225,18 +355,15 @@ export default function CategoriesPage() {
         )}
 
         {deletingCategoryId !== null ? (
-          <div className="mb-4 text-sm text-muted-foreground">
+          <div className="border-b border-border px-4 py-3 text-sm text-muted-foreground sm:px-6">
             در حال حذف دسته‌بندی...
           </div>
         ) : null}
 
         {isLoading ? (
-          <Table
-            columns={[]}
-            data={[]}
-            getRowKey={() => 'loading'}
-            loading
-          />
+          <div className="flex min-h-64 items-center justify-center">
+            <Spinner size="lg" />
+          </div>
         ) : (
           <CategoriesTable
             categories={data?.data ?? []}
@@ -247,7 +374,7 @@ export default function CategoriesPage() {
         )}
 
         {data && (
-          <div className="mt-6 overflow-x-auto border-t border-border pt-4">
+          <div className="border-t border-border px-4 py-4">
             <Pagination
               currentPage={data.meta.current_page}
               lastPage={data.meta.last_page}

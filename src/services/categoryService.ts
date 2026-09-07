@@ -38,14 +38,21 @@ export async function getAllCategories(): Promise<ItemCategory[]> {
   return categories
 }
 
+export interface AdminCategoryFilters {
+  search?: string
+  sort?: 'latest' | 'oldest' | 'name'
+}
+
 export async function getAdminCategories(
   page = 1,
+  filters: AdminCategoryFilters = {},
 ): Promise<PaginatedResponse<AdminCategory>> {
   const response = await apiClient.get<
     PaginatedResponse<AdminCategory>
   >(categoryEndpoints.list, {
     params: {
       page,
+      ...filters,
     },
   })
 
