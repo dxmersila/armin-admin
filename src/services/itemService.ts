@@ -17,14 +17,28 @@ export interface ItemPayload {
   tags?: string[]
 }
 
+export interface AdminItemFilters {
+  search?: string
+  is_visible?: boolean
+  access_type?: 'free' | 'paid'
+  category_id?: number
+  sort?: 'latest' | 'oldest' | 'title'
+}
+
 export async function getAdminItems(
   page = 1,
+  filters: AdminItemFilters = {},
 ): Promise<PaginatedResponse<AdminItem>> {
   const response = await apiClient.get<
     PaginatedResponse<AdminItem>
   >(itemEndpoints.list, {
     params: {
       page,
+      ...filters,
+      is_visible:
+        filters.is_visible === undefined
+          ? undefined
+          : Number(filters.is_visible),
     },
   })
 
