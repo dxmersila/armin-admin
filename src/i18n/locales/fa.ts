@@ -7,6 +7,8 @@ const fa = {
     loading: 'در حال بارگذاری...',
     language: 'زبان',
     theme: 'تم',
+    menu: 'باز کردن منو',
+    close: 'بستن',
   },
 
   navigation: {

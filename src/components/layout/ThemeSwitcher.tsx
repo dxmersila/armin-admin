@@ -1,3 +1,4 @@
+import { Monitor, Moon, Sun } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useTheme } from '../../theme/useTheme'
 
@@ -5,23 +6,38 @@ export default function ThemeSwitcher() {
   const { theme, setTheme } = useTheme()
   const { t } = useTranslation()
 
-  return (
-    <label className="flex items-center gap-2 text-sm">
-      <span className="text-gray-500">
-        {t('common.theme')}
-      </span>
+  function toggleTheme() {
+    if (theme === 'light') {
+      setTheme('dark')
+      return
+    }
 
-      <select
-        value={theme}
-        onChange={(event) =>
-          setTheme(event.target.value as 'light' | 'dark' | 'system')
-        }
-        className="rounded-md border border-border bg-surface px-2 py-1.5 text-foreground outline-none focus:ring-2 focus:ring-ring"
-      >
-        <option value="system">{t('theme.system')}</option>
-        <option value="light">{t('theme.light')}</option>
-        <option value="dark">{t('theme.dark')}</option>
-      </select>
-    </label>
+    if (theme === 'dark') {
+      setTheme('system')
+      return
+    }
+
+    setTheme('light')
+  }
+
+  const Icon = theme === 'light' ? Sun : theme === 'dark' ? Moon : Monitor
+
+  const themeLabel =
+    theme === 'light'
+      ? t('theme.light')
+      : theme === 'dark'
+        ? t('theme.dark')
+        : t('theme.system')
+
+  return (
+    <button
+      type="button"
+      onClick={toggleTheme}
+      aria-label={t('common.theme')}
+      title={`${t('common.theme')}: ${themeLabel}`}
+      className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
+    >
+      <Icon className="size-5" />
+    </button>
   )
 }

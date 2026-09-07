@@ -1,22 +1,26 @@
-import { createBrowserRouter } from 'react-router'
-import AdminLayout from '../layouts/AdminLayout'
-import AuthLayout from '../layouts/AuthLayout'
-import DashboardPage from '../pages/admin/DashboardPage'
-import LoginPage from '../pages/auth/LoginPage'
-import ProtectedRoute from './ProtectedRoute'
+import { createBrowserRouter } from "react-router";
+import AdminLayout from "../layouts/AdminLayout";
+import AuthLayout from "../layouts/AuthLayout";
+import DashboardPage from "../pages/admin/DashboardPage";
+import ItemsPage from "../pages/admin/ItemsPage";
+import ItemDetailPage from "../pages/admin/ItemDetailPage";
+import CreateItemPage from "../pages/admin/CreateItemPage";
+import EditItemPage from "../pages/admin/EditItemPage";
+import LoginPage from "../pages/auth/LoginPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
     Component: AuthLayout,
     children: [
       {
-        path: '/login',
+        path: "/login",
         Component: LoginPage,
       },
     ],
   },
   {
-    path: '/admin',
+    path: "/admin",
     Component: ProtectedRoute,
     children: [
       {
@@ -27,19 +31,31 @@ export const router = createBrowserRouter([
             Component: DashboardPage,
           },
           {
-            path: 'dashboard',
+            path: "dashboard",
             Component: DashboardPage,
           },
           {
-            path: 'items',
-            Component: () => <div>Items</div>,
+            path: "items",
+            Component: ItemsPage,
           },
           {
-            path: 'orders',
+            path: "items/create",
+            Component: CreateItemPage,
+          },
+          {
+            path: "items/:id",
+            Component: ItemDetailPage,
+          },
+          {
+            path: "items/:id/edit",
+            Component: EditItemPage,
+          },
+          {
+            path: "orders",
             Component: () => <div>Orders</div>,
           },
         ],
       },
     ],
   },
-])
+]);

@@ -7,6 +7,8 @@ const en = {
     loading: 'Loading...',
     language: 'Language',
     theme: 'Theme',
+    menu: 'Open menu',
+    close: 'Close',
   },
 
   navigation: {
