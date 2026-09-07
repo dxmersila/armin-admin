@@ -10,6 +10,8 @@ import CategoriesPage from "../pages/admin/CategoriesPage";
 import CreateCategoryPage from "../pages/admin/CreateCategoryPage";
 import CategoryDetailPage from "../pages/admin/CategoryDetailPage";
 import EditCategoryPage from "../pages/admin/EditCategoryPage";
+import OrdersPage from "../pages/admin/OrdersPage";
+import OrderDetailPage from "../pages/admin/OrderDetailPage";
 import LoginPage from "../pages/auth/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -72,7 +74,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "orders",
-            Component: () => <div>Orders</div>,
+            Component: OrdersPage,
+          },
+          {
+            path: "orders/:id",
+            Component: OrderDetailPage,
           },
         ],
       },
