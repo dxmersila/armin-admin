@@ -1,0 +1,288 @@
+import { useCallback, useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
+import { Pencil } from 'lucide-react'
+import { useNavigate, useParams } from 'react-router'
+import Alert from '../../components/ui/feedback/Alert'
+import BackButton from '../../components/ui/BackButton'
+import Button from '../../components/ui/Button'
+import Card from '../../components/ui/Card'
+import Input from '../../components/ui/Input'
+import Select from '../../components/ui/Select'
+import Spinner from '../../components/ui/feedback/Spinner'
+import { toast } from '../../components/ui/feedback/toast'
+import { useAsync } from '../../hooks/useAsync'
+import {
+  getAdminUser,
+  updateAdminUser,
+} from '../../services/userService'
+import type {
+  AdminUser,
+  UpdateAdminUserPayload,
+  UserRole,
+} from '../../types/user'
+
+interface UserFormValues {
+  name: string
+  role: UserRole
+}
+
+const emptyValues: UserFormValues = {
+  name: '',
+  role: 'user',
+}
+
+const roleOptions: Array<{
+  value: UserRole
+  label: string
+}> = [
+  { value: 'user', label: 'کاربر' },
+  { value: 'admin', label: 'مدیر' },
+]
+
+function mapUserToFormValues(
+  user: AdminUser,
+): UserFormValues {
+  return {
+    name: user.name,
+    role: user.role,
+  }
+}
+
+export default function EditUserPage() {
+  const { id } = useParams()
+  const navigate = useNavigate()
+
+  const [values, setValues] =
+    useState<UserFormValues | null>(null)
+
+  const {
+    data: user,
+    error: loadError,
+    isLoading: isLoadingUser,
+    execute: executeLoad,
+  } = useAsync<AdminUser>()
+
+  const {
+    error: submitError,
+    isLoading: isSubmitting,
+    execute: executeSubmit,
+  } = useAsync<AdminUser>()
+
+  const loadUser = useCallback(() => {
+    if (!id) {
+      return Promise.resolve(undefined)
+    }
+
+    const userId = Number(id)
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return Promise.resolve(undefined)
+    }
+
+    return executeLoad(() => getAdminUser(userId))
+  }, [executeLoad, id])
+
+  useEffect(() => {
+    void loadUser()
+  }, [loadUser])
+
+  const formValues =
+    values ?? (user ? mapUserToFormValues(user) : null)
+
+  function handleChange<K extends keyof UserFormValues>(
+    field: K,
+    value: UserFormValues[K],
+  ) {
+    setValues((current) => ({
+      ...(current ??
+        (user
+          ? mapUserToFormValues(user)
+          : emptyValues)),
+      [field]: value,
+    }))
+  }
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault()
+
+    if (!user || !formValues) {
+      return
+    }
+
+    const payload: UpdateAdminUserPayload = {
+      name: formValues.name.trim(),
+      role: formValues.role,
+    }
+
+    const result = await executeSubmit(() =>
+      updateAdminUser(user.id, payload),
+    )
+
+    if (result) {
+      await toast.success(
+        'کاربر با موفقیت بروزرسانی شد.',
+      )
+
+      navigate(`/admin/users/${result.id}`)
+    }
+  }
+
+  if (
+    !id ||
+    !Number.isInteger(Number(id)) ||
+    Number(id) <= 0
+  ) {
+    return (
+      <section className="space-y-4">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
+            <Pencil className="size-6 shrink-0" />
+            <span>ویرایش کاربر</span>
+          </h1>
+
+          <p className="mt-1 text-sm text-muted-foreground">
+            شناسه کاربر نامعتبر است.
+          </p>
+        </div>
+
+        <BackButton to="/admin/users">
+          بازگشت به کاربران
+        </BackButton>
+      </section>
+    )
+  }
+
+  if (isLoadingUser) {
+    return (
+      <section className="flex min-h-64 items-center justify-center">
+        <Spinner size="lg" />
+      </section>
+    )
+  }
+
+  if (loadError || !user || !formValues) {
+    return (
+      <section className="space-y-4">
+        <div>
+          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
+            <Pencil className="size-6 shrink-0" />
+            <span>ویرایش کاربر</span>
+          </h1>
+
+          <p className="mt-1 text-sm text-muted-foreground">
+            دریافت اطلاعات کاربر انجام نشد.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <Button
+            variant="secondary"
+            onClick={() => void loadUser()}
+          >
+            تلاش مجدد
+          </Button>
+
+          <BackButton to="/admin/users">
+            بازگشت
+          </BackButton>
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section className="space-y-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
+            <Pencil className="size-6 shrink-0" />
+            <span>ویرایش کاربر</span>
+          </h1>
+
+          <p className="mt-2 text-sm text-muted-foreground">
+            اطلاعات کاربر را ویرایش کنید.
+          </p>
+        </div>
+
+        <BackButton to={`/admin/users/${user.id}`}>
+          بازگشت به کاربر
+        </BackButton>
+      </div>
+
+      {submitError !== null && (
+        <Alert variant="error">
+          بروزرسانی کاربر انجام نشد. اطلاعات واردشده را بررسی کنید.
+        </Alert>
+      )}
+
+      <Card className="p-4 sm:p-6">
+        <form
+          className="space-y-6"
+          onSubmit={handleSubmit}
+        >
+          <div className="grid gap-4 md:grid-cols-2">
+            <Input
+              id="user-name"
+              label="نام"
+              value={formValues.name}
+              onChange={(event) =>
+                handleChange('name', event.target.value)
+              }
+              required
+            />
+
+            <Input
+              id="user-email"
+              label="ایمیل"
+              value={user.email}
+              disabled
+            />
+
+            <Select
+              id="user-role"
+              label="نقش"
+              value={formValues.role}
+              onChange={(event) =>
+                handleChange(
+                  'role',
+                  event.target.value as UserRole,
+                )
+              }
+            >
+              {roleOptions.map((option) => (
+                <option
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </option>
+              ))}
+            </Select>
+          </div>
+
+          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() =>
+                navigate(`/admin/users/${user.id}`)
+              }
+              disabled={isSubmitting}
+            >
+              انصراف
+            </Button>
+
+            <Button
+              type="submit"
+              loading={isSubmitting}
+            >
+              ذخیره تغییرات
+            </Button>
+          </div>
+        </form>
+      </Card>
+    </section>
+  )
+}

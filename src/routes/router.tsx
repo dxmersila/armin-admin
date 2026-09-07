@@ -12,6 +12,9 @@ import CategoryDetailPage from "../pages/admin/CategoryDetailPage";
 import EditCategoryPage from "../pages/admin/EditCategoryPage";
 import OrdersPage from "../pages/admin/OrdersPage";
 import OrderDetailPage from "../pages/admin/OrderDetailPage";
+import UsersPage from "../pages/admin/UsersPage";
+import UserDetailPage from "../pages/admin/UserDetailPage";
+import EditUserPage from "../pages/admin/EditUserPage";
 import LoginPage from "../pages/auth/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -79,6 +82,18 @@ export const router = createBrowserRouter([
           {
             path: "orders/:id",
             Component: OrderDetailPage,
+          },
+          {
+            path: "users",
+            Component: UsersPage,
+          },
+          {
+            path: "users/:id",
+            Component: UserDetailPage,
+          },
+          {
+            path: "users/:id/edit",
+            Component: EditUserPage,
           },
         ],
       },
