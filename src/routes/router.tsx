@@ -6,6 +6,10 @@ import ItemsPage from "../pages/admin/ItemsPage";
 import ItemDetailPage from "../pages/admin/ItemDetailPage";
 import CreateItemPage from "../pages/admin/CreateItemPage";
 import EditItemPage from "../pages/admin/EditItemPage";
+import CategoriesPage from "../pages/admin/CategoriesPage";
+import CreateCategoryPage from "../pages/admin/CreateCategoryPage";
+import CategoryDetailPage from "../pages/admin/CategoryDetailPage";
+import EditCategoryPage from "../pages/admin/EditCategoryPage";
 import LoginPage from "../pages/auth/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -49,6 +53,22 @@ export const router = createBrowserRouter([
           {
             path: "items/:id/edit",
             Component: EditItemPage,
+          },
+          {
+            path: "categories",
+            Component: CategoriesPage,
+          },
+          {
+            path: "categories/create",
+            Component: CreateCategoryPage,
+          },
+          {
+            path: "categories/:id",
+            Component: CategoryDetailPage,
+          },
+          {
+            path: "categories/:id/edit",
+            Component: EditCategoryPage,
           },
           {
             path: "orders",

@@ -1,8 +1,12 @@
 import { apiClient } from '../api/client'
-import type {
-  ItemCategory,
-  PaginatedResponse,
-} from '../types/item'
+import { categoryEndpoints } from '../api/endpoints/categories'
+import type { ItemCategory, PaginatedResponse } from '../types/item'
+import type { AdminCategory } from '../types/category'
+
+export interface CategoryPayload {
+  name: string
+  slug?: string
+}
 
 export async function getCategories(
   page = 1,
@@ -32,4 +36,57 @@ export async function getAllCategories(): Promise<ItemCategory[]> {
   }
 
   return categories
+}
+
+export async function getAdminCategories(
+  page = 1,
+): Promise<PaginatedResponse<AdminCategory>> {
+  const response = await apiClient.get<
+    PaginatedResponse<AdminCategory>
+  >(categoryEndpoints.list, {
+    params: {
+      page,
+    },
+  })
+
+  return response.data
+}
+
+export async function getAdminCategory(
+  id: number,
+): Promise<AdminCategory> {
+  const response = await apiClient.get<{ data: AdminCategory }>(
+    categoryEndpoints.show(id),
+  )
+
+  return response.data.data
+}
+
+export async function createAdminCategory(
+  payload: CategoryPayload,
+): Promise<AdminCategory> {
+  const response = await apiClient.post<{ data: AdminCategory }>(
+    categoryEndpoints.create,
+    payload,
+  )
+
+  return response.data.data
+}
+
+export async function updateAdminCategory(
+  id: number,
+  payload: CategoryPayload,
+): Promise<AdminCategory> {
+  const response = await apiClient.put<{ data: AdminCategory }>(
+    categoryEndpoints.update(id),
+    payload,
+  )
+
+  return response.data.data
+}
+
+export async function deleteAdminCategory(
+  id: number,
+): Promise<void> {
+  await apiClient.delete(categoryEndpoints.delete(id))
 }
