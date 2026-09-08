@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { FolderPlus } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
+import PageHeader from '../../components/ui/PageHeader'
 import BackButton from '../../components/ui/BackButton'
 import CategoryForm, {
   type CategoryFormValues,
@@ -63,22 +64,16 @@ export default function CreateCategoryPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <FolderPlus className="size-6 shrink-0" />
-            <span>ایجاد دسته‌بندی</span>
-          </h1>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            اطلاعات دسته‌بندی جدید را وارد کنید.
-          </p>
-        </div>
-
-        <BackButton to="/admin/categories">
-          بازگشت به دسته‌بندی‌ها
-        </BackButton>
-      </div>
+      <PageHeader
+        icon={FolderPlus}
+        title="ایجاد دسته‌بندی"
+        description="اطلاعات دسته‌بندی جدید را وارد کنید."
+        actions={
+          <BackButton to="/admin/categories">
+            بازگشت به دسته‌بندی‌ها
+          </BackButton>
+        }
+      />
 
       {submitError !== null && (
         <Alert variant="error">

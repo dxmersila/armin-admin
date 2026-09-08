@@ -4,6 +4,7 @@ import { PackagePlus } from 'lucide-react'
 import BackButton from '../../components/ui/BackButton'
 import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
+import PageHeader from '../../components/ui/PageHeader'
 import { toast } from '../../components/ui/feedback/toast'
 import ItemForm, {
   type ItemFormValues,
@@ -133,10 +134,11 @@ export default function CreateItemPage() {
   if (isLoadingCategories) {
     return (
       <section className="space-y-6">
-        <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-          <PackagePlus className="size-6 shrink-0" />
-          <span>ایجاد محصول</span>
-        </h1>
+        <PageHeader
+          icon={PackagePlus}
+          title="ایجاد محصول"
+          description="در حال دریافت دسته‌بندی‌ها..."
+        />
 
         <Alert variant="info">
           در حال دریافت دسته‌بندی‌ها...
@@ -147,22 +149,16 @@ export default function CreateItemPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <PackagePlus className="size-6 shrink-0" />
-            <span>ایجاد محصول</span>
-          </h1>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            اطلاعات محصول جدید را وارد کنید.
-          </p>
-        </div>
-
-        <BackButton to="/admin/items">
-          بازگشت به محصولات
-        </BackButton>
-      </div>
+      <PageHeader
+        icon={PackagePlus}
+        title="ایجاد محصول"
+        description="اطلاعات محصول جدید را وارد کنید."
+        actions={
+          <BackButton to="/admin/items">
+            بازگشت به محصولات
+          </BackButton>
+        }
+      />
 
       {categoriesError !== null && (
         <Alert variant="error">
