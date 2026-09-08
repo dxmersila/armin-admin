@@ -8,15 +8,12 @@ import Spinner from '../../components/ui/feedback/Spinner'
 import { useAsync } from '../../hooks/useAsync'
 import { getAdminOrder } from '../../services/orderService'
 import type { AdminOrder } from '../../types/order'
+import { formatDateTime, formatPrice } from '../../utils/format'
 import {
   getOrderStatusLabel,
   getOrderTypeLabel,
   getPaymentStatusLabel,
 } from '../../utils/orderLabels'
-
-function formatPrice(price: number) {
-  return `${price.toLocaleString('fa-IR')} تومان`
-}
 
 export default function OrderDetailPage() {
   const { id } = useParams()
@@ -163,9 +160,7 @@ export default function OrderDetailPage() {
                 تاریخ ایجاد
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {new Date(order.created_at).toLocaleString(
-                  'fa-IR',
-                )}
+                {formatDateTime(order.created_at)}
               </dd>
             </div>
 
@@ -174,9 +169,7 @@ export default function OrderDetailPage() {
                 آخرین بروزرسانی
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {new Date(order.updated_at).toLocaleString(
-                  'fa-IR',
-                )}
+                {formatDateTime(order.updated_at)}
               </dd>
             </div>
           </dl>
@@ -309,9 +302,7 @@ export default function OrderDetailPage() {
                   </p>
 
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {new Date(
-                      payment.created_at,
-                    ).toLocaleString('fa-IR')}
+                    {formatDateTime(payment.created_at)}
                   </p>
                 </div>
 

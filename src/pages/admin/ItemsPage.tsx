@@ -36,6 +36,7 @@ import type {
   ItemCategory,
   PaginatedResponse,
 } from '../../types/item'
+import { formatPrice } from '../../utils/format'
 
 interface ItemFilters {
   search: string
@@ -61,14 +62,6 @@ const sortOptions: Array<{
   { value: 'oldest', label: 'قدیمی‌ترین' },
   { value: 'title', label: 'عنوان' },
 ]
-
-function formatPrice(price: number | null) {
-  if (price === null) {
-    return '—'
-  }
-
-  return `${price.toLocaleString('fa-IR')} تومان`
-}
 
 interface ItemActionsProps {
   item: AdminItem

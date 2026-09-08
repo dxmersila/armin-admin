@@ -25,14 +25,7 @@ import {
   getAdminItem,
 } from '../../services/itemService'
 import type { AdminItem } from '../../types/item'
-
-function formatPrice(price: number | null): string {
-  if (price === null) {
-    return '—'
-  }
-
-  return `${price.toLocaleString('fa-IR')} تومان`
-}
+import { formatPrice } from '../../utils/format'
 
 export default function ItemDetailPage() {
   const { id } = useParams()

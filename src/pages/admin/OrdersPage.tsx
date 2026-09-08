@@ -23,6 +23,7 @@ import {
   getOrderTypeLabel,
 } from '../../utils/orderLabels'
 import type { PaginatedResponse } from '../../types/item'
+import { formatDate, formatPrice } from '../../utils/format'
 
 interface OrderFilters {
   status: OrderStatus | ''
@@ -250,15 +251,13 @@ export default function OrdersPage() {
                 key: 'total_price',
                 header: 'مبلغ',
                 render: (order) =>
-                  `${order.total_price.toLocaleString('fa-IR')} تومان`,
+                  formatPrice(order.total_price),
               },
               {
                 key: 'created_at',
                 header: 'تاریخ',
                 render: (order) =>
-                  new Date(order.created_at).toLocaleDateString(
-                    'fa-IR',
-                  ),
+                  formatDate(order.created_at),
               },
               {
                 key: 'actions',

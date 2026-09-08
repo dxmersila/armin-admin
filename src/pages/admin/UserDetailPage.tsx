@@ -18,6 +18,7 @@ import Spinner from '../../components/ui/feedback/Spinner'
 import { useAsync } from '../../hooks/useAsync'
 import { getAdminUser } from '../../services/userService'
 import type { AdminUser, UserRole } from '../../types/user'
+import { formatDate } from '../../utils/format'
 
 function getRoleLabel(role: UserRole) {
   return role === 'admin' ? 'مدیر' : 'کاربر'
@@ -194,9 +195,7 @@ export default function UserDetailPage() {
               </dt>
 
               <dd className="mt-1 text-foreground">
-                {new Date(user.created_at).toLocaleDateString(
-                  'fa-IR',
-                )}
+                {formatDate(user.created_at)}
               </dd>
             </div>
           </div>
