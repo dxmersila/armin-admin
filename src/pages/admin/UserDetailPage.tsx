@@ -13,6 +13,7 @@ import BackButton from '../../components/ui/BackButton'
 import Button from '../../components/ui/Button'
 import Badge from '../../components/ui/Badge'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import Spinner from '../../components/ui/feedback/Spinner'
 import { useAsync } from '../../hooks/useAsync'
 import { getAdminUser } from '../../services/userService'
@@ -103,35 +104,29 @@ export default function UserDetailPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <UsersIcon className="size-6 shrink-0" />
-            <span>{user.name}</span>
-          </h1>
+      <PageHeader
+        icon={UsersIcon}
+        title={user.name}
+        description={user.email}
+        actions={
+          <>
+            <BackButton to="/admin/users">
+              بازگشت به کاربران
+            </BackButton>
 
-          <p className="mt-2 text-sm text-muted-foreground">
-            {user.email}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <BackButton to="/admin/users">
-            بازگشت به کاربران
-          </BackButton>
-
-          <Link to={`/admin/users/${user.id}/edit`}>
-            <Button
-              variant="secondary"
-              size="sm"
-              aria-label={`ویرایش ${user.name}`}
-            >
-              <Pencil className="size-4" />
-              ویرایش
-            </Button>
-          </Link>
-        </div>
-      </div>
+            <Link to={`/admin/users/${user.id}/edit`}>
+              <Button
+                variant="secondary"
+                size="sm"
+                aria-label={`ویرایش ${user.name}`}
+              >
+                <Pencil className="size-4" />
+                ویرایش
+              </Button>
+            </Link>
+          </>
+        }
+      />
 
       <Card className="p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">

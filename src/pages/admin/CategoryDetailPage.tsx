@@ -9,6 +9,7 @@ import Alert from '../../components/ui/feedback/Alert'
 import BackButton from '../../components/ui/BackButton'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import Spinner from '../../components/ui/feedback/Spinner'
 import { confirm } from '../../components/ui/feedback/confirm'
 import { toast } from '../../components/ui/feedback/toast'
@@ -125,50 +126,44 @@ export default function CategoryDetailPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <FolderTree className="size-6 shrink-0" />
-            <span>{category.name}</span>
-          </h1>
+      <PageHeader
+        icon={FolderTree}
+        title={category.name}
+        description={category.slug}
+        actions={
+          <>
+            <BackButton to="/admin/categories">
+              بازگشت به دسته‌بندی‌ها
+            </BackButton>
 
-          <p className="mt-2 text-sm text-muted-foreground">
-            {category.slug}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <BackButton to="/admin/categories">
-            بازگشت به دسته‌بندی‌ها
-          </BackButton>
-
-          <div className="flex items-center gap-1">
-            <Link
-              to={`/admin/categories/${category.id}/edit`}
-              title="ویرایش"
-              aria-label={`ویرایش ${category.name}`}
-            >
-              <Button
-                variant="secondary"
-                size="sm"
+            <div className="flex items-center gap-1">
+              <Link
+                to={`/admin/categories/${category.id}/edit`}
+                title="ویرایش"
                 aria-label={`ویرایش ${category.name}`}
               >
-                <Pencil className="size-4" />
-              </Button>
-            </Link>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  aria-label={`ویرایش ${category.name}`}
+                >
+                  <Pencil className="size-4" />
+                </Button>
+              </Link>
 
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => void handleDelete()}
-              title="حذف"
-              aria-label={`حذف ${category.name}`}
-            >
-              <Trash2 className="size-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => void handleDelete()}
+                title="حذف"
+                aria-label={`حذف ${category.name}`}
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </div>
+          </>
+        }
+      />
 
       <Card className="p-4 sm:p-6">
         <div className="mb-4 flex items-center gap-2">

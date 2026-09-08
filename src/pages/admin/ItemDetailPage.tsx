@@ -3,6 +3,7 @@ import {
   Eye,
   EyeOff,
   FileText,
+  Package,
   Pencil,
   Tag,
   Trash2,
@@ -12,6 +13,7 @@ import Badge from '../../components/ui/Badge'
 import BackButton from '../../components/ui/BackButton'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import MediaManager from '../../components/items/MediaManager'
 import Alert from '../../components/ui/feedback/Alert'
 import Spinner from '../../components/ui/feedback/Spinner'
@@ -134,49 +136,44 @@ export default function ItemDetailPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-semibold text-foreground">
-            {item.title}
-          </h1>
+      <PageHeader
+        icon={Package}
+        title={item.title}
+        description={item.slug}
+        actions={
+          <>
+            <BackButton to="/admin/items">
+              بازگشت به محصولات
+            </BackButton>
 
-          <p className="mt-2 text-sm text-muted-foreground">
-            {item.slug}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <BackButton to="/admin/items">
-            بازگشت به محصولات
-          </BackButton>
-
-          <div className="flex items-center gap-1">
-            <Link
-              to={`/admin/items/${item.id}/edit`}
-              title="ویرایش"
-              aria-label={`ویرایش ${item.title}`}
-            >
-              <Button
-                variant="secondary"
-                size="sm"
+            <div className="flex items-center gap-1">
+              <Link
+                to={`/admin/items/${item.id}/edit`}
+                title="ویرایش"
                 aria-label={`ویرایش ${item.title}`}
               >
-                <Pencil className="size-4" />
-              </Button>
-            </Link>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  aria-label={`ویرایش ${item.title}`}
+                >
+                  <Pencil className="size-4" />
+                </Button>
+              </Link>
 
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => void handleDelete()}
-              title="حذف"
-              aria-label={`حذف ${item.title}`}
-            >
-              <Trash2 className="size-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => void handleDelete()}
+                title="حذف"
+                aria-label={`حذف ${item.title}`}
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </div>
+          </>
+        }
+      />
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="p-6">
