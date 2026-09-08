@@ -2,10 +2,12 @@ import { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   FolderKanban,
+  LayoutDashboard,
   Package,
   Users,
 } from 'lucide-react'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import Spinner from '../../components/ui/feedback/Spinner'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
@@ -65,15 +67,11 @@ export default function DashboardPage() {
 
   return (
     <section className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-foreground">
-          {t('dashboard.title')}
-        </h1>
-
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t('dashboard.welcome')}
-        </p>
-      </div>
+      <PageHeader
+        icon={LayoutDashboard}
+        title={t('dashboard.title')}
+        description={t('dashboard.welcome')}
+      />
 
       {error !== null && (
         <div className="space-y-3">
