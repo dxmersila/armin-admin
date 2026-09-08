@@ -8,6 +8,11 @@ import Spinner from '../../components/ui/feedback/Spinner'
 import { useAsync } from '../../hooks/useAsync'
 import { getAdminOrder } from '../../services/orderService'
 import type { AdminOrder } from '../../types/order'
+import {
+  getOrderStatusLabel,
+  getOrderTypeLabel,
+  getPaymentStatusLabel,
+} from '../../utils/orderLabels'
 
 function formatPrice(price: number) {
   return `${price.toLocaleString('fa-IR')} تومان`
@@ -131,7 +136,7 @@ export default function OrderDetailPage() {
                 نوع
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {order.type}
+                {getOrderTypeLabel(order.type)}
               </dd>
             </div>
 
@@ -140,7 +145,7 @@ export default function OrderDetailPage() {
                 وضعیت
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {order.status}
+                {getOrderStatusLabel(order.status)}
               </dd>
             </div>
 
@@ -320,7 +325,7 @@ export default function OrderDetailPage() {
                   </span>
 
                   <span className="text-muted-foreground">
-                    {payment.status}
+                    {getPaymentStatusLabel(payment.status)}
                   </span>
                 </div>
               </div>

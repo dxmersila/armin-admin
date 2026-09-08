@@ -18,6 +18,10 @@ import type {
   OrderStatus,
   PaymentStatus,
 } from '../../types/order'
+import {
+  getOrderStatusLabel,
+  getOrderTypeLabel,
+} from '../../utils/orderLabels'
 import type { PaginatedResponse } from '../../types/item'
 
 interface OrderFilters {
@@ -50,17 +54,6 @@ const paymentStatusOptions: Array<{
   { value: 'paid', label: 'پرداخت شده' },
   { value: 'failed', label: 'ناموفق' },
 ]
-
-function getOrderTypeLabel(type: AdminOrder['type']) {
-  return type === 'item' ? 'محصول' : 'اشتراک'
-}
-
-function getOrderStatusLabel(status: OrderStatus) {
-  return (
-    orderStatusOptions.find((option) => option.value === status)
-      ?.label ?? status
-  )
-}
 
 export default function OrdersPage() {
   const navigate = useNavigate()
