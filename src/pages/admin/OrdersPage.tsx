@@ -3,6 +3,7 @@ import { Eye, Filter, ShoppingCart } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
+import IconButton from '../../components/ui/IconButton'
 import Card from '../../components/ui/Card'
 import PageHeader from '../../components/ui/PageHeader'
 import FilterBar from '../../components/ui/FilterBar'
@@ -269,17 +270,16 @@ export default function OrdersPage() {
                 className: 'w-24 text-center',
                 render: (order) => (
                   <div className="flex justify-center">
-                    <button
+                    <IconButton
                       type="button"
                       onClick={() =>
                         navigate(`/admin/orders/${order.id}`)
                       }
                       title="مشاهده"
                       aria-label={`مشاهده سفارش #${order.id}`}
-                      className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                     >
                       <Eye className="size-4" />
-                    </button>
+                    </IconButton>
                   </div>
                 ),
               },

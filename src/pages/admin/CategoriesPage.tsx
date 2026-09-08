@@ -10,6 +10,7 @@ import {
 import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
+import IconButton from '../../components/ui/IconButton'
 import Card from '../../components/ui/Card'
 import PageHeader from '../../components/ui/PageHeader'
 import FilterBar from '../../components/ui/FilterBar'
@@ -62,37 +63,35 @@ function CategoryActions({
 
   return (
     <div className="flex items-center justify-center gap-1">
-      <button
+      <IconButton
         type="button"
         onClick={() => navigate(`/admin/categories/${category.id}`)}
         title="مشاهده"
         aria-label={`مشاهده ${category.name}`}
-        className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
       >
         <Eye className="size-4" />
-      </button>
+      </IconButton>
 
-      <button
+      <IconButton
         type="button"
         onClick={() =>
           navigate(`/admin/categories/${category.id}/edit`)
         }
         title="ویرایش"
         aria-label={`ویرایش ${category.name}`}
-        className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
       >
         <Pencil className="size-4" />
-      </button>
+      </IconButton>
 
-      <button
+      <IconButton
         type="button"
         onClick={() => onDelete(category)}
         title="حذف"
         aria-label={`حذف ${category.name}`}
-        className="inline-flex size-8 items-center justify-center rounded-md text-danger transition hover:bg-danger/10 focus:outline-none focus:ring-2 focus:ring-ring"
+        variant="danger"
       >
         <Trash2 className="size-4" />
-      </button>
+      </IconButton>
     </div>
   )
 }
