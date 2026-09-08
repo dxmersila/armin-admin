@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import FilterBar from '../../components/ui/FilterBar'
 import Input from '../../components/ui/Input'
 import Pagination from '../../components/ui/Pagination'
@@ -119,16 +120,11 @@ export default function OrdersPage() {
 
   return (
     <section className="space-y-6">
-      <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-          <ShoppingCart className="size-6 shrink-0" />
-          <span>سفارش‌ها</span>
-        </h1>
-
-        <p className="mt-2 text-sm text-muted-foreground">
-          مدیریت و مشاهده سفارش‌های کاربران.
-        </p>
-      </div>
+      <PageHeader
+        icon={ShoppingCart}
+        title="سفارش‌ها"
+        description="مدیریت و مشاهده سفارش‌های کاربران."
+      />
 
       <Card className="p-4 sm:p-6">
         <FilterBar>

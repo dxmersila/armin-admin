@@ -10,6 +10,7 @@ import Alert from '../../components/ui/feedback/Alert'
 import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import FilterBar from '../../components/ui/FilterBar'
 import Input from '../../components/ui/Input'
 import Pagination from '../../components/ui/Pagination'
@@ -222,16 +223,11 @@ export default function UsersPage() {
 
   return (
     <section className="space-y-6">
-      <div>
-        <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-          <UsersIcon className="size-6 shrink-0" />
-          <span>کاربران</span>
-        </h1>
-
-        <p className="mt-2 text-sm text-muted-foreground">
-          مدیریت کاربران و نقش‌های دسترسی.
-        </p>
-      </div>
+      <PageHeader
+        icon={UsersIcon}
+        title="کاربران"
+        description="مدیریت کاربران و نقش‌های دسترسی."
+      />
 
       <Card className="p-4 sm:p-6">
         <FilterBar>

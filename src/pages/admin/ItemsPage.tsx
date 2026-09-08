@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import FilterBar from '../../components/ui/FilterBar'
 import Input from '../../components/ui/Input'
 import Pagination from '../../components/ui/Pagination'
@@ -353,26 +354,20 @@ export default function ItemsPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Package className="size-6 shrink-0" />
-            <span>محصولات</span>
-          </h1>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            مدیریت محصولات
-          </p>
-        </div>
-
-        <Button
-          className="w-full sm:w-auto"
-          onClick={() => navigate('/admin/items/create')}
-        >
-          <Plus className="size-4" />
-          افزودن محصول
-        </Button>
-      </div>
+      <PageHeader
+        icon={Package}
+        title="محصولات"
+        description="مدیریت محصولات"
+        actions={
+          <Button
+            className="w-full sm:w-auto"
+            onClick={() => navigate('/admin/items/create')}
+          >
+            <Plus className="size-4" />
+            افزودن محصول
+          </Button>
+        }
+      />
 
       <Card className="p-4 sm:p-6">
         <FilterBar>
