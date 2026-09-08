@@ -4,6 +4,7 @@ import {
   Package,
   ShoppingCart,
   Users,
+  BadgeCheck,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -13,6 +14,7 @@ export type NavigationKey =
   | 'orders'
   | 'categories'
   | 'users'
+  | 'subscriptions'
 
 export interface NavigationItem {
   key: NavigationKey
@@ -45,5 +47,10 @@ export const adminNavigation: NavigationItem[] = [
     key: 'users',
     to: '/admin/users',
     icon: Users,
+  },
+  {
+    key: 'subscriptions',
+    to: '/admin/subscription-plans',
+    icon: BadgeCheck,
   },
 ]

@@ -15,6 +15,10 @@ import OrderDetailPage from "../pages/admin/OrderDetailPage";
 import UsersPage from "../pages/admin/UsersPage";
 import UserDetailPage from "../pages/admin/UserDetailPage";
 import EditUserPage from "../pages/admin/EditUserPage";
+import SubscriptionPlansPage from "../pages/admin/SubscriptionPlansPage";
+import CreateSubscriptionPlanPage from "../pages/admin/CreateSubscriptionPlanPage";
+import SubscriptionPlanDetailPage from "../pages/admin/SubscriptionPlanDetailPage";
+import EditSubscriptionPlanPage from "../pages/admin/EditSubscriptionPlanPage";
 import LoginPage from "../pages/auth/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -86,6 +90,22 @@ export const router = createBrowserRouter([
           {
             path: "users",
             Component: UsersPage,
+          },
+          {
+            path: "subscription-plans",
+            Component: SubscriptionPlansPage,
+          },
+          {
+            path: "subscription-plans/create",
+            Component: CreateSubscriptionPlanPage,
+          },
+          {
+            path: "subscription-plans/:id",
+            Component: SubscriptionPlanDetailPage,
+          },
+          {
+            path: "subscription-plans/:id/edit",
+            Component: EditSubscriptionPlanPage,
           },
           {
             path: "users/:id",
