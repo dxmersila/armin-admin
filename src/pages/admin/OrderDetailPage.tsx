@@ -3,6 +3,7 @@ import { ArrowRight, ShoppingCart } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 import BackButton from '../../components/ui/BackButton'
 import Card from '../../components/ui/Card'
+import PageHeader from '../../components/ui/PageHeader'
 import Spinner from '../../components/ui/feedback/Spinner'
 import { useAsync } from '../../hooks/useAsync'
 import { getAdminOrder } from '../../services/orderService'
@@ -47,16 +48,11 @@ export default function OrderDetailPage() {
   ) {
     return (
       <section className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <ShoppingCart className="size-6 shrink-0" />
-            <span>جزئیات سفارش</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            شناسه سفارش نامعتبر است.
-          </p>
-        </div>
+        <PageHeader
+          icon={ShoppingCart}
+          title="جزئیات سفارش"
+          description="شناسه سفارش نامعتبر است."
+        />
 
         <BackButton to="/admin/orders">
           بازگشت به سفارش‌ها
@@ -76,16 +72,11 @@ export default function OrderDetailPage() {
   if (error !== null || !order) {
     return (
       <section className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <ShoppingCart className="size-6 shrink-0" />
-            <span>جزئیات سفارش</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            دریافت اطلاعات سفارش انجام نشد.
-          </p>
-        </div>
+        <PageHeader
+          icon={ShoppingCart}
+          title="جزئیات سفارش"
+          description="دریافت اطلاعات سفارش انجام نشد."
+        />
 
         <div className="flex flex-wrap gap-3">
           <button
@@ -106,22 +97,16 @@ export default function OrderDetailPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <ShoppingCart className="size-6 shrink-0" />
-            <span>سفارش #{order.id}</span>
-          </h1>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            جزئیات کامل سفارش و پرداخت.
-          </p>
-        </div>
-
-        <BackButton to="/admin/orders">
-          بازگشت به سفارش‌ها
-        </BackButton>
-      </div>
+      <PageHeader
+        icon={ShoppingCart}
+        title={`سفارش #${order.id}`}
+        description="جزئیات کامل سفارش و پرداخت."
+        actions={
+          <BackButton to="/admin/orders">
+            بازگشت به سفارش‌ها
+          </BackButton>
+        }
+      />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="space-y-5 p-4 sm:p-6">

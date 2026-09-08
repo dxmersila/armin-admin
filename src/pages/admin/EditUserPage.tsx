@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import BackButton from '../../components/ui/BackButton'
 import Button from '../../components/ui/Button'
+import PageHeader from '../../components/ui/PageHeader'
 import Card from '../../components/ui/Card'
 import Input from '../../components/ui/Input'
 import Select from '../../components/ui/Select'
@@ -136,16 +137,11 @@ export default function EditUserPage() {
   ) {
     return (
       <section className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش کاربر</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            شناسه کاربر نامعتبر است.
-          </p>
-        </div>
+        <PageHeader
+          icon={Pencil}
+          title="ویرایش کاربر"
+          description="شناسه کاربر نامعتبر است."
+        />
 
         <BackButton to="/admin/users">
           بازگشت به کاربران
@@ -165,16 +161,11 @@ export default function EditUserPage() {
   if (loadError || !user || !formValues) {
     return (
       <section className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش کاربر</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            دریافت اطلاعات کاربر انجام نشد.
-          </p>
-        </div>
+        <PageHeader
+          icon={Pencil}
+          title="ویرایش کاربر"
+          description="دریافت اطلاعات کاربر انجام نشد."
+        />
 
         <div className="flex flex-wrap gap-3">
           <Button
@@ -194,22 +185,16 @@ export default function EditUserPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش کاربر</span>
-          </h1>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            اطلاعات کاربر را ویرایش کنید.
-          </p>
-        </div>
-
-        <BackButton to={`/admin/users/${user.id}`}>
-          بازگشت به کاربر
-        </BackButton>
-      </div>
+      <PageHeader
+        icon={Pencil}
+        title="ویرایش کاربر"
+        description="اطلاعات کاربر را ویرایش کنید."
+        actions={
+          <BackButton to={`/admin/users/${user.id}`}>
+            بازگشت به کاربر
+          </BackButton>
+        }
+      />
 
       {submitError !== null && (
         <Alert variant="error">

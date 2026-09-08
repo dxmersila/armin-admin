@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import BackButton from '../../components/ui/BackButton'
 import Button from '../../components/ui/Button'
+import PageHeader from '../../components/ui/PageHeader'
 import Spinner from '../../components/ui/feedback/Spinner'
 import CategoryForm, {
   type CategoryFormValues,
@@ -112,16 +113,11 @@ export default function EditCategoryPage() {
   ) {
     return (
       <section className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش دسته‌بندی</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            شناسه دسته‌بندی نامعتبر است.
-          </p>
-        </div>
+        <PageHeader
+          icon={Pencil}
+          title="ویرایش دسته‌بندی"
+          description="شناسه دسته‌بندی نامعتبر است."
+        />
 
         <BackButton to="/admin/categories">
           بازگشت به دسته‌بندی‌ها
@@ -141,16 +137,11 @@ export default function EditCategoryPage() {
   if (loadError || !category || !formValues) {
     return (
       <section className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش دسته‌بندی</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            دریافت اطلاعات دسته‌بندی انجام نشد.
-          </p>
-        </div>
+        <PageHeader
+          icon={Pencil}
+          title="ویرایش دسته‌بندی"
+          description="دریافت اطلاعات دسته‌بندی انجام نشد."
+        />
 
         <div className="flex flex-wrap gap-3">
           <Button
@@ -170,22 +161,16 @@ export default function EditCategoryPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش دسته‌بندی</span>
-          </h1>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            اطلاعات دسته‌بندی را ویرایش کنید.
-          </p>
-        </div>
-
-        <BackButton to="/admin/categories">
-          بازگشت به دسته‌بندی‌ها
-        </BackButton>
-      </div>
+      <PageHeader
+        icon={Pencil}
+        title="ویرایش دسته‌بندی"
+        description="اطلاعات دسته‌بندی را ویرایش کنید."
+        actions={
+          <BackButton to="/admin/categories">
+            بازگشت به دسته‌بندی‌ها
+          </BackButton>
+        }
+      />
 
       {submitError !== null && (
         <Alert variant="error">

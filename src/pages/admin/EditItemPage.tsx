@@ -8,6 +8,7 @@ import ItemForm, {
 } from '../../components/items/ItemForm'
 import MediaManager from '../../components/items/MediaManager'
 import Button from '../../components/ui/Button'
+import PageHeader from '../../components/ui/PageHeader'
 import Spinner from '../../components/ui/feedback/Spinner'
 import { toast } from '../../components/ui/feedback/toast'
 import { useAsync } from '../../hooks/useAsync'
@@ -183,16 +184,11 @@ export default function EditItemPage() {
   ) {
     return (
       <div className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش محصول</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            شناسه آیتم نامعتبر است.
-          </p>
-        </div>
+        <PageHeader
+          icon={Pencil}
+          title="ویرایش محصول"
+          description="شناسه آیتم نامعتبر است."
+        />
 
         <BackButton to="/admin/items">
           بازگشت به محصولات
@@ -217,16 +213,11 @@ export default function EditItemPage() {
   ) {
     return (
       <div className="space-y-4">
-        <div>
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش محصول</span>
-          </h1>
-
-          <p className="mt-1 text-sm text-muted-foreground">
-            دریافت اطلاعات آیتم انجام نشد.
-          </p>
-        </div>
+        <PageHeader
+          icon={Pencil}
+          title="ویرایش محصول"
+          description="دریافت اطلاعات آیتم انجام نشد."
+        />
 
         <Button
           variant="secondary"
@@ -240,22 +231,16 @@ export default function EditItemPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-            <Pencil className="size-6 shrink-0" />
-            <span>ویرایش محصول</span>
-          </h1>
-
-          <p className="mt-2 text-sm text-muted-foreground">
-            اطلاعات محصول و رسانه‌های آن را ویرایش کنید.
-          </p>
-        </div>
-
-        <BackButton to="/admin/items">
-          بازگشت به محصولات
-        </BackButton>
-      </div>
+      <PageHeader
+        icon={Pencil}
+        title="ویرایش محصول"
+        description="اطلاعات محصول و رسانه‌های آن را ویرایش کنید."
+        actions={
+          <BackButton to="/admin/items">
+            بازگشت به محصولات
+          </BackButton>
+        }
+      />
 
       <EditItemForm
         key={item.id}
