@@ -186,7 +186,7 @@ const fa = {
       role: 'نقش',
       userRole: 'کاربر',
       adminRole: 'مدیر',
-      cancel: 'انصراف',
+      cancel: 'لغو',
       save: 'ذخیره تغییرات',
     },
     detail: {
