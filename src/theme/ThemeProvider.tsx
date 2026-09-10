@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { appConfig, type AppTheme } from '../config/app'
 import {
   getStoredTheme,
@@ -36,7 +36,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     getStoredTheme() ?? appConfig.defaultTheme,
   )
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     applyTheme(theme)
     setStoredTheme(theme)
 

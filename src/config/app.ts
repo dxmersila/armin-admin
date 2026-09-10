@@ -10,5 +10,5 @@ interface AppConfig {
 export const appConfig: AppConfig = {
   name: 'Armin Admin',
   defaultLocale: 'fa',
-  defaultTheme: 'system',
+  defaultTheme: 'dark',
 }

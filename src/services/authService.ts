@@ -19,9 +19,9 @@ export const authService = {
   },
 
   async me(): Promise<User> {
-    const response = await apiClient.get<User>('/auth/me')
+    const response = await apiClient.get<{ data: User }>('/auth/me')
 
-    return response.data
+    return response.data.data
   },
 
   async logout(): Promise<void> {

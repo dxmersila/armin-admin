@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import AdminLayout from "../layouts/AdminLayout";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardPage from "../pages/admin/DashboardPage";
@@ -23,6 +23,10 @@ import LoginPage from "../pages/auth/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Navigate to="/admin" replace />,
+  },
   {
     Component: AuthLayout,
     children: [
