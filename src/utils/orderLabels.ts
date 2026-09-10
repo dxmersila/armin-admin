@@ -4,29 +4,22 @@ import type {
   PaymentStatus,
 } from '../types/order'
 
-const orderStatusLabels: Record<OrderStatus, string> = {
-  pending: 'در انتظار پرداخت',
-  paid: 'پرداخت شده',
-  failed: 'ناموفق',
-  cancelled: 'لغو شده',
+export function getOrderTypeLabelKey(
+  type: OrderType,
+): string {
+  return type === 'item'
+    ? 'orders.type.item'
+    : 'orders.type.subscription'
 }
 
-const paymentStatusLabels: Record<PaymentStatus, string> = {
-  pending: 'در انتظار',
-  paid: 'پرداخت شده',
-  failed: 'ناموفق',
+export function getOrderStatusLabelKey(
+  status: OrderStatus,
+): string {
+  return `orders.status.${status}`
 }
 
-export function getOrderTypeLabel(type: OrderType): string {
-  return type === 'item' ? 'محصول' : 'اشتراک'
-}
-
-export function getOrderStatusLabel(status: OrderStatus): string {
-  return orderStatusLabels[status]
-}
-
-export function getPaymentStatusLabel(
+export function getPaymentStatusLabelKey(
   status: PaymentStatus,
 ): string {
-  return paymentStatusLabels[status]
+  return `orders.paymentStatus.${status}`
 }

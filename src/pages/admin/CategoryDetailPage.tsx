@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   FolderTree,
   Pencil,
@@ -23,6 +24,7 @@ import type { AdminCategory } from '../../types/category'
 export default function CategoryDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const {
     data: category,
@@ -61,11 +63,11 @@ export default function CategoryDetailPage() {
     return (
       <section className="space-y-4">
         <Alert variant="error">
-          شناسه دسته‌بندی نامعتبر است.
+          {t('categories.detail.invalidId')}
         </Alert>
 
         <BackButton to="/admin/categories">
-          بازگشت به دسته‌بندی‌ها
+          {t('categories.detail.backToCategories')}
         </BackButton>
       </section>
     )
@@ -73,10 +75,10 @@ export default function CategoryDetailPage() {
 
   async function handleDelete() {
     const accepted = await confirm({
-      title: `حذف «${category?.name ?? ''}»؟`,
-      text: 'این عملیات قابل بازگشت نیست.',
-      confirmText: 'حذف',
-      cancelText: 'لغو',
+      title: t('categories.detail.deleteTitle', { name: category?.name ?? '' }),
+      text: t('categories.detail.deleteWarning'),
+      confirmText: t('categories.detail.delete'),
+      cancelText: t('common.cancel'),
       danger: true,
     })
 
@@ -86,13 +88,9 @@ export default function CategoryDetailPage() {
 
     try {
       await deleteAdminCategory(category.id)
-      await toast.success(
-        'دسته‌بندی با موفقیت حذف شد.',
-      )
+      await toast.success(t('categories.detail.deleteSuccess'))
     } catch {
-      await toast.error(
-        'حذف دسته‌بندی انجام نشد.',
-      )
+      await toast.error(t('categories.detail.deleteError'))
       return
     }
 
@@ -105,7 +103,7 @@ export default function CategoryDetailPage() {
     return (
       <section className="space-y-4">
         <Alert variant="error">
-          خطا در دریافت اطلاعات دسته‌بندی.
+          {t('categories.detail.loadError')}
         </Alert>
 
         <div className="flex flex-wrap gap-3">
@@ -113,11 +111,11 @@ export default function CategoryDetailPage() {
             variant="secondary"
             onClick={() => void loadCategory()}
           >
-            تلاش مجدد
+            {t('categories.detail.retry')}
           </Button>
 
           <BackButton to="/admin/categories">
-            بازگشت
+            {t('categories.detail.back')}
           </BackButton>
         </div>
       </section>
@@ -133,19 +131,19 @@ export default function CategoryDetailPage() {
         actions={
           <>
             <BackButton to="/admin/categories">
-              بازگشت به دسته‌بندی‌ها
+              {t('categories.detail.backToCategories')}
             </BackButton>
 
             <div className="flex items-center gap-1">
               <Link
                 to={`/admin/categories/${category.id}/edit`}
-                title="ویرایش"
-                aria-label={`ویرایش ${category.name}`}
+                title={t('categories.detail.edit')}
+                aria-label={`${t('categories.detail.edit')} ${category.name}`}
               >
                 <Button
                   variant="secondary"
                   size="sm"
-                  aria-label={`ویرایش ${category.name}`}
+                  aria-label={`${t('categories.detail.edit')} ${category.name}`}
                 >
                   <Pencil className="size-4" />
                 </Button>
@@ -155,8 +153,8 @@ export default function CategoryDetailPage() {
                 variant="danger"
                 size="sm"
                 onClick={() => void handleDelete()}
-                title="حذف"
-                aria-label={`حذف ${category.name}`}
+                title={t('categories.detail.delete')}
+                aria-label={`${t('categories.detail.delete')} ${category.name}`}
               >
                 <Trash2 className="size-4" />
               </Button>
@@ -170,14 +168,14 @@ export default function CategoryDetailPage() {
           <FolderTree className="size-5 text-muted-foreground" />
 
           <h2 className="font-semibold text-foreground">
-            اطلاعات دسته‌بندی
+            {t('categories.detail.information')}
           </h2>
         </div>
 
         <dl className="space-y-4 text-sm">
           <div>
             <dt className="text-muted-foreground">
-              نام
+              {t('categories.detail.name')}
             </dt>
 
             <dd className="mt-1 text-foreground">
@@ -187,7 +185,7 @@ export default function CategoryDetailPage() {
 
           <div>
             <dt className="text-muted-foreground">
-              Slug
+              {t('categories.detail.slug')}
             </dt>
 
             <dd className="mt-1 break-all text-foreground">

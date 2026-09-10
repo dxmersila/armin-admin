@@ -1,4 +1,6 @@
 import { useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '../../i18n/useLanguage'
 import { ArrowRight, ShoppingCart } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 import BackButton from '../../components/ui/BackButton'
@@ -10,13 +12,16 @@ import { getAdminOrder } from '../../services/orderService'
 import type { AdminOrder } from '../../types/order'
 import { formatDateTime, formatPrice } from '../../utils/format'
 import {
-  getOrderStatusLabel,
-  getOrderTypeLabel,
-  getPaymentStatusLabel,
+  getOrderStatusLabelKey,
+  getOrderTypeLabelKey,
+  getPaymentStatusLabelKey,
 } from '../../utils/orderLabels'
 
 export default function OrderDetailPage() {
+  const { locale } = useLanguage()
+
   const { id } = useParams()
+  const { t } = useTranslation()
 
   const {
     data: order,
@@ -52,12 +57,12 @@ export default function OrderDetailPage() {
       <section className="space-y-4">
         <PageHeader
           icon={ShoppingCart}
-          title="جزئیات سفارش"
-          description="شناسه سفارش نامعتبر است."
+          title={t('orders.detail.title')}
+          description={t('orders.detail.invalidId')}
         />
 
         <BackButton to="/admin/orders">
-          بازگشت به سفارش‌ها
+          {t('orders.detail.backToOrders')}
         </BackButton>
       </section>
     )
@@ -76,8 +81,8 @@ export default function OrderDetailPage() {
       <section className="space-y-4">
         <PageHeader
           icon={ShoppingCart}
-          title="جزئیات سفارش"
-          description="دریافت اطلاعات سفارش انجام نشد."
+          title={t('orders.detail.title')}
+          description={t('orders.detail.loadError')}
         />
 
         <div className="flex flex-wrap gap-3">
@@ -86,11 +91,11 @@ export default function OrderDetailPage() {
             onClick={() => void loadOrder()}
             className="inline-flex items-center justify-center rounded-md border border-border bg-surface px-3 py-1.5 text-sm font-medium text-foreground transition hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
           >
-            تلاش مجدد
+            {t('common.retry')}
           </button>
 
           <BackButton to="/admin/orders">
-            بازگشت به سفارش‌ها
+            {t('orders.detail.backToOrders')}
           </BackButton>
         </div>
       </section>
@@ -101,11 +106,11 @@ export default function OrderDetailPage() {
     <section className="space-y-6">
       <PageHeader
         icon={ShoppingCart}
-        title={`سفارش #${order.id}`}
-        description="جزئیات کامل سفارش و پرداخت."
+        title={`${t('orders.detail.order')} #${order.id}`}
+        description={t('orders.detail.description')}
         actions={
           <BackButton to="/admin/orders">
-            بازگشت به سفارش‌ها
+            {t('orders.detail.backToOrders')}
           </BackButton>
         }
       />
@@ -114,14 +119,14 @@ export default function OrderDetailPage() {
         <Card className="space-y-5 p-4 sm:p-6">
           <div>
             <h2 className="text-lg font-semibold text-foreground">
-              اطلاعات سفارش
+              {t('orders.detail.orderInfo')}
             </h2>
           </div>
 
           <dl className="grid gap-4 sm:grid-cols-2">
             <div>
               <dt className="text-sm text-muted-foreground">
-                شناسه
+                {t('orders.detail.id')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
                 #{order.id}
@@ -130,46 +135,46 @@ export default function OrderDetailPage() {
 
             <div>
               <dt className="text-sm text-muted-foreground">
-                نوع
+                {t('orders.detail.type')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {getOrderTypeLabel(order.type)}
+                {t(getOrderTypeLabelKey(order.type))}
               </dd>
             </div>
 
             <div>
               <dt className="text-sm text-muted-foreground">
-                وضعیت
+                {t('orders.detail.status')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {getOrderStatusLabel(order.status)}
+                {t(getOrderStatusLabelKey(order.status))}
               </dd>
             </div>
 
             <div>
               <dt className="text-sm text-muted-foreground">
-                مبلغ کل
+                {t('orders.detail.totalAmount')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {formatPrice(order.total_price)}
+                {formatPrice(order.total_price, locale)}
               </dd>
             </div>
 
             <div>
               <dt className="text-sm text-muted-foreground">
-                تاریخ ایجاد
+                {t('orders.detail.createdAt')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {formatDateTime(order.created_at)}
+                {formatDateTime(order.created_at, locale)}
               </dd>
             </div>
 
             <div>
               <dt className="text-sm text-muted-foreground">
-                آخرین بروزرسانی
+                {t('orders.detail.updatedAt')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {formatDateTime(order.updated_at)}
+                {formatDateTime(order.updated_at, locale)}
               </dd>
             </div>
           </dl>
@@ -178,7 +183,7 @@ export default function OrderDetailPage() {
         <Card className="space-y-5 p-4 sm:p-6">
           <div>
             <h2 className="text-lg font-semibold text-foreground">
-              کاربر
+              {t('orders.detail.user')}
             </h2>
           </div>
 
@@ -186,7 +191,7 @@ export default function OrderDetailPage() {
             <dl className="grid gap-4 sm:grid-cols-2">
               <div>
                 <dt className="text-sm text-muted-foreground">
-                  نام
+                  {t('orders.detail.name')}
                 </dt>
                 <dd className="mt-1 font-medium text-foreground">
                   {order.user.name}
@@ -195,7 +200,7 @@ export default function OrderDetailPage() {
 
               <div>
                 <dt className="text-sm text-muted-foreground">
-                  ایمیل
+                  {t('orders.detail.email')}
                 </dt>
                 <dd className="mt-1 break-all font-medium text-foreground">
                   {order.user.email}
@@ -204,7 +209,7 @@ export default function OrderDetailPage() {
             </dl>
           ) : (
             <p className="text-sm text-muted-foreground">
-              اطلاعات کاربر در دسترس نیست.
+              {t('orders.detail.userInfoUnavailable')}
             </p>
           )}
         </Card>
@@ -214,7 +219,7 @@ export default function OrderDetailPage() {
         <Card className="space-y-5 p-4 sm:p-6">
           <div>
             <h2 className="text-lg font-semibold text-foreground">
-              آیتم‌های سفارش
+              {t('orders.detail.orderItems')}
             </h2>
           </div>
 
@@ -235,7 +240,7 @@ export default function OrderDetailPage() {
                 </div>
 
                 <div className="shrink-0 font-medium text-foreground">
-                  {formatPrice(orderItem.price)}
+                  {formatPrice(orderItem.price, locale)}
                 </div>
               </div>
             ))}
@@ -247,7 +252,7 @@ export default function OrderDetailPage() {
         <Card className="space-y-5 p-4 sm:p-6">
           <div>
             <h2 className="text-lg font-semibold text-foreground">
-              پلن اشتراک
+              {t('orders.detail.subscriptionPlan')}
             </h2>
           </div>
 
@@ -263,19 +268,19 @@ export default function OrderDetailPage() {
 
             <div>
               <dt className="text-sm text-muted-foreground">
-                مدت
+                {t('orders.detail.duration')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {order.subscription_plan.duration_months} ماه
+                {order.subscription_plan.duration_months} {t('orders.detail.months')}
               </dd>
             </div>
 
             <div>
               <dt className="text-sm text-muted-foreground">
-                قیمت
+                {t('orders.detail.price')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
-                {formatPrice(order.subscription_plan.price)}
+                {formatPrice(order.subscription_plan.price, locale)}
               </dd>
             </div>
           </dl>
@@ -286,7 +291,7 @@ export default function OrderDetailPage() {
         <Card className="space-y-5 p-4 sm:p-6">
           <div>
             <h2 className="text-lg font-semibold text-foreground">
-              پرداخت‌ها
+              {t('orders.detail.payments')}
             </h2>
           </div>
 
@@ -298,17 +303,17 @@ export default function OrderDetailPage() {
               >
                 <div>
                   <p className="font-medium text-foreground">
-                    پرداخت #{payment.id}
+                    {t('orders.detail.payment')} #{payment.id}
                   </p>
 
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {formatDateTime(payment.created_at)}
+                    {formatDateTime(payment.created_at, locale)}
                   </p>
                 </div>
 
                 <div className="text-sm">
                   <span className="font-medium text-foreground">
-                    {formatPrice(payment.amount)}
+                    {formatPrice(payment.amount, locale)}
                   </span>
 
                   <span className="mx-2 text-muted-foreground">
@@ -316,7 +321,7 @@ export default function OrderDetailPage() {
                   </span>
 
                   <span className="text-muted-foreground">
-                    {getPaymentStatusLabel(payment.status)}
+                    {t(getPaymentStatusLabelKey(payment.status))}
                   </span>
                 </div>
               </div>
@@ -331,7 +336,7 @@ export default function OrderDetailPage() {
           className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
         >
           <ArrowRight className="size-4" />
-          بازگشت به لیست سفارش‌ها
+          {t('orders.detail.backToOrderList')}
         </Link>
       </div>
     </section>

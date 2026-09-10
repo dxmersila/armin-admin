@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { PackagePlus } from 'lucide-react'
 import BackButton from '../../components/ui/BackButton'
 import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
+import Spinner from '../../components/ui/feedback/Spinner'
 import PageHeader from '../../components/ui/PageHeader'
 import { toast } from '../../components/ui/feedback/toast'
 import ItemForm, {
@@ -32,6 +34,7 @@ const initialValues: ItemFormValues = {
 
 export default function CreateItemPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [values, setValues] =
     useState<ItemFormValues>(initialValues)
@@ -117,10 +120,10 @@ export default function CreateItemPage() {
 
       if (failedMediaCount > 0) {
         await toast.error(
-          `محصول ایجاد شد، اما ${failedMediaCount} تصویر آپلود نشد.`,
+          `${t('items.create.mediaUploadPartial', { count: failedMediaCount })}`,
         )
       } else {
-        await toast.success('محصول با موفقیت ایجاد شد.')
+        await toast.success(t('items.create.success'))
       }
 
       navigate(`/admin/items/${item.id}`, {
@@ -136,13 +139,13 @@ export default function CreateItemPage() {
       <section className="space-y-6">
         <PageHeader
           icon={PackagePlus}
-          title="ایجاد محصول"
-          description="در حال دریافت دسته‌بندی‌ها..."
+          title={t('items.create.title')}
+          description={t('items.create.description')}
         />
 
-        <Alert variant="info">
-          در حال دریافت دسته‌بندی‌ها...
-        </Alert>
+        <div className="flex min-h-64 items-center justify-center">
+          <Spinner size="lg" />
+        </div>
       </section>
     )
   }
@@ -151,24 +154,24 @@ export default function CreateItemPage() {
     <section className="space-y-6">
       <PageHeader
         icon={PackagePlus}
-        title="ایجاد محصول"
-        description="اطلاعات محصول جدید را وارد کنید."
+        title={t('items.create.title')}
+        description={t('items.create.description')}
         actions={
           <BackButton to="/admin/items">
-            بازگشت به محصولات
+            {t('items.create.back')}
           </BackButton>
         }
       />
 
       {categoriesError !== null && (
         <Alert variant="error">
-          دریافت دسته‌بندی‌ها انجام نشد.
+          {t('items.create.categoriesError')}
         </Alert>
       )}
 
       {submitError !== null && (
         <Alert variant="error">
-          ایجاد محصول انجام نشد. اطلاعات واردشده را بررسی کنید.
+          {t('items.create.submitError')}
         </Alert>
       )}
 
@@ -176,7 +179,7 @@ export default function CreateItemPage() {
         values={values}
         categories={categories}
         isSubmitting={isSubmitting}
-        submitLabel="ایجاد محصول"
+        submitLabel={t('items.create.title')}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={() => navigate('/admin/items')}

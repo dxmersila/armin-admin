@@ -15,13 +15,19 @@ const sizeClasses: Record<SpinnerSize, string> = {
 
 export default function Spinner({
   size = 'md',
-  label = 'در حال بارگذاری...',
+  label,
 }: SpinnerProps) {
   return (
     <LoaderCircle
       className={`${sizeClasses[size]} animate-spin text-muted-foreground`}
-      aria-label={label}
-      role="status"
+      {...(label
+        ? {
+            'aria-label': label,
+            role: 'status',
+          }
+        : {
+            'aria-hidden': true,
+          })}
     />
   )
 }

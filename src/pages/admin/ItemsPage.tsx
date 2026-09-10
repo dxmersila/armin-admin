@@ -11,6 +11,8 @@ import {
   Trash2,
 } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '../../i18n/useLanguage'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
 import IconButton from '../../components/ui/IconButton'
@@ -55,15 +57,6 @@ const emptyFilters: ItemFilters = {
   sort: 'latest',
 }
 
-const sortOptions: Array<{
-  value: ItemFilters['sort']
-  label: string
-}> = [
-  { value: 'latest', label: 'جدیدترین' },
-  { value: 'oldest', label: 'قدیمی‌ترین' },
-  { value: 'title', label: 'عنوان' },
-]
-
 interface ItemActionsProps {
   item: AdminItem
   onDelete: (item: AdminItem) => void
@@ -74,14 +67,15 @@ function ItemActions({
   onDelete,
 }: ItemActionsProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
     <div className="flex items-center justify-center gap-1">
       <IconButton
         type="button"
         onClick={() => navigate(`/admin/items/${item.id}`)}
-        title="مشاهده"
-        aria-label={`مشاهده ${item.title}`}
+        title={t('items.table.view')}
+        aria-label={`${t('items.table.view')} ${item.title}`}
       >
         <Eye className="size-4" />
       </IconButton>
@@ -89,8 +83,8 @@ function ItemActions({
       <IconButton
         type="button"
         onClick={() => navigate(`/admin/items/${item.id}/edit`)}
-        title="ویرایش"
-        aria-label={`ویرایش ${item.title}`}
+        title={t('items.table.edit')}
+        aria-label={`${t('items.table.edit')} ${item.title}`}
       >
         <Pencil className="size-4" />
       </IconButton>
@@ -98,8 +92,8 @@ function ItemActions({
       <IconButton
         type="button"
         onClick={() => onDelete(item)}
-        title="حذف"
-        aria-label={`حذف ${item.title}`}
+        title={t('items.table.delete')}
+        aria-label={`${t('items.table.delete')} ${item.title}`}
         variant="danger"
       >
         <Trash2 className="size-4" />
@@ -117,10 +111,13 @@ function ItemsTable({
   items,
   onDelete,
 }: ItemsTableProps) {
+  const { t } = useTranslation()
+  const { locale } = useLanguage()
+
   const columns: TableColumn<AdminItem>[] = [
     {
       key: 'title',
-      header: 'عنوان',
+      header: t('items.table.title'),
       className: 'w-56 max-w-56',
       render: (item) => (
         <div className="w-56 max-w-full">
@@ -142,21 +139,21 @@ function ItemsTable({
     },
     {
       key: 'visibility',
-      header: <span className="block text-center">وضعیت</span>,
+      header: <span className="block text-center">{t('items.table.visibility')}</span>,
       className: 'w-20 text-center',
       render: (item) =>
         item.is_visible ? (
           <span
-            title="قابل نمایش"
-            aria-label="قابل نمایش"
+            title={t('items.table.visible')}
+            aria-label={t('items.table.visible')}
             className="mx-auto inline-flex size-9 items-center justify-center rounded-full text-success transition hover:bg-success/10 focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <Eye className="size-5" />
           </span>
         ) : (
           <span
-            title="مخفی"
-            aria-label="مخفی"
+            title={t('items.table.hidden')}
+            aria-label={t('items.table.hidden')}
             className="mx-auto inline-flex size-9 items-center justify-center rounded-full text-muted-foreground transition hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <EyeOffIcon className="size-5" />
@@ -165,14 +162,14 @@ function ItemsTable({
     },
     {
       key: 'access_type',
-      header: <span className="block text-center">دسترسی</span>,
+      header: <span className="block text-center">{t('items.table.access')}</span>,
       className: 'w-20 text-center',
       render: (item) =>
         item.access_type === 'paid' ? (
           <button
             type="button"
-            title={formatPrice(item.price)}
-            aria-label={`محصول پولی - ${formatPrice(item.price)}`}
+            title={formatPrice(item.price, locale)}
+            aria-label={`${t('items.table.paidProduct')} - ${formatPrice(item.price, locale)}`}
             className="mx-auto inline-flex size-9 items-center justify-center rounded-full text-warning transition hover:bg-warning/10 focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <CircleDollarSign className="size-5" />
@@ -180,8 +177,8 @@ function ItemsTable({
         ) : (
           <button
             type="button"
-            title="رایگان"
-            aria-label="محصول رایگان"
+            title={t('items.table.free')}
+            aria-label={t('items.table.freeProduct')}
             className="mx-auto inline-flex size-9 items-center justify-center rounded-full text-success transition hover:bg-success/10 focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <Gift className="size-5" />
@@ -190,7 +187,7 @@ function ItemsTable({
     },
     {
       key: 'actions',
-      header: <span className="block text-center">عملیات</span>,
+      header: <span className="block text-center">{t('items.table.actions')}</span>,
       className: 'w-32 text-center',
       render: (item) => (
         <ItemActions
@@ -206,13 +203,23 @@ function ItemsTable({
       columns={columns}
       data={items}
       getRowKey={(item) => item.id}
-      emptyMessage="محصولی برای نمایش وجود ندارد."
+      emptyMessage={t('items.table.empty')}
     />
   )
 }
 
 export default function ItemsPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const sortOptions: Array<{
+    value: ItemFilters['sort']
+    label: string
+  }> = [
+    { value: 'latest', label: t('items.filters.latest') },
+    { value: 'oldest', label: t('items.filters.oldest') },
+    { value: 'title', label: t('items.filters.titleSort') },
+  ]
 
   const [currentPage, setCurrentPage] = useState(1)
   const [filters, setFilters] =
@@ -271,7 +278,7 @@ export default function ItemsPage() {
       } catch {
         if (!cancelled) {
           await toast.error(
-            'دریافت دسته‌بندی‌ها برای فیلتر انجام نشد.',
+            t('items.feedback.categoriesLoadError'),
           )
         }
       } finally {
@@ -286,7 +293,7 @@ export default function ItemsPage() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [t])
 
   function handleFilterChange<K extends keyof ItemFilters>(
     field: K,
@@ -311,10 +318,10 @@ export default function ItemsPage() {
 
   async function handleDelete(item: AdminItem) {
     const accepted = await confirm({
-      title: `حذف «${item.title}»؟`,
-      text: 'این عملیات قابل بازگشت نیست.',
-      confirmText: 'حذف',
-      cancelText: 'لغو',
+      title: t('items.feedback.deleteTitle', { title: item.title }),
+      text: t('items.feedback.deleteWarning'),
+      confirmText: t('items.feedback.confirmDelete'),
+      cancelText: t('items.feedback.cancelDelete'),
       danger: true,
     })
 
@@ -326,7 +333,7 @@ export default function ItemsPage() {
 
     try {
       await deleteAdminItem(item.id)
-      await toast.success('محصول با موفقیت حذف شد.')
+      await toast.success(t('items.feedback.deleteSuccess'))
 
       const isLastItemOnPage =
         data?.data.length === 1 && currentPage > 1
@@ -338,7 +345,7 @@ export default function ItemsPage() {
 
       await loadItems(currentPage, appliedFilters)
     } catch {
-      await toast.error('حذف محصول انجام نشد.')
+      await toast.error(t('items.feedback.deleteError'))
     } finally {
       setDeletingItemId(null)
     }
@@ -348,15 +355,15 @@ export default function ItemsPage() {
     <section className="space-y-6">
       <PageHeader
         icon={Package}
-        title="محصولات"
-        description="مدیریت محصولات"
+        title={t('items.title')}
+        description={t('items.description')}
         actions={
           <Button
             className="w-full sm:w-auto"
             onClick={() => navigate('/admin/items/create')}
           >
             <Plus className="size-4" />
-            افزودن محصول
+            {t('items.add')}
           </Button>
         }
       />
@@ -368,11 +375,11 @@ export default function ItemsPage() {
 
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                فیلترها
+                {t('items.filters.title')}
               </h2>
 
               <p className="mt-1 text-sm text-muted-foreground">
-                محصولات را بر اساس جستجو، وضعیت، دسترسی، دسته‌بندی و ترتیب نمایش فیلتر کنید.
+                {t('items.filters.description')}
               </p>
             </div>
           </div>
@@ -380,8 +387,8 @@ export default function ItemsPage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Input
               id="item-search-filter"
-              label="جستجو"
-              placeholder="عنوان یا slug محصول"
+              label={t('items.filters.search')}
+              placeholder={t('items.filters.searchPlaceholder')}
               value={filters.search}
               onChange={(event) =>
                 handleFilterChange(
@@ -393,7 +400,7 @@ export default function ItemsPage() {
 
             <Select
               id="item-visibility-filter"
-              label="وضعیت نمایش"
+              label={t('items.filters.visibility')}
               value={filters.is_visible}
               onChange={(event) =>
                 handleFilterChange(
@@ -402,14 +409,14 @@ export default function ItemsPage() {
                 )
               }
             >
-              <option value="all">همه وضعیت‌ها</option>
-              <option value="visible">قابل نمایش</option>
-              <option value="hidden">مخفی</option>
+              <option value="all">{t('items.filters.allVisibility')}</option>
+              <option value="visible">{t('items.table.visible')}</option>
+              <option value="hidden">{t('items.table.hidden')}</option>
             </Select>
 
             <Select
               id="item-access-type-filter"
-              label="نوع دسترسی"
+              label={t('items.filters.accessType')}
               value={filters.access_type}
               onChange={(event) =>
                 handleFilterChange(
@@ -418,14 +425,14 @@ export default function ItemsPage() {
                 )
               }
             >
-              <option value="all">همه انواع دسترسی</option>
-              <option value="free">رایگان</option>
-              <option value="paid">پولی</option>
+              <option value="all">{t('items.filters.allAccessTypes')}</option>
+              <option value="free">{t('items.filters.free')}</option>
+              <option value="paid">{t('items.filters.paid')}</option>
             </Select>
 
             <Select
               id="item-category-filter"
-              label="دسته‌بندی"
+              label={t('items.filters.category')}
               value={filters.category_id}
               disabled={isCategoriesLoading}
               onChange={(event) =>
@@ -437,8 +444,8 @@ export default function ItemsPage() {
             >
               <option value="">
                 {isCategoriesLoading
-                  ? 'در حال دریافت دسته‌بندی‌ها...'
-                  : 'همه دسته‌بندی‌ها'}
+                  ? t('items.filters.loadingCategories')
+                  : t('items.filters.allCategories')}
               </option>
 
               {categories.map((category) => (
@@ -453,7 +460,7 @@ export default function ItemsPage() {
 
             <Select
               id="item-sort-filter"
-              label="مرتب‌سازی"
+              label={t('items.filters.sort')}
               value={filters.sort}
               onChange={(event) =>
                 handleFilterChange(
@@ -479,14 +486,14 @@ export default function ItemsPage() {
               variant="secondary"
               onClick={handleClearFilters}
             >
-              پاک کردن
+              {t('items.filters.clear')}
             </Button>
 
             <Button
               type="button"
               onClick={handleApplyFilters}
             >
-              اعمال فیلتر
+              {t('items.filters.apply')}
             </Button>
           </div>
         </FilterBar>
@@ -496,7 +503,7 @@ export default function ItemsPage() {
         {error !== null && (
           <div className="p-4 sm:p-6">
             <Alert variant="error">
-              خطا در دریافت یا حذف محصول.
+              {t('items.feedback.loadError')}
             </Alert>
 
             <div className="mt-3">
@@ -506,15 +513,16 @@ export default function ItemsPage() {
                   void loadItems(currentPage, appliedFilters)
                 }
               >
-                تلاش مجدد
+                {t('items.feedback.retry')}
               </Button>
             </div>
           </div>
         )}
 
         {deletingItemId !== null ? (
-          <div className="border-b border-border px-4 py-3 text-sm text-muted-foreground sm:px-6">
-            در حال حذف محصول...
+          <div className="flex items-center gap-2 border-b border-border px-4 py-3 text-sm text-muted-foreground sm:px-6">
+            <Spinner size="sm" />
+            <span>{t('items.feedback.deleting')}</span>
           </div>
         ) : null}
 

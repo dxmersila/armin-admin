@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BadgeCheck } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
@@ -20,6 +21,7 @@ const initialValues: SubscriptionPlanFormValues = {
 
 export default function CreateSubscriptionPlanPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [values, setValues] =
     useState<SubscriptionPlanFormValues>(initialValues)
@@ -56,9 +58,7 @@ export default function CreateSubscriptionPlanPage() {
           is_active: values.is_active,
         })
 
-      await toast.success(
-        'اشتراک با موفقیت ایجاد شد.',
-      )
+      await toast.success(t('subscriptionPlans.create.success'))
 
       navigate(
         `/admin/subscription-plans/${plan.id}`,
@@ -73,25 +73,25 @@ export default function CreateSubscriptionPlanPage() {
     <section className="space-y-6">
       <PageHeader
         icon={BadgeCheck}
-        title="ایجاد اشتراک"
-        description="اطلاعات اشتراک جدید را وارد کنید."
+        title={t('subscriptionPlans.create.title')}
+        description={t('subscriptionPlans.create.description')}
         actions={
           <BackButton to="/admin/subscription-plans">
-            بازگشت به اشتراک‌ها
+            {t('subscriptionPlans.create.back')}
           </BackButton>
         }
       />
 
       {submitError !== null && (
         <Alert variant="error">
-          ایجاد اشتراک انجام نشد. اطلاعات واردشده را بررسی کنید.
+          {t('subscriptionPlans.create.submitError')}
         </Alert>
       )}
 
       <SubscriptionPlanForm
         values={values}
         isSubmitting={isSubmitting}
-        submitLabel="ایجاد اشتراک"
+        submitLabel={t('subscriptionPlans.create.submit')}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={() =>

@@ -1,4 +1,5 @@
 import type { FormEvent, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import Button from '../ui/Button'
 import Card from '../ui/Card'
 import Input from '../ui/Input'
@@ -43,23 +44,25 @@ export default function ItemForm({
   onCancel,
   mediaSection,
 }: ItemFormProps) {
+  const { t } = useTranslation()
+
   return (
     <form onSubmit={onSubmit} className="space-y-6">
       <Card className="space-y-5 p-4 sm:p-6">
         <div>
           <h2 className="text-lg font-semibold text-foreground">
-            اطلاعات اصلی
+            {t('items.form.mainInfo')}
           </h2>
 
           <p className="mt-1 text-sm text-muted-foreground">
-            اطلاعات اصلی محصول را وارد کنید.
+            {t('items.form.mainInfoDescription')}
           </p>
         </div>
 
         <div className="grid gap-5 md:grid-cols-2">
           <Input
             id="item-title"
-            label="عنوان"
+            label={t('items.form.title')}
             value={values.title}
             onChange={(event) =>
               onChange('title', event.target.value)
@@ -69,9 +72,9 @@ export default function ItemForm({
 
           <Input
             id="item-slug"
-            label="Slug"
+            label={t('items.form.slug')}
             value={values.slug}
-            hint="در صورت خالی بودن، backend آن را از عنوان می‌سازد."
+            hint={t('items.form.slugHint')}
             onChange={(event) =>
               onChange('slug', event.target.value)
             }
@@ -80,7 +83,7 @@ export default function ItemForm({
 
         <Textarea
           id="item-description"
-          label="توضیحات"
+          label={t('items.form.description')}
           value={values.description}
           onChange={(event) =>
             onChange('description', event.target.value)
@@ -89,7 +92,7 @@ export default function ItemForm({
 
         <Textarea
           id="item-content"
-          label="محتوا"
+          label={t('items.form.content')}
           value={values.content}
           rows={8}
           onChange={(event) =>
@@ -100,13 +103,13 @@ export default function ItemForm({
 
       <Card className="space-y-5 p-4 sm:p-6">
         <h2 className="text-lg font-semibold text-foreground">
-          تنظیمات دسترسی
+          {t('items.form.accessSettings')}
         </h2>
 
         <div className="grid gap-5 md:grid-cols-2">
           <Select
             id="item-access-type"
-            label="نوع دسترسی"
+            label={t('items.form.accessType')}
             value={values.access_type}
             onChange={(event) =>
               onChange(
@@ -115,8 +118,8 @@ export default function ItemForm({
               )
             }
           >
-            <option value="free">رایگان</option>
-            <option value="paid">پولی</option>
+            <option value="free">{t('items.form.free')}</option>
+            <option value="paid">{t('items.form.paid')}</option>
           </Select>
 
           <Input
@@ -124,13 +127,13 @@ export default function ItemForm({
             type="number"
             min={0}
             step={1}
-            label="قیمت"
+            label={t('items.form.price')}
             value={values.price}
             disabled={values.access_type === 'free'}
             hint={
               values.access_type === 'free'
-                ? 'برای محصول رایگان نیازی به قیمت نیست.'
-                : 'قیمت را به تومان وارد کنید.'
+                ? t('items.form.freePriceHint')
+                : t('items.form.paidPriceHint')
             }
             onChange={(event) =>
               onChange('price', event.target.value)
@@ -149,19 +152,19 @@ export default function ItemForm({
           />
 
           <span className="text-sm font-medium text-foreground">
-            محصول قابل نمایش باشد
+            {t('items.form.visible')}
           </span>
         </label>
       </Card>
 
       <Card className="space-y-5 p-4 sm:p-6">
         <h2 className="text-lg font-semibold text-foreground">
-          دسته‌بندی و تگ‌ها
+          {t('items.form.categoriesAndTags')}
         </h2>
 
         <Select
           id="item-categories"
-          label="دسته‌بندی‌ها"
+          label={t('items.form.categories')}
           multiple
           value={values.categories.map(String)}
           onChange={(event) => {
@@ -199,7 +202,7 @@ export default function ItemForm({
           onClick={onCancel}
           disabled={isSubmitting}
         >
-          لغو
+          {t('items.form.cancel')}
         </Button>
 
         <Button

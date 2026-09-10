@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Pencil } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
@@ -30,6 +31,7 @@ function mapCategoryToFormValues(
 export default function EditCategoryPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [values, setValues] =
     useState<CategoryFormValues | null>(null)
@@ -98,9 +100,7 @@ export default function EditCategoryPage() {
     )
 
     if (result) {
-      await toast.success(
-        'دسته‌بندی با موفقیت بروزرسانی شد.',
-      )
+      await toast.success(t('categories.edit.success'))
 
       navigate(`/admin/categories/${result.id}`)
     }
@@ -115,12 +115,12 @@ export default function EditCategoryPage() {
       <section className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش دسته‌بندی"
-          description="شناسه دسته‌بندی نامعتبر است."
+          title={t('categories.edit.title')}
+          description={t('categories.edit.invalidId')}
         />
 
         <BackButton to="/admin/categories">
-          بازگشت به دسته‌بندی‌ها
+          {t('categories.edit.backToCategories')}
         </BackButton>
       </section>
     )
@@ -139,8 +139,8 @@ export default function EditCategoryPage() {
       <section className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش دسته‌بندی"
-          description="دریافت اطلاعات دسته‌بندی انجام نشد."
+          title={t('categories.edit.title')}
+          description={t('categories.edit.loadError')}
         />
 
         <div className="flex flex-wrap gap-3">
@@ -148,11 +148,11 @@ export default function EditCategoryPage() {
             variant="secondary"
             onClick={() => void loadCategory()}
           >
-            تلاش مجدد
+            {t('categories.edit.retry')}
           </Button>
 
           <BackButton to="/admin/categories">
-            بازگشت
+            {t('categories.edit.back')}
           </BackButton>
         </div>
       </section>
@@ -163,25 +163,25 @@ export default function EditCategoryPage() {
     <section className="space-y-6">
       <PageHeader
         icon={Pencil}
-        title="ویرایش دسته‌بندی"
-        description="اطلاعات دسته‌بندی را ویرایش کنید."
+        title={t('categories.edit.title')}
+        description={t('categories.edit.description')}
         actions={
           <BackButton to="/admin/categories">
-            بازگشت به دسته‌بندی‌ها
+            {t('categories.edit.backToCategories')}
           </BackButton>
         }
       />
 
       {submitError !== null && (
         <Alert variant="error">
-          بروزرسانی دسته‌بندی انجام نشد. اطلاعات واردشده را بررسی کنید.
+          {t('categories.edit.submitError')}
         </Alert>
       )}
 
       <CategoryForm
         values={formValues}
         isSubmitting={isSubmitting}
-        submitLabel="ذخیره تغییرات"
+        submitLabel={t('categories.edit.save')}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={() =>

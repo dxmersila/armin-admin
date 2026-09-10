@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import Button from './Button'
 
 interface PaginationProps {
@@ -14,6 +15,8 @@ export default function Pagination({
   onPageChange,
   disabled = false,
 }: PaginationProps) {
+  const { t } = useTranslation()
+
   if (lastPage <= 1) {
     return null
   }
@@ -28,11 +31,14 @@ export default function Pagination({
         onClick={() => onPageChange(currentPage - 1)}
       >
         <ChevronRight className="size-4" />
-        قبلی
+        {t('common.previous')}
       </Button>
 
       <span className="whitespace-nowrap text-center text-xs text-muted-foreground sm:text-sm">
-        صفحه {currentPage} از {lastPage}
+        {t('common.pageOf', {
+          current: currentPage,
+          total: lastPage,
+        })}
       </span>
 
       <Button
@@ -42,7 +48,7 @@ export default function Pagination({
         disabled={disabled || currentPage >= lastPage}
         onClick={() => onPageChange(currentPage + 1)}
       >
-        بعدی
+        {t('common.next')}
         <ChevronLeft className="size-4" />
       </Button>
     </div>

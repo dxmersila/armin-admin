@@ -1,4 +1,6 @@
 import { useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '../../i18n/useLanguage'
 import {
   Eye,
   EyeOff,
@@ -28,8 +30,11 @@ import type { AdminItem } from '../../types/item'
 import { formatPrice } from '../../utils/format'
 
 export default function ItemDetailPage() {
+  const { locale } = useLanguage()
+
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const {
     data: item,
@@ -68,11 +73,11 @@ export default function ItemDetailPage() {
     return (
       <section className="space-y-4">
         <Alert variant="error">
-          شناسه محصول نامعتبر است.
+          {t('items.detail.invalidId')}
         </Alert>
 
         <BackButton to="/admin/items">
-          بازگشت به محصولات
+          {t('items.detail.backToProducts')}
         </BackButton>
       </section>
     )
@@ -80,10 +85,10 @@ export default function ItemDetailPage() {
 
   async function handleDelete() {
     const accepted = await confirm({
-      title: `حذف «${item?.title ?? ''}»؟`,
-      text: 'این عملیات قابل بازگشت نیست.',
-      confirmText: 'حذف',
-      cancelText: 'لغو',
+      title: t('items.detail.deleteTitle', { title: item?.title ?? '' }),
+      text: t('items.detail.deleteWarning'),
+      confirmText: t('common.delete'),
+      cancelText: t('common.cancel'),
       danger: true,
     })
 
@@ -93,9 +98,9 @@ export default function ItemDetailPage() {
 
     try {
       await deleteAdminItem(item.id)
-      await toast.success('محصول با موفقیت حذف شد.')
+      await toast.success(t('items.detail.deleteSuccess'))
     } catch {
-      await toast.error('حذف محصول انجام نشد.')
+      await toast.error(t('items.detail.deleteError'))
       return
     }
 
@@ -116,7 +121,7 @@ export default function ItemDetailPage() {
             variant="secondary"
             onClick={() => void loadItem()}
           >
-            تلاش مجدد
+            {t('items.detail.retry')}
           </Button>
 
           <BackButton to="/admin/items">
@@ -136,19 +141,19 @@ export default function ItemDetailPage() {
         actions={
           <>
             <BackButton to="/admin/items">
-              بازگشت به محصولات
+              {t('items.detail.backToProducts')}
             </BackButton>
 
             <div className="flex items-center gap-1">
               <Link
                 to={`/admin/items/${item.id}/edit`}
-                title="ویرایش"
-                aria-label={`ویرایش ${item.title}`}
+                title={t('items.detail.edit')}
+                aria-label={`${t('items.detail.edit')} ${item.title}`}
               >
                 <Button
                   variant="secondary"
                   size="sm"
-                  aria-label={`ویرایش ${item.title}`}
+                  aria-label={`${t('items.detail.edit')} ${item.title}`}
                 >
                   <Pencil className="size-4" />
                 </Button>
@@ -158,8 +163,8 @@ export default function ItemDetailPage() {
                 variant="danger"
                 size="sm"
                 onClick={() => void handleDelete()}
-                title="حذف"
-                aria-label={`حذف ${item.title}`}
+                title={t('items.detail.delete')}
+                aria-label={`${t('items.detail.delete')} ${item.title}`}
               >
                 <Trash2 className="size-4" />
               </Button>
@@ -174,14 +179,14 @@ export default function ItemDetailPage() {
             <FileText className="size-5 text-muted-foreground" />
 
             <h2 className="font-semibold text-foreground">
-              اطلاعات اصلی
+              {t('items.detail.mainInfo')}
             </h2>
           </div>
 
           <dl className="space-y-4 text-sm">
             <div>
               <dt className="text-muted-foreground">
-                عنوان
+                {t('items.detail.title')}
               </dt>
 
               <dd className="mt-1 text-foreground">
@@ -191,7 +196,7 @@ export default function ItemDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                Slug
+                {t('items.detail.slug')}
               </dt>
 
               <dd className="mt-1 text-foreground">
@@ -201,19 +206,19 @@ export default function ItemDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                وضعیت نمایش
+                {t('items.detail.visibility')}
               </dt>
 
               <dd className="mt-2">
                 {item.is_visible ? (
                   <Badge variant="success">
                     <Eye className="me-1 size-3.5" />
-                    قابل نمایش
+                    {t('items.detail.visible')}
                   </Badge>
                 ) : (
                   <Badge variant="neutral">
                     <EyeOff className="me-1 size-3.5" />
-                    مخفی
+                    {t('items.detail.hidden')}
                   </Badge>
                 )}
               </dd>
@@ -221,17 +226,17 @@ export default function ItemDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                نوع دسترسی
+                {t('items.detail.accessType')}
               </dt>
 
               <dd className="mt-2">
                 {item.access_type === 'paid' ? (
                   <Badge variant="warning">
-                    پولی
+                    {t('items.detail.paid')}
                   </Badge>
                 ) : (
                   <Badge variant="success">
-                    رایگان
+                    {t('items.detail.free')}
                   </Badge>
                 )}
               </dd>
@@ -239,13 +244,13 @@ export default function ItemDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                قیمت
+                {t('items.detail.price')}
               </dt>
 
               <dd className="mt-1 text-foreground">
                 {item.access_type === 'paid'
-                  ? formatPrice(item.price)
-                  : 'رایگان'}
+                  ? formatPrice(item.price, locale)
+                  : t('items.detail.free')}
               </dd>
             </div>
           </dl>
@@ -256,13 +261,13 @@ export default function ItemDetailPage() {
             <Tag className="size-5 text-muted-foreground" />
 
             <h2 className="font-semibold text-foreground">
-              دسته‌بندی و تگ‌ها
+              {t('items.detail.categoriesAndTags')}
             </h2>
           </div>
 
           <div>
             <p className="text-sm text-muted-foreground">
-              دسته‌بندی‌ها
+              {t('items.detail.categories')}
             </p>
 
             <div className="mt-2 flex flex-wrap gap-2">
@@ -282,7 +287,7 @@ export default function ItemDetailPage() {
 
           <div className="mt-6">
             <p className="text-sm text-muted-foreground">
-              تگ‌ها
+              {t('items.detail.tags')}
             </p>
 
             <div className="mt-2 flex flex-wrap gap-2">
@@ -304,13 +309,13 @@ export default function ItemDetailPage() {
 
       <Card className="p-6">
         <h2 className="mb-4 font-semibold text-foreground">
-          توضیحات
+          {t('items.detail.description')}
         </h2>
 
         <div className="space-y-6 text-sm leading-7 text-foreground">
           <div>
             <p className="mb-2 text-muted-foreground">
-              Description
+              {t('items.detail.description')}
             </p>
 
             <p className="whitespace-pre-wrap">
@@ -320,7 +325,7 @@ export default function ItemDetailPage() {
 
           <div>
             <p className="mb-2 text-muted-foreground">
-              Content
+              {t('items.detail.content')}
             </p>
 
             <p className="whitespace-pre-wrap">

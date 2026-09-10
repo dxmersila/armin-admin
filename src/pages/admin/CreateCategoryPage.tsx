@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FolderPlus } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
@@ -19,6 +20,7 @@ const initialValues: CategoryFormValues = {
 
 export default function CreateCategoryPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [values, setValues] =
     useState<CategoryFormValues>(initialValues)
@@ -50,9 +52,7 @@ export default function CreateCategoryPage() {
         slug: values.slug.trim() || undefined,
       })
 
-      await toast.success(
-        'دسته‌بندی با موفقیت ایجاد شد.',
-      )
+      await toast.success(t('categories.create.success'))
 
       navigate(`/admin/categories/${category.id}`, {
         replace: true,
@@ -66,25 +66,25 @@ export default function CreateCategoryPage() {
     <section className="space-y-6">
       <PageHeader
         icon={FolderPlus}
-        title="ایجاد دسته‌بندی"
-        description="اطلاعات دسته‌بندی جدید را وارد کنید."
+        title={t('categories.create.title')}
+        description={t('categories.create.description')}
         actions={
           <BackButton to="/admin/categories">
-            بازگشت به دسته‌بندی‌ها
+            {t('categories.create.back')}
           </BackButton>
         }
       />
 
       {submitError !== null && (
         <Alert variant="error">
-          ایجاد دسته‌بندی انجام نشد. اطلاعات واردشده را بررسی کنید.
+          {t('categories.create.submitError')}
         </Alert>
       )}
 
       <CategoryForm
         values={values}
         isSubmitting={isSubmitting}
-        submitLabel="ایجاد دسته‌بندی"
+        submitLabel={t('categories.create.submit')}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={() => navigate('/admin/categories')}

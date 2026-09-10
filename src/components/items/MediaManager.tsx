@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ImagePlus,
   LoaderCircle,
@@ -33,6 +34,7 @@ export default function MediaManager({
   onMediaChange,
   onPrimaryChange,
 }: MediaManagerProps) {
+  const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const [media, setMedia] = useState<ItemMedia[]>(initialMedia)
@@ -93,11 +95,11 @@ export default function MediaManager({
         onPrimaryChange?.(nextPrimaryId)
       }
 
-      await toast.success('تصویر با موفقیت اضافه شد.')
+      await toast.success(t('items.media.uploadSuccess'))
     } catch (uploadError) {
       console.error('Media upload failed:', uploadError)
-      setError('آپلود تصویر انجام نشد.')
-      await toast.error('آپلود تصویر انجام نشد.')
+      setError(t('items.media.uploadError'))
+      await toast.error(t('items.media.uploadError'))
     } finally {
       setIsUploading(false)
     }
@@ -141,14 +143,14 @@ export default function MediaManager({
 
       updateMedia(nextMedia)
 
-      await toast.success('تصویر اصلی با موفقیت تغییر کرد.')
+      await toast.success(t('items.media.primarySuccess'))
     } catch (primaryError) {
       console.error(
         'Setting primary media failed:',
         primaryError,
       )
-      setError('تغییر تصویر اصلی انجام نشد.')
-      await toast.error('تغییر تصویر اصلی انجام نشد.')
+      setError(t('items.media.primaryError'))
+      await toast.error(t('items.media.primaryError'))
     } finally {
       setSettingPrimaryMediaId(null)
     }
@@ -156,12 +158,12 @@ export default function MediaManager({
 
   async function handleDelete(mediaItem: ItemMedia) {
     const accepted = await confirm({
-      title: `حذف «${mediaItem.file.name}»؟`,
+      title: t('items.media.deleteTitle', { name: mediaItem.file.name }),
       text: mediaItem.is_primary
-        ? 'این تصویر اصلی است. حذف آن قابل بازگشت نیست.'
-        : 'این عملیات قابل بازگشت نیست.',
-      confirmText: 'حذف',
-      cancelText: 'لغو',
+        ? t('items.media.deletePrimaryWarning')
+        : t('items.media.deleteWarning'),
+      confirmText: t('items.media.delete'),
+      cancelText: t('items.form.cancel'),
       danger: true,
     })
 
@@ -199,11 +201,11 @@ export default function MediaManager({
         onPrimaryChange?.(nextPrimaryId)
       }
 
-      await toast.success('تصویر با موفقیت حذف شد.')
+      await toast.success(t('items.media.deleteSuccess'))
     } catch (deleteError) {
       console.error('Media delete failed:', deleteError)
-      setError('حذف تصویر انجام نشد.')
-      await toast.error('حذف تصویر انجام نشد.')
+      setError(t('items.media.deleteError'))
+      await toast.error(t('items.media.deleteError'))
     } finally {
       setDeletingMediaId(null)
     }
@@ -218,11 +220,11 @@ export default function MediaManager({
     <Card className="space-y-5 p-4 sm:p-6">
       <div>
         <h2 className="font-semibold text-foreground">
-          رسانه‌ها
+          {t('items.media.title')}
         </h2>
 
         <p className="mt-1 text-sm text-muted-foreground">
-          تصاویر محصول را مدیریت کنید.
+          {t('items.media.description')}
         </p>
       </div>
 
@@ -231,11 +233,11 @@ export default function MediaManager({
           <ImagePlus className="mx-auto size-8 text-muted-foreground" />
 
           <p className="mt-3 text-sm font-medium text-foreground">
-            هنوز تصویری اضافه نشده است.
+            {t('items.media.emptyTitle')}
           </p>
 
           <p className="mt-1 text-xs text-muted-foreground">
-            حداکثر حجم هر تصویر ۵ مگابایت است.
+            {t('items.media.emptyDescription')}
           </p>
         </div>
       ) : (
@@ -256,7 +258,7 @@ export default function MediaManager({
                   <div className="absolute start-3 top-3">
                     <Badge variant="success" size="sm">
                       <Star className="me-1 size-3" />
-                      اصلی
+                      {t('items.media.primary')}
                     </Badge>
                   </div>
                 )}
@@ -282,12 +284,12 @@ export default function MediaManager({
                       disabled={primaryChangeDisabled}
                     >
                       <Star className="size-4" />
-                      اصلی کردن
+                      {t('items.media.makePrimary')}
                     </Button>
                   ) : (
                     <div className="flex items-center justify-center rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground">
                       <Star className="me-1 size-3.5" />
-                      تصویر اصلی
+                      {t('items.media.primaryImage')}
                     </div>
                   )}
 
@@ -304,7 +306,7 @@ export default function MediaManager({
                     }
                   >
                     <Trash2 className="size-4" />
-                    حذف
+                    {t('items.media.delete')}
                   </Button>
                 </div>
               </div>
@@ -343,8 +345,8 @@ export default function MediaManager({
           )}
 
           {isUploading
-            ? 'در حال آپلود...'
-            : 'انتخاب تصویر'}
+            ? t('items.media.uploading')
+            : t('items.media.upload')}
         </Button>
       </div>
     </Card>

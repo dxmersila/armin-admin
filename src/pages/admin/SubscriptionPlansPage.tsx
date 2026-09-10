@@ -1,6 +1,8 @@
 import { BadgeCheck, Eye, Pencil, Plus } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import { useCallback, useEffect, useState } from 'react'
+import { useLanguage } from '../../i18n/useLanguage'
 import Badge from '../../components/ui/Badge'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
@@ -19,6 +21,9 @@ import { formatDate, formatPrice } from '../../utils/format'
 import type { PaginatedResponse } from '../../types/item'
 
 export default function SubscriptionPlansPage() {
+  const { locale } = useLanguage()
+  const { t } = useTranslation()
+
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -42,48 +47,48 @@ export default function SubscriptionPlansPage() {
   const columns: TableColumn<AdminSubscriptionPlan>[] = [
     {
       key: 'id',
-      header: 'شناسه',
+      header: t('subscriptionPlans.table.id'),
       render: (plan) => `#${plan.id}`,
     },
     {
       key: 'name',
-      header: 'نام اشتراک',
+      header: t('subscriptionPlans.table.name'),
       render: (plan) => plan.name,
     },
     {
       key: 'duration_months',
-      header: 'مدت',
-      render: (plan) => `${plan.duration_months} ماه`,
+      header: t('subscriptionPlans.table.duration'),
+      render: (plan) => `${plan.duration_months} ${t('subscriptionPlans.table.months')}`,
     },
     {
       key: 'price',
-      header: 'قیمت',
-      render: (plan) => formatPrice(plan.price),
+      header: t('subscriptionPlans.table.price'),
+      render: (plan) => formatPrice(plan.price, locale),
     },
     {
       key: 'is_active',
-      header: 'وضعیت',
+      header: t('subscriptionPlans.table.status'),
       render: (plan) =>
         plan.is_active ? (
           <Badge variant="success">
-            فعال
+            {t('subscriptionPlans.table.active')}
           </Badge>
         ) : (
           <Badge variant="neutral">
-            غیرفعال
+            {t('subscriptionPlans.table.inactive')}
           </Badge>
         ),
     },
     {
       key: 'created_at',
-      header: 'تاریخ ایجاد',
-      render: (plan) => formatDate(plan.created_at),
+      header: t('subscriptionPlans.table.createdAt'),
+      render: (plan) => formatDate(plan.created_at, locale),
     },
     {
       key: 'actions',
       header: (
         <span className="block text-center">
-          عملیات
+          {t('subscriptionPlans.table.actions')}
         </span>
       ),
       className: 'w-24 text-center',
@@ -91,8 +96,8 @@ export default function SubscriptionPlansPage() {
         <div className="flex justify-center gap-1">
           <IconButton
             type="button"
-            title="مشاهده"
-            aria-label={`مشاهده ${plan.name}`}
+            title={t('subscriptionPlans.table.view')}
+            aria-label={`${t('subscriptionPlans.table.view')} ${plan.name}`}
             onClick={() =>
               navigate(`/admin/subscription-plans/${plan.id}`)
             }
@@ -102,8 +107,8 @@ export default function SubscriptionPlansPage() {
 
           <IconButton
             type="button"
-            title="ویرایش"
-            aria-label={`ویرایش ${plan.name}`}
+            title={t('subscriptionPlans.table.edit')}
+            aria-label={`${t('subscriptionPlans.table.edit')} ${plan.name}`}
             onClick={() =>
               navigate(
                 `/admin/subscription-plans/${plan.id}/edit`,
@@ -121,8 +126,8 @@ export default function SubscriptionPlansPage() {
     <section className="space-y-6">
       <PageHeader
         icon={BadgeCheck}
-        title="اشتراک‌ها"
-        description="مدیریت اشتراک‌ها."
+        title={t('subscriptionPlans.title')}
+        description={t('subscriptionPlans.description')}
         actions={
           <Button
             className="w-full sm:w-auto"
@@ -131,14 +136,14 @@ export default function SubscriptionPlansPage() {
             }
           >
             <Plus className="size-4" />
-            افزودن اشتراک
+            {t('subscriptionPlans.add')}
           </Button>
         }
       />
 
       {error !== null && (
         <Alert variant="error">
-          دریافت اشتراک‌ها انجام نشد.
+          {t('subscriptionPlans.feedback.loadError')}
         </Alert>
       )}
 
@@ -152,7 +157,7 @@ export default function SubscriptionPlansPage() {
             columns={columns}
             data={data?.data ?? []}
             getRowKey={(plan) => plan.id}
-            emptyMessage="اشتراکی برای نمایش وجود ندارد."
+            emptyMessage={t('subscriptionPlans.table.empty')}
           />
         )}
 

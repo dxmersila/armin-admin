@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Pencil } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
@@ -31,6 +32,7 @@ function mapPlanToFormValues(
 export default function EditSubscriptionPlanPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [values, setValues] =
     useState<SubscriptionPlanFormValues | null>(null)
@@ -110,9 +112,7 @@ export default function EditSubscriptionPlanPage() {
     )
 
     if (result) {
-      await toast.success(
-        'اشتراک با موفقیت بروزرسانی شد.',
-      )
+      await toast.success(t('subscriptionPlans.edit.success'))
 
       navigate(`/admin/subscription-plans/${result.id}`)
     }
@@ -127,12 +127,12 @@ export default function EditSubscriptionPlanPage() {
       <section className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش اشتراک"
-          description="شناسه اشتراک نامعتبر است."
+          title={t('subscriptionPlans.edit.title')}
+          description={t('subscriptionPlans.edit.invalidId')}
         />
 
         <BackButton to="/admin/subscription-plans">
-          بازگشت به اشتراک‌ها
+          {t('subscriptionPlans.edit.backToSubscriptions')}
         </BackButton>
       </section>
     )
@@ -151,8 +151,8 @@ export default function EditSubscriptionPlanPage() {
       <section className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش اشتراک"
-          description="دریافت اطلاعات اشتراک انجام نشد."
+          title={t('subscriptionPlans.edit.title')}
+          description={t('subscriptionPlans.edit.loadError')}
         />
 
         <div className="flex flex-wrap gap-3">
@@ -160,11 +160,11 @@ export default function EditSubscriptionPlanPage() {
             variant="secondary"
             onClick={() => void loadPlan()}
           >
-            تلاش مجدد
+            {t('common.retry')}
           </Button>
 
           <BackButton to="/admin/subscription-plans">
-            بازگشت
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -175,27 +175,27 @@ export default function EditSubscriptionPlanPage() {
     <section className="space-y-6">
       <PageHeader
         icon={Pencil}
-        title="ویرایش اشتراک"
-        description="اطلاعات اشتراک را ویرایش کنید."
+        title={t('subscriptionPlans.edit.title')}
+        description={t('subscriptionPlans.edit.description')}
         actions={
           <BackButton
             to={`/admin/subscription-plans/${plan.id}`}
           >
-            بازگشت به اشتراک
+            {t('subscriptionPlans.edit.backToSubscription')}
           </BackButton>
         }
       />
 
       {submitError !== null && (
         <Alert variant="error">
-          بروزرسانی اشتراک انجام نشد. اطلاعات واردشده را بررسی کنید.
+          {t('subscriptionPlans.edit.submitError')}
         </Alert>
       )}
 
       <SubscriptionPlanForm
         values={formValues}
         isSubmitting={isSubmitting}
-        submitLabel="ذخیره تغییرات"
+        submitLabel={t('subscriptionPlans.edit.save')}
         onChange={handleChange}
         onSubmit={handleSubmit}
         onCancel={() =>

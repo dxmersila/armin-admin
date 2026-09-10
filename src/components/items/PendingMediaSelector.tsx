@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ImagePlus,
   Star,
@@ -29,6 +30,7 @@ export default function PendingMediaSelector({
   onChange,
   disabled = false,
 }: PendingMediaSelectorProps) {
+  const { t } = useTranslation()
   const inputRef = useRef<HTMLInputElement | null>(null)
   const objectUrlsRef = useRef<Set<string>>(new Set())
   const [error, setError] = useState<string | null>(null)
@@ -69,8 +71,8 @@ export default function PendingMediaSelector({
     if (invalidFile) {
       setError(
         !invalidFile.type.startsWith('image/')
-          ? 'فقط فایل‌های تصویری قابل انتخاب هستند.'
-          : 'حجم هر تصویر باید حداکثر ۵ مگابایت باشد.',
+          ? t('items.media.invalidType')
+          : t('items.media.fileTooLarge'),
       )
 
       return
@@ -141,11 +143,11 @@ export default function PendingMediaSelector({
     <Card className="space-y-5 p-4 sm:p-6">
       <div>
         <h2 className="font-semibold text-foreground">
-          رسانه‌ها
+          {t('items.media.title')}
         </h2>
 
         <p className="mt-1 text-sm text-muted-foreground">
-          تصاویر محصول را انتخاب کنید.
+          {t('items.media.selectionDescription')}
         </p>
       </div>
 
@@ -154,11 +156,11 @@ export default function PendingMediaSelector({
           <ImagePlus className="mx-auto size-8 text-muted-foreground" />
 
           <p className="mt-3 text-sm font-medium text-foreground">
-            هنوز تصویری انتخاب نشده است.
+            {t('items.media.selectionEmptyTitle')}
           </p>
 
           <p className="mt-1 text-xs text-muted-foreground">
-            فقط تصاویر با حجم حداکثر ۵ مگابایت.
+            {t('items.media.selectionEmptyDescription')}
           </p>
         </div>
       ) : (
@@ -179,7 +181,7 @@ export default function PendingMediaSelector({
                   <div className="absolute start-3 top-3">
                     <Badge variant="success" size="sm">
                       <Star className="me-1 size-3" />
-                      اصلی
+                      {t('items.media.primary')}
                     </Badge>
                   </div>
                 )}
@@ -206,8 +208,8 @@ export default function PendingMediaSelector({
                   >
                     <Star className="size-4" />
                     {media.isPrimary
-                      ? 'تصویر اصلی'
-                      : 'اصلی کردن'}
+                      ? t('items.media.primaryImage')
+                      : t('items.media.makePrimary')}
                   </Button>
 
                   <Button
@@ -216,10 +218,10 @@ export default function PendingMediaSelector({
                     size="sm"
                     onClick={() => removeMedia(media.id)}
                     disabled={disabled}
-                    aria-label={`حذف ${media.file.name}`}
+                    aria-label={`${t('items.media.delete')} ${media.file.name}`}
                   >
                     <Trash2 className="size-4" />
-                    حذف
+                    {t('items.media.delete')}
                   </Button>
                 </div>
               </div>
@@ -252,7 +254,7 @@ export default function PendingMediaSelector({
           disabled={disabled}
         >
           <Upload className="size-4" />
-          انتخاب تصاویر
+          {t('items.media.selectImages')}
         </Button>
       </div>
     </Card>

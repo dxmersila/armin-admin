@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Pencil } from 'lucide-react'
 import BackButton from '../../components/ui/BackButton'
 import { useNavigate, useParams } from 'react-router'
@@ -41,6 +42,7 @@ function EditItemForm({
   categories,
 }: EditItemFormProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const [values, setValues] = useState<ItemFormValues>(() =>
     mapItemToFormValues(item),
@@ -112,7 +114,7 @@ function EditItemForm({
     })
 
     if (result) {
-      await toast.success('آیتم با موفقیت بروزرسانی شد.')
+      await toast.success(t('items.edit.success'))
       navigate(`/admin/items/${result.id}`)
     }
   }
@@ -122,7 +124,7 @@ function EditItemForm({
       values={values}
       categories={categories}
       isSubmitting={isSaving}
-      submitLabel="ذخیره تغییرات"
+      submitLabel={t('items.edit.save')}
       onChange={handleChange}
       onSubmit={handleSubmit}
       onCancel={() => navigate(`/admin/items/${item.id}`)}
@@ -141,6 +143,7 @@ function EditItemForm({
 
 export default function EditItemPage() {
   const { id } = useParams()
+  const { t } = useTranslation()
 
   const {
     data: item,
@@ -186,12 +189,12 @@ export default function EditItemPage() {
       <div className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش محصول"
-          description="شناسه آیتم نامعتبر است."
+          title={t('items.edit.title')}
+          description={t('items.edit.invalidId')}
         />
 
         <BackButton to="/admin/items">
-          بازگشت به محصولات
+          {t('items.edit.back')}
         </BackButton>
       </div>
     )
@@ -215,15 +218,15 @@ export default function EditItemPage() {
       <div className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش محصول"
-          description="دریافت اطلاعات آیتم انجام نشد."
+          title={t('items.edit.title')}
+          description={t('items.edit.loadError')}
         />
 
         <Button
           variant="secondary"
           onClick={() => void loadData()}
         >
-          تلاش مجدد
+          {t('items.edit.retry')}
         </Button>
       </div>
     )
@@ -233,11 +236,11 @@ export default function EditItemPage() {
     <div className="space-y-6">
       <PageHeader
         icon={Pencil}
-        title="ویرایش محصول"
-        description="اطلاعات محصول و رسانه‌های آن را ویرایش کنید."
+        title={t('items.edit.title')}
+        description={t('items.edit.description')}
         actions={
           <BackButton to="/admin/items">
-            بازگشت به محصولات
+            {t('items.edit.back')}
           </BackButton>
         }
       />

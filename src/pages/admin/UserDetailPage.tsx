@@ -1,4 +1,6 @@
 import { useCallback, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '../../i18n/useLanguage'
 import {
   CalendarDays,
   Mail,
@@ -20,8 +22,13 @@ import { getAdminUser } from '../../services/userService'
 import type { AdminUser, UserRole } from '../../types/user'
 import { formatDate } from '../../utils/format'
 
-function getRoleLabel(role: UserRole) {
-  return role === 'admin' ? 'مدیر' : 'کاربر'
+function getRoleLabel(
+  role: UserRole,
+  t: (key: string) => string,
+) {
+  return role === 'admin'
+    ? t('users.detail.adminRole')
+    : t('users.detail.userRole')
 }
 
 function getRoleBadgeVariant(
@@ -31,7 +38,10 @@ function getRoleBadgeVariant(
 }
 
 export default function UserDetailPage() {
+  const { locale } = useLanguage()
+
   const { id } = useParams()
+  const { t } = useTranslation()
 
   const {
     data: user,
@@ -70,11 +80,11 @@ export default function UserDetailPage() {
     return (
       <section className="space-y-4">
         <Alert variant="error">
-          شناسه کاربر نامعتبر است.
+          {t('users.detail.invalidId')}
         </Alert>
 
         <BackButton to="/admin/users">
-          بازگشت به کاربران
+          {t('users.detail.backToUsers')}
         </BackButton>
       </section>
     )
@@ -84,7 +94,7 @@ export default function UserDetailPage() {
     return (
       <section className="space-y-4">
         <Alert variant="error">
-          خطا در دریافت اطلاعات کاربر.
+          {t('users.detail.loadError')}
         </Alert>
 
         <div className="flex flex-wrap gap-3">
@@ -92,11 +102,11 @@ export default function UserDetailPage() {
             variant="secondary"
             onClick={() => void loadUser()}
           >
-            تلاش مجدد
+            {t('common.retry')}
           </Button>
 
           <BackButton to="/admin/users">
-            بازگشت
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -112,17 +122,17 @@ export default function UserDetailPage() {
         actions={
           <>
             <BackButton to="/admin/users">
-              بازگشت به کاربران
+              {t('users.detail.backToUsers')}
             </BackButton>
 
             <Link to={`/admin/users/${user.id}/edit`}>
               <Button
                 variant="secondary"
                 size="sm"
-                aria-label={`ویرایش ${user.name}`}
+                aria-label={`${t('common.edit')} ${user.name}`}
               >
                 <Pencil className="size-4" />
-                ویرایش
+                {t('common.edit')}
               </Button>
             </Link>
           </>
@@ -134,7 +144,7 @@ export default function UserDetailPage() {
           <UserIcon className="size-5 text-muted-foreground" />
 
           <h2 className="font-semibold text-foreground">
-            اطلاعات کاربر
+            {t('users.detail.information')}
           </h2>
         </div>
 
@@ -144,7 +154,7 @@ export default function UserDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                نام
+                {t('users.detail.name')}
               </dt>
 
               <dd className="mt-1 text-foreground">
@@ -158,7 +168,7 @@ export default function UserDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                ایمیل
+                {t('users.detail.email')}
               </dt>
 
               <dd className="mt-1 break-all text-foreground">
@@ -172,7 +182,7 @@ export default function UserDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                نقش
+                {t('users.detail.role')}
               </dt>
 
               <dd className="mt-1">
@@ -180,7 +190,7 @@ export default function UserDetailPage() {
                   {user.role === 'admin' ? (
                     <Shield className="size-3.5" />
                   ) : null}
-                  {getRoleLabel(user.role)}
+                  {getRoleLabel(user.role, t)}
                 </Badge>
               </dd>
             </div>
@@ -191,11 +201,11 @@ export default function UserDetailPage() {
 
             <div>
               <dt className="text-muted-foreground">
-                تاریخ عضویت
+                {t('users.detail.joinedAt')}
               </dt>
 
               <dd className="mt-1 text-foreground">
-                {formatDate(user.created_at)}
+                {formatDate(user.created_at, locale)}
               </dd>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeSwitcher from './ThemeSwitcher'
 
@@ -23,9 +24,12 @@ export default function Header({ onMenuClick }: HeaderProps) {
           <Menu className="size-5" />
         </button>
 
-        <h2 className="truncate text-sm font-medium text-muted-foreground">
+        <Link
+          to="/admin/dashboard"
+          className="truncate text-sm font-medium text-muted-foreground transition hover:text-foreground"
+        >
           {t('navigation.dashboard')}
-        </h2>
+        </Link>
       </div>
 
       <div className="flex shrink-0 items-center gap-1">

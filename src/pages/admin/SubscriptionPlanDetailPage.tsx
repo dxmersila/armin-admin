@@ -1,6 +1,8 @@
 import { Pencil, BadgeCheck } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router'
 import { useCallback, useEffect } from 'react'
+import { useLanguage } from '../../i18n/useLanguage'
 import BackButton from '../../components/ui/BackButton'
 import Button from '../../components/ui/Button'
 import Badge from '../../components/ui/Badge'
@@ -16,6 +18,9 @@ import {
 } from '../../utils/format'
 
 export default function SubscriptionPlanDetailPage() {
+  const { locale } = useLanguage()
+  const { t } = useTranslation()
+
   const { id } = useParams()
 
   const {
@@ -60,12 +65,12 @@ export default function SubscriptionPlanDetailPage() {
       <section className="space-y-4">
         <PageHeader
           icon={BadgeCheck}
-          title="جزئیات اشتراک"
-          description="شناسه اشتراک نامعتبر است."
+          title={t('subscriptionPlans.detail.title')}
+          description={t('subscriptionPlans.detail.invalidId')}
         />
 
         <BackButton to="/admin/subscription-plans">
-          بازگشت به اشتراک‌ها
+          {t('subscriptionPlans.detail.backToSubscriptions')}
         </BackButton>
       </section>
     )
@@ -76,8 +81,8 @@ export default function SubscriptionPlanDetailPage() {
       <section className="space-y-4">
         <PageHeader
           icon={BadgeCheck}
-          title="جزئیات اشتراک"
-          description="دریافت اطلاعات اشتراک انجام نشد."
+          title={t('subscriptionPlans.detail.title')}
+          description={t('subscriptionPlans.detail.loadError')}
         />
 
         <div className="flex flex-wrap gap-3">
@@ -85,11 +90,11 @@ export default function SubscriptionPlanDetailPage() {
             variant="secondary"
             onClick={() => void loadPlan()}
           >
-            تلاش مجدد
+            {t('common.retry')}
           </Button>
 
           <BackButton to="/admin/subscription-plans">
-            بازگشت
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -101,11 +106,11 @@ export default function SubscriptionPlanDetailPage() {
       <PageHeader
         icon={BadgeCheck}
         title={plan.name}
-        description={`اشتراک #${plan.id}`}
+        description={`${t('subscriptionPlans.detail.subscription')} #${plan.id}`}
         actions={
           <>
             <BackButton to="/admin/subscription-plans">
-              بازگشت به اشتراک‌ها
+              {t('subscriptionPlans.detail.backToSubscriptions')}
             </BackButton>
 
             <Link
@@ -114,10 +119,10 @@ export default function SubscriptionPlanDetailPage() {
               <Button
                 variant="secondary"
                 size="sm"
-                aria-label={`ویرایش ${plan.name}`}
+                aria-label={`${t('common.edit')} ${plan.name}`}
               >
                 <Pencil className="size-4" />
-                ویرایش
+                {t('common.edit')}
               </Button>
             </Link>
           </>
@@ -129,14 +134,14 @@ export default function SubscriptionPlanDetailPage() {
           <BadgeCheck className="size-5 text-muted-foreground" />
 
           <h2 className="font-semibold text-foreground">
-            اطلاعات اشتراک
+            {t('subscriptionPlans.detail.information')}
           </h2>
         </div>
 
         <dl className="grid gap-5 sm:grid-cols-2">
           <div>
             <dt className="text-sm text-muted-foreground">
-              نام
+              {t('subscriptionPlans.detail.name')}
             </dt>
 
             <dd className="mt-1 font-medium text-foreground">
@@ -146,17 +151,17 @@ export default function SubscriptionPlanDetailPage() {
 
           <div>
             <dt className="text-sm text-muted-foreground">
-              وضعیت
+              {t('subscriptionPlans.detail.status')}
             </dt>
 
             <dd className="mt-2">
               {plan.is_active ? (
                 <Badge variant="success">
-                  فعال
+                  {t('subscriptionPlans.detail.active')}
                 </Badge>
               ) : (
                 <Badge variant="neutral">
-                  غیرفعال
+                  {t('subscriptionPlans.detail.inactive')}
                 </Badge>
               )}
             </dd>
@@ -164,41 +169,41 @@ export default function SubscriptionPlanDetailPage() {
 
           <div>
             <dt className="text-sm text-muted-foreground">
-              مدت
+              {t('subscriptionPlans.detail.duration')}
             </dt>
 
             <dd className="mt-1 font-medium text-foreground">
-              {plan.duration_months} ماه
+              {plan.duration_months} {t('subscriptionPlans.detail.months')}
             </dd>
           </div>
 
           <div>
             <dt className="text-sm text-muted-foreground">
-              قیمت
+              {t('subscriptionPlans.detail.price')}
             </dt>
 
             <dd className="mt-1 font-medium text-foreground">
-              {formatPrice(plan.price)}
+              {formatPrice(plan.price, locale)}
             </dd>
           </div>
 
           <div>
             <dt className="text-sm text-muted-foreground">
-              تاریخ ایجاد
+              {t('subscriptionPlans.detail.createdAt')}
             </dt>
 
             <dd className="mt-1 font-medium text-foreground">
-              {formatDateTime(plan.created_at)}
+              {formatDateTime(plan.created_at, locale)}
             </dd>
           </div>
 
           <div>
             <dt className="text-sm text-muted-foreground">
-              آخرین بروزرسانی
+              {t('subscriptionPlans.detail.updatedAt')}
             </dt>
 
             <dd className="mt-1 font-medium text-foreground">
-              {formatDateTime(plan.updated_at)}
+              {formatDateTime(plan.updated_at, locale)}
             </dd>
           </div>
         </dl>

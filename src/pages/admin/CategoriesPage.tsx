@@ -8,6 +8,7 @@ import {
   Trash2,
 } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
 import IconButton from '../../components/ui/IconButton'
@@ -41,15 +42,6 @@ const emptyFilters: CategoryFilters = {
   sort: 'name',
 }
 
-const sortOptions: Array<{
-  value: CategoryFilters['sort']
-  label: string
-}> = [
-  { value: 'latest', label: 'جدیدترین' },
-  { value: 'oldest', label: 'قدیمی‌ترین' },
-  { value: 'name', label: 'نام' },
-]
-
 interface CategoryActionsProps {
   category: AdminCategory
   onDelete: (category: AdminCategory) => void
@@ -60,14 +52,15 @@ function CategoryActions({
   onDelete,
 }: CategoryActionsProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
     <div className="flex items-center justify-center gap-1">
       <IconButton
         type="button"
         onClick={() => navigate(`/admin/categories/${category.id}`)}
-        title="مشاهده"
-        aria-label={`مشاهده ${category.name}`}
+        title={t('categories.table.view')}
+        aria-label={`${t('categories.table.view')} ${category.name}`}
       >
         <Eye className="size-4" />
       </IconButton>
@@ -77,8 +70,8 @@ function CategoryActions({
         onClick={() =>
           navigate(`/admin/categories/${category.id}/edit`)
         }
-        title="ویرایش"
-        aria-label={`ویرایش ${category.name}`}
+        title={t('categories.table.edit')}
+        aria-label={`${t('categories.table.edit')} ${category.name}`}
       >
         <Pencil className="size-4" />
       </IconButton>
@@ -86,8 +79,8 @@ function CategoryActions({
       <IconButton
         type="button"
         onClick={() => onDelete(category)}
-        title="حذف"
-        aria-label={`حذف ${category.name}`}
+        title={t('categories.table.delete')}
+        aria-label={`${t('categories.table.delete')} ${category.name}`}
         variant="danger"
       >
         <Trash2 className="size-4" />
@@ -105,10 +98,12 @@ function CategoriesTable({
   categories,
   onDelete,
 }: CategoriesTableProps) {
+  const { t } = useTranslation()
+
   const columns: TableColumn<AdminCategory>[] = [
     {
       key: 'name',
-      header: 'نام',
+      header: t('categories.table.name'),
       className: 'w-56 max-w-56',
       render: (category) => (
         <div className="w-56 max-w-full">
@@ -125,7 +120,7 @@ function CategoriesTable({
       key: 'actions',
       header: (
         <span className="block text-center">
-          عملیات
+          {t('categories.table.actions')}
         </span>
       ),
       className: 'w-32 text-center',
@@ -143,13 +138,23 @@ function CategoriesTable({
       columns={columns}
       data={categories}
       getRowKey={(category) => category.id}
-      emptyMessage="دسته‌بندی‌ای برای نمایش وجود ندارد."
+      emptyMessage={t('categories.table.empty')}
     />
   )
 }
 
 export default function CategoriesPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const sortOptions: Array<{
+    value: CategoryFilters['sort']
+    label: string
+  }> = [
+    { value: 'latest', label: t('categories.filters.latest') },
+    { value: 'oldest', label: t('categories.filters.oldest') },
+    { value: 'name', label: t('categories.filters.name') },
+  ]
 
   const [currentPage, setCurrentPage] = useState(1)
   const [filters, setFilters] =
@@ -204,10 +209,10 @@ export default function CategoriesPage() {
 
   async function handleDelete(category: AdminCategory) {
     const accepted = await confirm({
-      title: `حذف «${category.name}»؟`,
-      text: 'این عملیات قابل بازگشت نیست.',
-      confirmText: 'حذف',
-      cancelText: 'لغو',
+      title: t('categories.feedback.deleteTitle', { name: category.name }),
+      text: t('categories.feedback.deleteWarning'),
+      confirmText: t('categories.table.delete'),
+      cancelText: t('common.cancel'),
       danger: true,
     })
 
@@ -219,7 +224,7 @@ export default function CategoriesPage() {
 
     try {
       await deleteAdminCategory(category.id)
-      await toast.success('دسته‌بندی با موفقیت حذف شد.')
+      await toast.success(t('categories.feedback.deleteSuccess'))
 
       const isLastCategoryOnPage =
         data?.data.length === 1 && currentPage > 1
@@ -231,7 +236,7 @@ export default function CategoriesPage() {
 
       await loadCategories(currentPage, appliedFilters)
     } catch {
-      await toast.error('حذف دسته‌بندی انجام نشد.')
+      await toast.error(t('categories.feedback.deleteError'))
     } finally {
       setDeletingCategoryId(null)
     }
@@ -241,15 +246,15 @@ export default function CategoriesPage() {
     <section className="space-y-6">
       <PageHeader
         icon={FolderTree}
-        title="دسته‌بندی‌ها"
-        description="مدیریت دسته‌بندی‌ها"
+        title={t('categories.title')}
+        description={t('categories.description')}
         actions={
           <Button
             className="w-full sm:w-auto"
             onClick={() => navigate('/admin/categories/create')}
           >
             <Plus className="size-4" />
-            افزودن دسته‌بندی
+            {t('categories.add')}
           </Button>
         }
       />
@@ -261,11 +266,11 @@ export default function CategoriesPage() {
 
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                فیلترها
+                {t('categories.filters.title')}
               </h2>
 
               <p className="mt-1 text-sm text-muted-foreground">
-                دسته‌بندی‌ها را بر اساس جستجو و ترتیب نمایش فیلتر کنید.
+                {t('categories.filters.description')}
               </p>
             </div>
           </div>
@@ -273,8 +278,8 @@ export default function CategoriesPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <Input
               id="category-search-filter"
-              label="جستجو"
-              placeholder="نام یا slug دسته‌بندی"
+              label={t('categories.filters.search')}
+              placeholder={t('categories.filters.searchPlaceholder')}
               value={filters.search}
               onChange={(event) =>
                 handleFilterChange(
@@ -286,7 +291,7 @@ export default function CategoriesPage() {
 
             <Select
               id="category-sort-filter"
-              label="مرتب‌سازی"
+              label={t('categories.filters.sort')}
               value={filters.sort}
               onChange={(event) =>
                 handleFilterChange(
@@ -312,14 +317,14 @@ export default function CategoriesPage() {
               variant="secondary"
               onClick={handleClearFilters}
             >
-              پاک کردن
+              {t('categories.filters.clear')}
             </Button>
 
             <Button
               type="button"
               onClick={handleApplyFilters}
             >
-              اعمال فیلتر
+              {t('categories.filters.apply')}
             </Button>
           </div>
         </FilterBar>
@@ -329,7 +334,7 @@ export default function CategoriesPage() {
         {error !== null && (
           <div className="p-4 sm:p-6">
             <Alert variant="error">
-              خطا در دریافت یا حذف دسته‌بندی.
+              {t('categories.feedback.loadError')}
             </Alert>
 
             <div className="mt-3">
@@ -342,15 +347,16 @@ export default function CategoriesPage() {
                   )
                 }
               >
-                تلاش مجدد
+                {t('categories.feedback.retry')}
               </Button>
             </div>
           </div>
         )}
 
         {deletingCategoryId !== null ? (
-          <div className="border-b border-border px-4 py-3 text-sm text-muted-foreground sm:px-6">
-            در حال حذف دسته‌بندی...
+          <div className="flex items-center gap-2 border-b border-border px-4 py-3 text-sm text-muted-foreground sm:px-6">
+            <Spinner size="sm" />
+            <span>{t('categories.feedback.deleting')}</span>
           </div>
         ) : null}
 

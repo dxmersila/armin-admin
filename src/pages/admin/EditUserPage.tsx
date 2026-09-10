@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Pencil } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
@@ -32,14 +33,6 @@ const emptyValues: UserFormValues = {
   role: 'user',
 }
 
-const roleOptions: Array<{
-  value: UserRole
-  label: string
-}> = [
-  { value: 'user', label: 'کاربر' },
-  { value: 'admin', label: 'مدیر' },
-]
-
 function mapUserToFormValues(
   user: AdminUser,
 ): UserFormValues {
@@ -52,6 +45,15 @@ function mapUserToFormValues(
 export default function EditUserPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const roleOptions: Array<{
+    value: UserRole
+    label: string
+  }> = [
+    { value: 'user', label: t('users.edit.userRole') },
+    { value: 'admin', label: t('users.edit.adminRole') },
+  ]
 
   const [values, setValues] =
     useState<UserFormValues | null>(null)
@@ -122,9 +124,7 @@ export default function EditUserPage() {
     )
 
     if (result) {
-      await toast.success(
-        'کاربر با موفقیت بروزرسانی شد.',
-      )
+      await toast.success(t('users.edit.success'))
 
       navigate(`/admin/users/${result.id}`)
     }
@@ -139,12 +139,12 @@ export default function EditUserPage() {
       <section className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش کاربر"
-          description="شناسه کاربر نامعتبر است."
+          title={t('users.edit.title')}
+          description={t('users.edit.invalidId')}
         />
 
         <BackButton to="/admin/users">
-          بازگشت به کاربران
+          {t('users.edit.backToUsers')}
         </BackButton>
       </section>
     )
@@ -163,8 +163,8 @@ export default function EditUserPage() {
       <section className="space-y-4">
         <PageHeader
           icon={Pencil}
-          title="ویرایش کاربر"
-          description="دریافت اطلاعات کاربر انجام نشد."
+          title={t('users.edit.title')}
+          description={t('users.edit.loadError')}
         />
 
         <div className="flex flex-wrap gap-3">
@@ -172,11 +172,11 @@ export default function EditUserPage() {
             variant="secondary"
             onClick={() => void loadUser()}
           >
-            تلاش مجدد
+            {t('common.retry')}
           </Button>
 
           <BackButton to="/admin/users">
-            بازگشت
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -187,18 +187,18 @@ export default function EditUserPage() {
     <section className="space-y-6">
       <PageHeader
         icon={Pencil}
-        title="ویرایش کاربر"
-        description="اطلاعات کاربر را ویرایش کنید."
+        title={t('users.edit.title')}
+        description={t('users.edit.description')}
         actions={
           <BackButton to={`/admin/users/${user.id}`}>
-            بازگشت به کاربر
+            {t('users.edit.backToUser')}
           </BackButton>
         }
       />
 
       {submitError !== null && (
         <Alert variant="error">
-          بروزرسانی کاربر انجام نشد. اطلاعات واردشده را بررسی کنید.
+          {t('users.edit.submitError')}
         </Alert>
       )}
 
@@ -210,7 +210,7 @@ export default function EditUserPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <Input
               id="user-name"
-              label="نام"
+              label={t('users.edit.name')}
               value={formValues.name}
               onChange={(event) =>
                 handleChange('name', event.target.value)
@@ -220,14 +220,14 @@ export default function EditUserPage() {
 
             <Input
               id="user-email"
-              label="ایمیل"
+              label={t('users.edit.email')}
               value={user.email}
               disabled
             />
 
             <Select
               id="user-role"
-              label="نقش"
+              label={t('users.edit.role')}
               value={formValues.role}
               onChange={(event) =>
                 handleChange(
@@ -256,14 +256,14 @@ export default function EditUserPage() {
               }
               disabled={isSubmitting}
             >
-              انصراف
+              {t('users.edit.cancel')}
             </Button>
 
             <Button
               type="submit"
               loading={isSubmitting}
             >
-              ذخیره تغییرات
+              {t('users.edit.save')}
             </Button>
           </div>
         </form>

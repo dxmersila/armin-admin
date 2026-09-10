@@ -28,6 +28,7 @@ import type {
 } from '../../types/user'
 import type { PaginatedResponse } from '../../types/item'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 interface UserFilters {
   search: string
@@ -41,25 +42,13 @@ const emptyFilters: UserFilters = {
   sort: 'latest',
 }
 
-const roleOptions: Array<{
-  value: UserRole
-  label: string
-}> = [
-  { value: 'user', label: 'کاربر' },
-  { value: 'admin', label: 'مدیر' },
-]
-
-const sortOptions: Array<{
-  value: UserFilters['sort']
-  label: string
-}> = [
-  { value: 'latest', label: 'جدیدترین' },
-  { value: 'oldest', label: 'قدیمی‌ترین' },
-  { value: 'name', label: 'نام' },
-]
-
-function getRoleLabel(role: UserRole) {
-  return role === 'admin' ? 'مدیر' : 'کاربر'
+function getRoleLabel(
+  role: UserRole,
+  t: (key: string) => string,
+) {
+  return role === 'admin'
+    ? t('users.table.adminRole')
+    : t('users.table.userRole')
 }
 
 function getRoleBadgeVariant(
@@ -74,14 +63,15 @@ interface UserActionsProps {
 
 function UserActions({ user }: UserActionsProps) {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
     <div className="flex items-center justify-center gap-1">
       <IconButton
         type="button"
         onClick={() => navigate(`/admin/users/${user.id}`)}
-        title="مشاهده"
-        aria-label={`مشاهده ${user.name}`}
+        title={t('common.view')}
+        aria-label={`${t('common.view')} ${user.name}`}
       >
         <Eye className="size-4" />
       </IconButton>
@@ -91,8 +81,8 @@ function UserActions({ user }: UserActionsProps) {
         onClick={() =>
           navigate(`/admin/users/${user.id}/edit`)
         }
-        title="ویرایش"
-        aria-label={`ویرایش ${user.name}`}
+        title={t('common.edit')}
+        aria-label={`${t('common.edit')} ${user.name}`}
       >
         <Pencil className="size-4" />
       </IconButton>
@@ -105,10 +95,12 @@ interface UsersTableProps {
 }
 
 function UsersTable({ users }: UsersTableProps) {
+  const { t } = useTranslation()
+
   const columns: TableColumn<AdminUser>[] = [
     {
       key: 'name',
-      header: 'نام',
+      header: t('users.table.name'),
       className: 'w-52 max-w-52',
       render: (user) => (
         <div className="w-52 max-w-full">
@@ -123,7 +115,7 @@ function UsersTable({ users }: UsersTableProps) {
     },
     {
       key: 'email',
-      header: 'ایمیل',
+      header: t('users.table.email'),
       className: 'min-w-56',
       render: (user) => (
         <span
@@ -136,14 +128,14 @@ function UsersTable({ users }: UsersTableProps) {
     },
     {
       key: 'role',
-      header: 'نقش',
+      header: t('users.table.role'),
       className: 'w-28',
       render: (user) => (
         <Badge variant={getRoleBadgeVariant(user.role)}>
           {user.role === 'admin' ? (
             <Shield className="size-3.5" />
           ) : null}
-          {getRoleLabel(user.role)}
+          {getRoleLabel(user.role, t)}
         </Badge>
       ),
     },
@@ -151,7 +143,7 @@ function UsersTable({ users }: UsersTableProps) {
       key: 'actions',
       header: (
         <span className="block text-center">
-          عملیات
+          {t('users.table.actions')}
         </span>
       ),
       className: 'w-24 text-center',
@@ -164,12 +156,31 @@ function UsersTable({ users }: UsersTableProps) {
       columns={columns}
       data={users}
       getRowKey={(user) => user.id}
-      emptyMessage="کاربری برای نمایش وجود ندارد."
+      emptyMessage={t('users.table.empty')}
     />
   )
 }
 
 export default function UsersPage() {
+  const { t } = useTranslation()
+
+  const roleOptions: Array<{
+    value: UserRole
+    label: string
+  }> = [
+    { value: 'user', label: t('users.table.userRole') },
+    { value: 'admin', label: t('users.table.adminRole') },
+  ]
+
+  const sortOptions: Array<{
+    value: UserFilters['sort']
+    label: string
+  }> = [
+    { value: 'latest', label: t('users.filters.latest') },
+    { value: 'oldest', label: t('users.filters.oldest') },
+    { value: 'name', label: t('users.filters.name') },
+  ]
+
   const [currentPage, setCurrentPage] = useState(1)
   const [filters, setFilters] =
     useState<UserFilters>(emptyFilters)
@@ -224,8 +235,8 @@ export default function UsersPage() {
     <section className="space-y-6">
       <PageHeader
         icon={UsersIcon}
-        title="کاربران"
-        description="مدیریت کاربران و نقش‌های دسترسی."
+        title={t('users.title')}
+        description={t('users.description')}
       />
 
       <Card className="p-4 sm:p-6">
@@ -235,11 +246,11 @@ export default function UsersPage() {
 
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                فیلترها
+                {t('users.filters.title')}
               </h2>
 
               <p className="mt-1 text-sm text-muted-foreground">
-                کاربران را بر اساس نام، ایمیل، نقش و ترتیب نمایش فیلتر کنید.
+                {t('users.filters.description')}
               </p>
             </div>
           </div>
@@ -247,8 +258,8 @@ export default function UsersPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <Input
               id="user-search-filter"
-              label="جستجو"
-              placeholder="نام یا ایمیل کاربر"
+              label={t('common.search')}
+              placeholder={t('users.filters.searchPlaceholder')}
               value={filters.search}
               onChange={(event) =>
                 handleFilterChange(
@@ -260,7 +271,7 @@ export default function UsersPage() {
 
             <Select
               id="user-role-filter"
-              label="نقش"
+              label={t('users.filters.role')}
               value={filters.role}
               onChange={(event) =>
                 handleFilterChange(
@@ -269,7 +280,7 @@ export default function UsersPage() {
                 )
               }
             >
-              <option value="">همه نقش‌ها</option>
+              <option value="">{t('users.filters.allRoles')}</option>
 
               {roleOptions.map((option) => (
                 <option
@@ -283,7 +294,7 @@ export default function UsersPage() {
 
             <Select
               id="user-sort-filter"
-              label="مرتب‌سازی"
+              label={t('users.filters.sort')}
               value={filters.sort}
               onChange={(event) =>
                 handleFilterChange(
@@ -309,14 +320,14 @@ export default function UsersPage() {
               variant="secondary"
               onClick={handleClearFilters}
             >
-              پاک کردن
+              {t('common.clear')}
             </Button>
 
             <Button
               type="button"
               onClick={handleApplyFilters}
             >
-              اعمال فیلتر
+              {t('common.apply')}
             </Button>
           </div>
         </FilterBar>
@@ -324,7 +335,7 @@ export default function UsersPage() {
 
       {error !== null && (
         <Alert variant="error">
-          دریافت کاربران انجام نشد.
+          {t('users.feedback.loadError')}
         </Alert>
       )}
 

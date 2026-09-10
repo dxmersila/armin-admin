@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Eye, Filter, ShoppingCart } from 'lucide-react'
 import { useNavigate } from 'react-router'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '../../i18n/useLanguage'
 import Alert from '../../components/ui/feedback/Alert'
 import Button from '../../components/ui/Button'
 import IconButton from '../../components/ui/IconButton'
@@ -20,8 +22,8 @@ import type {
   PaymentStatus,
 } from '../../types/order'
 import {
-  getOrderStatusLabel,
-  getOrderTypeLabel,
+  getOrderStatusLabelKey,
+  getOrderTypeLabelKey,
 } from '../../utils/orderLabels'
 import type { PaginatedResponse } from '../../types/item'
 import { formatDate, formatPrice } from '../../utils/format'
@@ -38,27 +40,30 @@ const emptyFilters: OrderFilters = {
   payment_status: '',
 }
 
-const orderStatusOptions: Array<{
-  value: OrderStatus
-  label: string
-}> = [
-  { value: 'pending', label: 'در انتظار پرداخت' },
-  { value: 'paid', label: 'پرداخت شده' },
-  { value: 'failed', label: 'ناموفق' },
-  { value: 'cancelled', label: 'لغو شده' },
-]
-
-const paymentStatusOptions: Array<{
-  value: PaymentStatus
-  label: string
-}> = [
-  { value: 'pending', label: 'در انتظار' },
-  { value: 'paid', label: 'پرداخت شده' },
-  { value: 'failed', label: 'ناموفق' },
-]
-
 export default function OrdersPage() {
+  const { locale } = useLanguage()
+
   const navigate = useNavigate()
+  const { t } = useTranslation()
+
+  const orderStatusOptions: Array<{
+    value: OrderStatus
+    label: string
+  }> = [
+    { value: 'pending', label: t('orders.status.pending') },
+    { value: 'paid', label: t('orders.status.paid') },
+    { value: 'failed', label: t('orders.status.failed') },
+    { value: 'cancelled', label: t('orders.status.cancelled') },
+  ]
+
+  const paymentStatusOptions: Array<{
+    value: PaymentStatus
+    label: string
+  }> = [
+    { value: 'pending', label: t('orders.paymentStatus.pending') },
+    { value: 'paid', label: t('orders.paymentStatus.paid') },
+    { value: 'failed', label: t('orders.paymentStatus.failed') },
+  ]
 
   const [currentPage, setCurrentPage] = useState(1)
   const [filters, setFilters] =
@@ -117,8 +122,8 @@ export default function OrdersPage() {
     <section className="space-y-6">
       <PageHeader
         icon={ShoppingCart}
-        title="سفارش‌ها"
-        description="مدیریت و مشاهده سفارش‌های کاربران."
+        title={t('orders.title')}
+        description={t('orders.description')}
       />
 
       <Card className="p-4 sm:p-6">
@@ -128,11 +133,11 @@ export default function OrdersPage() {
 
             <div>
               <h2 className="text-lg font-semibold text-foreground">
-                فیلترها
+                {t('orders.filters.title')}
               </h2>
 
               <p className="mt-1 text-sm text-muted-foreground">
-                سفارش‌ها را بر اساس وضعیت، کاربر و وضعیت پرداخت فیلتر کنید.
+                {t('orders.filters.description')}
               </p>
             </div>
           </div>
@@ -140,7 +145,7 @@ export default function OrdersPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <Select
               id="order-status-filter"
-              label="وضعیت سفارش"
+              label={t('orders.filters.orderStatus')}
               value={filters.status}
               onChange={(event) =>
                 handleFilterChange(
@@ -149,7 +154,7 @@ export default function OrdersPage() {
                 )
               }
             >
-              <option value="">همه وضعیت‌ها</option>
+              <option value="">{t('orders.filters.allStatuses')}</option>
 
               {orderStatusOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -160,11 +165,11 @@ export default function OrdersPage() {
 
             <Input
               id="order-user-id-filter"
-              label="شناسه کاربر"
+              label={t('orders.filters.userId')}
               type="number"
               min={1}
               inputMode="numeric"
-              placeholder="مثلاً 12"
+              placeholder={t('orders.filters.userIdPlaceholder')}
               value={filters.user_id}
               onChange={(event) =>
                 handleFilterChange('user_id', event.target.value)
@@ -173,7 +178,7 @@ export default function OrdersPage() {
 
             <Select
               id="order-payment-status-filter"
-              label="وضعیت پرداخت"
+              label={t('orders.filters.paymentStatus')}
               value={filters.payment_status}
               onChange={(event) =>
                 handleFilterChange(
@@ -182,7 +187,7 @@ export default function OrdersPage() {
                 )
               }
             >
-              <option value="">همه وضعیت‌های پرداخت</option>
+              <option value="">{t('orders.filters.allPaymentStatuses')}</option>
 
               {paymentStatusOptions.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -198,14 +203,14 @@ export default function OrdersPage() {
               variant="secondary"
               onClick={handleClearFilters}
             >
-              پاک کردن
+              {t('common.clear')}
             </Button>
 
             <Button
               type="button"
               onClick={handleApplyFilters}
             >
-              اعمال فیلتر
+              {t('common.apply')}
             </Button>
           </div>
         </FilterBar>
@@ -213,7 +218,7 @@ export default function OrdersPage() {
 
       {error !== null && (
         <Alert variant="error">
-          دریافت سفارش‌ها انجام نشد.
+          {t('orders.feedback.loadError')}
         </Alert>
       )}
 
@@ -227,44 +232,44 @@ export default function OrdersPage() {
             columns={[
               {
                 key: 'id',
-                header: 'شناسه',
+                header: t('orders.table.id'),
                 render: (order) => `#${order.id}`,
               },
               {
                 key: 'user',
-                header: 'کاربر',
+                header: t('orders.table.user'),
                 render: (order) =>
-                  order.user?.name ?? `کاربر #${order.user_id}`,
+                  order.user?.name ?? t('orders.table.userFallback', { id: order.user_id }),
               },
               {
                 key: 'type',
-                header: 'نوع',
+                header: t('orders.table.type'),
                 render: (order) =>
-                  getOrderTypeLabel(order.type),
+                  t(getOrderTypeLabelKey(order.type)),
               },
               {
                 key: 'status',
-                header: 'وضعیت',
+                header: t('orders.table.status'),
                 render: (order) =>
-                  getOrderStatusLabel(order.status),
+                  t(getOrderStatusLabelKey(order.status)),
               },
               {
                 key: 'total_price',
-                header: 'مبلغ',
+                header: t('orders.table.amount'),
                 render: (order) =>
-                  formatPrice(order.total_price),
+                  formatPrice(order.total_price, locale),
               },
               {
                 key: 'created_at',
-                header: 'تاریخ',
+                header: t('orders.table.date'),
                 render: (order) =>
-                  formatDate(order.created_at),
+                  formatDate(order.created_at, locale),
               },
               {
                 key: 'actions',
                 header: (
                   <span className="block text-center">
-                    عملیات
+                    {t('orders.table.actions')}
                   </span>
                 ),
                 className: 'w-24 text-center',
@@ -275,8 +280,8 @@ export default function OrdersPage() {
                       onClick={() =>
                         navigate(`/admin/orders/${order.id}`)
                       }
-                      title="مشاهده"
-                      aria-label={`مشاهده سفارش #${order.id}`}
+                      title={t('common.view')}
+                      aria-label={`${t('common.view')} order #${order.id}`}
                     >
                       <Eye className="size-4" />
                     </IconButton>
@@ -286,7 +291,7 @@ export default function OrdersPage() {
             ]}
             data={data?.data ?? []}
             getRowKey={(order) => order.id}
-            emptyMessage="سفارشی برای نمایش وجود ندارد."
+            emptyMessage={t('orders.table.empty')}
           />
         )}
 

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink, useNavigate } from 'react-router'
 import { useAuth } from '../../auth/useAuth'
+import Spinner from '../ui/feedback/Spinner'
 
 import { adminNavigation } from './navigation'
 
@@ -116,8 +117,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="flex w-full items-center justify-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-foreground transition hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"
           >
             <LogOut className="size-4" />
+
+            {isLoggingOut && <Spinner size="sm" />}
+
             <span>
-              {isLoggingOut ? t('common.loading') : t('common.logout')}
+              {t('common.logout')}
             </span>
           </button>
         </div>

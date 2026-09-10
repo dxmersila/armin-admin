@@ -1,4 +1,5 @@
 import { useState, type KeyboardEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
 
 interface TagInputProps {
@@ -14,12 +15,15 @@ interface TagInputProps {
 export default function TagInput({
   value,
   onChange,
-  label = 'برچسب‌ها',
-  placeholder = 'برچسب را وارد کنید...',
+  label,
+  placeholder,
   error,
   hint,
   disabled = false,
 }: TagInputProps) {
+  const { t } = useTranslation()
+  const resolvedLabel = label ?? t('tags.label')
+  const resolvedPlaceholder = placeholder ?? t('tags.placeholder')
   const [inputValue, setInputValue] = useState('')
 
   function addTag() {
@@ -57,9 +61,9 @@ export default function TagInput({
 
   return (
     <div className="w-full">
-      {label && (
+      {resolvedLabel && (
         <label className="mb-1.5 block text-sm font-medium text-foreground">
-          {label}
+          {resolvedLabel}
         </label>
       )}
 
@@ -84,7 +88,7 @@ export default function TagInput({
                   type="button"
                   onClick={() => removeTag(tag)}
                   disabled={disabled}
-                  aria-label={`حذف ${tag}`}
+                  aria-label={`${t('tags.remove')} ${tag}`}
                   className="rounded-full p-0.5 text-muted-foreground transition hover:bg-surface hover:text-foreground disabled:pointer-events-none"
                 >
                   <X className="size-3.5" />
@@ -99,7 +103,7 @@ export default function TagInput({
           value={inputValue}
           onChange={(event) => setInputValue(event.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           disabled={disabled}
           className="block w-full border-0 bg-transparent px-2 py-1 text-sm text-foreground outline-none placeholder:text-muted-foreground"
         />

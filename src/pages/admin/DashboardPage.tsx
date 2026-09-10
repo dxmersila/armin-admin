@@ -76,14 +76,14 @@ export default function DashboardPage() {
       {error !== null && (
         <div className="space-y-3">
           <Alert variant="error">
-            خطا در دریافت اطلاعات داشبورد.
+            {t('dashboard.loadError')}
           </Alert>
 
           <Button
             variant="secondary"
             onClick={() => void loadDashboard()}
           >
-            تلاش مجدد
+            {t('dashboard.retry')}
           </Button>
         </div>
       )}
@@ -96,19 +96,19 @@ export default function DashboardPage() {
         ) : (
           <>
             <DashboardCard
-              title="کاربران"
+              title={t('dashboard.users')}
               value={stats?.users_count ?? 0}
               icon={Users}
             />
 
             <DashboardCard
-              title="محصولات"
+              title={t('dashboard.items')}
               value={stats?.items_count ?? 0}
               icon={Package}
             />
 
             <DashboardCard
-              title="دسته‌بندی‌ها"
+              title={t('dashboard.categories')}
               value={stats?.categories_count ?? 0}
               icon={FolderKanban}
             />
