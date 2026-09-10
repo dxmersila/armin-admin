@@ -2,7 +2,6 @@ import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   ImagePlus,
-  LoaderCircle,
   Star,
   Trash2,
   Upload,
@@ -338,11 +337,7 @@ export default function MediaManager({
           disabled={isUploading}
           loading={isUploading}
         >
-          {isUploading ? (
-            <LoaderCircle className="size-4 animate-spin" />
-          ) : (
-            <Upload className="size-4" />
-          )}
+          <Upload className="size-4" />
 
           {isUploading
             ? t('items.media.uploading')
