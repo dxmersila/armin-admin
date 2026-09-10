@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router'
 import Alert from '../../components/ui/feedback/Alert'
 import BackButton from '../../components/ui/BackButton'
 import Button from '../../components/ui/Button'
+import FormActions from '../../components/ui/FormActions'
 import PageHeader from '../../components/ui/PageHeader'
 import Card from '../../components/ui/Card'
 import Input from '../../components/ui/Input'
@@ -247,25 +248,12 @@ export default function EditUserPage() {
             </Select>
           </div>
 
-          <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() =>
-                navigate(`/admin/users/${user.id}`)
-              }
-              disabled={isSubmitting}
-            >
-              {t('users.edit.cancel')}
-            </Button>
-
-            <Button
-              type="submit"
-              loading={isSubmitting}
-            >
-              {t('users.edit.save')}
-            </Button>
-          </div>
+          <FormActions
+            cancelLabel={t('users.edit.cancel')}
+            submitLabel={t('users.edit.save')}
+            onCancel={() => navigate(`/admin/users/${user.id}`)}
+            isSubmitting={isSubmitting}
+          />
         </form>
       </Card>
     </section>

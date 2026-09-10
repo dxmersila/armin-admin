@@ -1,6 +1,6 @@
 import type { FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
-import Button from '../ui/Button'
+import FormActions from '../ui/FormActions'
 import Card from '../ui/Card'
 import Input from '../ui/Input'
 import type { SubscriptionPlanFormValues } from '../../types/subscriptionPlan'
@@ -98,23 +98,12 @@ export default function SubscriptionPlanForm({
         </label>
       </Card>
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCancel}
-          disabled={isSubmitting}
-        >
-          {t('subscriptionPlans.form.cancel')}
-        </Button>
-
-        <Button
-          type="submit"
-          loading={isSubmitting}
-        >
-          {submitLabel}
-        </Button>
-      </div>
+      <FormActions
+        cancelLabel={t('subscriptionPlans.form.cancel')}
+        submitLabel={submitLabel}
+        onCancel={onCancel}
+        isSubmitting={isSubmitting}
+      />
     </form>
   )
 }

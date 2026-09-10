@@ -1,6 +1,6 @@
 import type { FormEvent, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import Button from '../ui/Button'
+import FormActions from '../ui/FormActions'
 import Card from '../ui/Card'
 import Input from '../ui/Input'
 import Select from '../ui/Select'
@@ -195,23 +195,12 @@ export default function ItemForm({
 
       {mediaSection}
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCancel}
-          disabled={isSubmitting}
-        >
-          {t('items.form.cancel')}
-        </Button>
-
-        <Button
-          type="submit"
-          loading={isSubmitting}
-        >
-          {submitLabel}
-        </Button>
-      </div>
+      <FormActions
+        cancelLabel={t('items.form.cancel')}
+        submitLabel={submitLabel}
+        onCancel={onCancel}
+        isSubmitting={isSubmitting}
+      />
     </form>
   )
 }
