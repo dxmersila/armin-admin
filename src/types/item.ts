@@ -12,8 +12,6 @@ export interface ItemTag {
   slug: string
 }
 
-export type ItemMedia = AdminMedia
-
 export interface AdminItem {
   id: number
   title: string
@@ -25,7 +23,7 @@ export interface AdminItem {
   price: number | null
   categories: ItemCategory[]
   tags: ItemTag[]
-  media: ItemMedia[]
+  media: AdminMedia[]
 }
 
 export interface PaginationMeta {

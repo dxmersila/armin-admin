@@ -1,4 +1,6 @@
+import type { UserRole } from './user'
 import type { AdminItem } from './item'
+import type { AdminSubscriptionPlan } from './subscriptionPlan'
 
 export type OrderStatus =
   | 'pending'
@@ -19,7 +21,7 @@ export interface OrderUser {
   id: number
   name: string
   email: string
-  role: string
+  role: UserRole
 }
 
 export interface OrderItem {
@@ -37,16 +39,6 @@ export interface OrderPayment {
   created_at: string
 }
 
-export interface SubscriptionPlan {
-  id: number
-  name: string
-  duration_months: number
-  price: number
-  is_active: boolean
-  created_at: string
-  updated_at: string
-}
-
 export interface AdminOrder {
   id: number
   user_id: number
@@ -55,7 +47,7 @@ export interface AdminOrder {
   total_price: number
   user?: OrderUser
   items?: OrderItem[]
-  subscription_plan?: SubscriptionPlan | null
+  subscription_plan?: AdminSubscriptionPlan | null
   payments?: OrderPayment[]
   created_at: string
   updated_at: string

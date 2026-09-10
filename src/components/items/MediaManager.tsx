@@ -11,7 +11,7 @@ import Card from '../ui/Card'
 import Badge from '../ui/Badge'
 import { confirm } from '../ui/feedback/confirm'
 import { toast } from '../ui/feedback/toast'
-import type { ItemMedia } from '../../types/item'
+import type { AdminMedia } from '../../types/media'
 import {
   deleteAdminMedia,
   setAdminMediaPrimary,
@@ -20,9 +20,9 @@ import {
 
 interface MediaManagerProps {
   itemId: number
-  media: ItemMedia[]
+  media: AdminMedia[]
   deferPrimaryChange?: boolean
-  onMediaChange?: (media: ItemMedia[]) => void
+  onMediaChange?: (media: AdminMedia[]) => void
   onPrimaryChange?: (mediaId: number | null) => void
 }
 
@@ -36,19 +36,19 @@ export default function MediaManager({
   const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-  const [media, setMedia] = useState<ItemMedia[]>(initialMedia)
+  const [media, setMedia] = useState<AdminMedia[]>(initialMedia)
   const [isUploading, setIsUploading] = useState(false)
   const [deletingMediaId, setDeletingMediaId] = useState<number | null>(null)
   const [settingPrimaryMediaId, setSettingPrimaryMediaId] =
     useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  function updateMedia(nextMedia: ItemMedia[]) {
+  function updateMedia(nextMedia: AdminMedia[]) {
     setMedia(nextMedia)
     onMediaChange?.(nextMedia)
   }
 
-  function getPrimaryMediaId(items: ItemMedia[]) {
+  function getPrimaryMediaId(items: AdminMedia[]) {
     return (
       items.find((item) => item.is_primary)?.id ?? null
     )
@@ -104,7 +104,7 @@ export default function MediaManager({
     }
   }
 
-  async function handleSetPrimary(mediaItem: ItemMedia) {
+  async function handleSetPrimary(mediaItem: AdminMedia) {
     if (mediaItem.is_primary) {
       return
     }
@@ -155,7 +155,7 @@ export default function MediaManager({
     }
   }
 
-  async function handleDelete(mediaItem: ItemMedia) {
+  async function handleDelete(mediaItem: AdminMedia) {
     const accepted = await confirm({
       title: t('items.media.deleteTitle', { name: mediaItem.file.name }),
       text: mediaItem.is_primary
