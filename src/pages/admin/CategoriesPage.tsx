@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   Eye,
-  Filter,
   FolderTree,
   Pencil,
   Plus,
@@ -14,7 +13,7 @@ import Button from '../../components/ui/Button'
 import IconButton from '../../components/ui/IconButton'
 import Card from '../../components/ui/Card'
 import PageHeader from '../../components/ui/PageHeader'
-import FilterBar from '../../components/ui/FilterBar'
+import CollapsibleFilterBar from '../../components/ui/CollapsibleFilterBar'
 import Input from '../../components/ui/Input'
 import Pagination from '../../components/ui/Pagination'
 import Select from '../../components/ui/Select'
@@ -259,21 +258,10 @@ export default function CategoriesPage() {
         }
       />
 
-      <Card className="p-4 sm:p-6">
-        <FilterBar>
-          <div className="flex items-center gap-2">
-            <Filter className="size-5 text-muted-foreground" />
-
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">
-                {t('categories.filters.title')}
-              </h2>
-
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t('categories.filters.description')}
-              </p>
-            </div>
-          </div>
+      <CollapsibleFilterBar
+        title={t('categories.filters.title')}
+        description={t('categories.filters.description')}
+      >
 
           <div className="grid gap-4 md:grid-cols-2">
             <Input
@@ -327,8 +315,7 @@ export default function CategoriesPage() {
               {t('categories.filters.apply')}
             </Button>
           </div>
-        </FilterBar>
-      </Card>
+      </CollapsibleFilterBar>
 
       <Card className="overflow-hidden">
         {error !== null && (

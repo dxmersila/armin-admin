@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   Eye,
-  Filter,
   Pencil,
   Shield,
   Users as UsersIcon,
@@ -12,7 +11,7 @@ import Button from '../../components/ui/Button'
 import IconButton from '../../components/ui/IconButton'
 import Card from '../../components/ui/Card'
 import PageHeader from '../../components/ui/PageHeader'
-import FilterBar from '../../components/ui/FilterBar'
+import CollapsibleFilterBar from '../../components/ui/CollapsibleFilterBar'
 import Input from '../../components/ui/Input'
 import Pagination from '../../components/ui/Pagination'
 import Select from '../../components/ui/Select'
@@ -239,21 +238,10 @@ export default function UsersPage() {
         description={t('users.description')}
       />
 
-      <Card className="p-4 sm:p-6">
-        <FilterBar>
-          <div className="flex items-center gap-2">
-            <Filter className="size-5 text-muted-foreground" />
-
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">
-                {t('users.filters.title')}
-              </h2>
-
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t('users.filters.description')}
-              </p>
-            </div>
-          </div>
+      <CollapsibleFilterBar
+        title={t('users.filters.title')}
+        description={t('users.filters.description')}
+      >
 
           <div className="grid gap-4 md:grid-cols-3">
             <Input
@@ -330,8 +318,7 @@ export default function UsersPage() {
               {t('common.apply')}
             </Button>
           </div>
-        </FilterBar>
-      </Card>
+      </CollapsibleFilterBar>
 
       {error !== null && (
         <Alert variant="error">

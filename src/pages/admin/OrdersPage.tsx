@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Eye, Filter, ShoppingCart } from 'lucide-react'
+import { Eye, ShoppingCart } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useLanguage } from '../../i18n/useLanguage'
@@ -8,7 +8,7 @@ import Button from '../../components/ui/Button'
 import IconButton from '../../components/ui/IconButton'
 import Card from '../../components/ui/Card'
 import PageHeader from '../../components/ui/PageHeader'
-import FilterBar from '../../components/ui/FilterBar'
+import CollapsibleFilterBar from '../../components/ui/CollapsibleFilterBar'
 import Input from '../../components/ui/Input'
 import Pagination from '../../components/ui/Pagination'
 import Select from '../../components/ui/Select'
@@ -126,21 +126,10 @@ export default function OrdersPage() {
         description={t('orders.description')}
       />
 
-      <Card className="p-4 sm:p-6">
-        <FilterBar>
-          <div className="flex items-center gap-2">
-            <Filter className="size-5 text-muted-foreground" />
-
-            <div>
-              <h2 className="text-lg font-semibold text-foreground">
-                {t('orders.filters.title')}
-              </h2>
-
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t('orders.filters.description')}
-              </p>
-            </div>
-          </div>
+      <CollapsibleFilterBar
+        title={t('orders.filters.title')}
+        description={t('orders.filters.description')}
+      >
 
           <div className="grid gap-4 md:grid-cols-3">
             <Select
@@ -213,8 +202,7 @@ export default function OrdersPage() {
               {t('common.apply')}
             </Button>
           </div>
-        </FilterBar>
-      </Card>
+      </CollapsibleFilterBar>
 
       {error !== null && (
         <Alert variant="error">
