@@ -1,43 +1,43 @@
-import { createBrowserRouter, Navigate } from "react-router";
-import AdminLayout from "../layouts/AdminLayout";
-import AuthLayout from "../layouts/AuthLayout";
-import DashboardPage from "../pages/admin/DashboardPage";
-import ItemsPage from "../pages/admin/ItemsPage";
-import ItemDetailPage from "../pages/admin/ItemDetailPage";
-import CreateItemPage from "../pages/admin/CreateItemPage";
-import EditItemPage from "../pages/admin/EditItemPage";
-import CategoriesPage from "../pages/admin/CategoriesPage";
-import CreateCategoryPage from "../pages/admin/CreateCategoryPage";
-import CategoryDetailPage from "../pages/admin/CategoryDetailPage";
-import EditCategoryPage from "../pages/admin/EditCategoryPage";
-import OrdersPage from "../pages/admin/OrdersPage";
-import OrderDetailPage from "../pages/admin/OrderDetailPage";
-import UsersPage from "../pages/admin/UsersPage";
-import UserDetailPage from "../pages/admin/UserDetailPage";
-import EditUserPage from "../pages/admin/EditUserPage";
-import SubscriptionPlansPage from "../pages/admin/SubscriptionPlansPage";
-import CreateSubscriptionPlanPage from "../pages/admin/CreateSubscriptionPlanPage";
-import SubscriptionPlanDetailPage from "../pages/admin/SubscriptionPlanDetailPage";
-import EditSubscriptionPlanPage from "../pages/admin/EditSubscriptionPlanPage";
-import LoginPage from "../pages/auth/LoginPage";
-import ProtectedRoute from "./ProtectedRoute";
+import { createBrowserRouter, Navigate } from 'react-router'
+import AdminLayout from '../layouts/AdminLayout'
+import AuthLayout from '../layouts/AuthLayout'
+import DashboardPage from '../pages/admin/DashboardPage'
+import ItemsPage from '../pages/admin/ItemsPage'
+import ItemDetailPage from '../pages/admin/ItemDetailPage'
+import CreateItemPage from '../pages/admin/CreateItemPage'
+import EditItemPage from '../pages/admin/EditItemPage'
+import CategoriesPage from '../pages/admin/CategoriesPage'
+import CreateCategoryPage from '../pages/admin/CreateCategoryPage'
+import CategoryDetailPage from '../pages/admin/CategoryDetailPage'
+import EditCategoryPage from '../pages/admin/EditCategoryPage'
+import OrdersPage from '../pages/admin/OrdersPage'
+import OrderDetailPage from '../pages/admin/OrderDetailPage'
+import UsersPage from '../pages/admin/UsersPage'
+import UserDetailPage from '../pages/admin/UserDetailPage'
+import EditUserPage from '../pages/admin/EditUserPage'
+import SubscriptionPlansPage from '../pages/admin/SubscriptionPlansPage'
+import CreateSubscriptionPlanPage from '../pages/admin/CreateSubscriptionPlanPage'
+import SubscriptionPlanDetailPage from '../pages/admin/SubscriptionPlanDetailPage'
+import EditSubscriptionPlanPage from '../pages/admin/EditSubscriptionPlanPage'
+import LoginPage from '../pages/auth/LoginPage'
+import ProtectedRoute from './ProtectedRoute'
 
 export const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Navigate to="/admin" replace />,
+    path: '/',
+    element: <Navigate to='/admin' replace />,
   },
   {
     Component: AuthLayout,
     children: [
       {
-        path: "/login",
+        path: '/login',
         Component: LoginPage,
       },
     ],
   },
   {
-    path: "/admin",
+    path: '/admin',
     Component: ProtectedRoute,
     children: [
       {
@@ -48,79 +48,79 @@ export const router = createBrowserRouter([
             Component: DashboardPage,
           },
           {
-            path: "dashboard",
+            path: 'dashboard',
             Component: DashboardPage,
           },
           {
-            path: "items",
+            path: 'items',
             Component: ItemsPage,
           },
           {
-            path: "items/create",
+            path: 'items/create',
             Component: CreateItemPage,
           },
           {
-            path: "items/:id",
+            path: 'items/:id',
             Component: ItemDetailPage,
           },
           {
-            path: "items/:id/edit",
+            path: 'items/:id/edit',
             Component: EditItemPage,
           },
           {
-            path: "categories",
+            path: 'categories',
             Component: CategoriesPage,
           },
           {
-            path: "categories/create",
+            path: 'categories/create',
             Component: CreateCategoryPage,
           },
           {
-            path: "categories/:id",
+            path: 'categories/:id',
             Component: CategoryDetailPage,
           },
           {
-            path: "categories/:id/edit",
+            path: 'categories/:id/edit',
             Component: EditCategoryPage,
           },
           {
-            path: "orders",
+            path: 'orders',
             Component: OrdersPage,
           },
           {
-            path: "orders/:id",
+            path: 'orders/:id',
             Component: OrderDetailPage,
           },
           {
-            path: "users",
+            path: 'users',
             Component: UsersPage,
           },
           {
-            path: "subscription-plans",
+            path: 'subscription-plans',
             Component: SubscriptionPlansPage,
           },
           {
-            path: "subscription-plans/create",
+            path: 'subscription-plans/create',
             Component: CreateSubscriptionPlanPage,
           },
           {
-            path: "subscription-plans/:id",
+            path: 'subscription-plans/:id',
             Component: SubscriptionPlanDetailPage,
           },
           {
-            path: "subscription-plans/:id/edit",
+            path: 'subscription-plans/:id/edit',
             Component: EditSubscriptionPlanPage,
           },
           {
-            path: "users/:id",
+            path: 'users/:id',
             Component: UserDetailPage,
           },
           {
-            path: "users/:id/edit",
+            path: 'users/:id/edit',
             Component: EditUserPage,
           },
         ],
       },
     ],
   },
-]);
+])
