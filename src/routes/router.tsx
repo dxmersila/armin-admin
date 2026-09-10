@@ -1,25 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router'
 import AdminLayout from '../layouts/AdminLayout'
 import AuthLayout from '../layouts/AuthLayout'
-import DashboardPage from '../pages/admin/DashboardPage'
-import ItemsPage from '../pages/admin/ItemsPage'
-import ItemDetailPage from '../pages/admin/ItemDetailPage'
-import CreateItemPage from '../pages/admin/CreateItemPage'
-import EditItemPage from '../pages/admin/EditItemPage'
-import CategoriesPage from '../pages/admin/CategoriesPage'
-import CreateCategoryPage from '../pages/admin/CreateCategoryPage'
-import CategoryDetailPage from '../pages/admin/CategoryDetailPage'
-import EditCategoryPage from '../pages/admin/EditCategoryPage'
-import OrdersPage from '../pages/admin/OrdersPage'
-import OrderDetailPage from '../pages/admin/OrderDetailPage'
-import UsersPage from '../pages/admin/UsersPage'
-import UserDetailPage from '../pages/admin/UserDetailPage'
-import EditUserPage from '../pages/admin/EditUserPage'
-import SubscriptionPlansPage from '../pages/admin/SubscriptionPlansPage'
-import CreateSubscriptionPlanPage from '../pages/admin/CreateSubscriptionPlanPage'
-import SubscriptionPlanDetailPage from '../pages/admin/SubscriptionPlanDetailPage'
-import EditSubscriptionPlanPage from '../pages/admin/EditSubscriptionPlanPage'
-import LoginPage from '../pages/auth/LoginPage'
 import ProtectedRoute from './ProtectedRoute'
 
 export const router = createBrowserRouter([
@@ -32,7 +13,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/login',
-        Component: LoginPage,
+        lazy: async () => ({ Component: (await import('../pages/auth/LoginPage')).default }),
       },
     ],
   },
@@ -45,79 +26,79 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            Component: DashboardPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/DashboardPage')).default }),
           },
           {
             path: 'dashboard',
-            Component: DashboardPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/DashboardPage')).default }),
           },
           {
             path: 'items',
-            Component: ItemsPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/ItemsPage')).default }),
           },
           {
             path: 'items/create',
-            Component: CreateItemPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/CreateItemPage')).default }),
           },
           {
             path: 'items/:id',
-            Component: ItemDetailPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/ItemDetailPage')).default }),
           },
           {
             path: 'items/:id/edit',
-            Component: EditItemPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/EditItemPage')).default }),
           },
           {
             path: 'categories',
-            Component: CategoriesPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/CategoriesPage')).default }),
           },
           {
             path: 'categories/create',
-            Component: CreateCategoryPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/CreateCategoryPage')).default }),
           },
           {
             path: 'categories/:id',
-            Component: CategoryDetailPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/CategoryDetailPage')).default }),
           },
           {
             path: 'categories/:id/edit',
-            Component: EditCategoryPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/EditCategoryPage')).default }),
           },
           {
             path: 'orders',
-            Component: OrdersPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/OrdersPage')).default }),
           },
           {
             path: 'orders/:id',
-            Component: OrderDetailPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/OrderDetailPage')).default }),
           },
           {
             path: 'users',
-            Component: UsersPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/UsersPage')).default }),
           },
           {
             path: 'subscription-plans',
-            Component: SubscriptionPlansPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/SubscriptionPlansPage')).default }),
           },
           {
             path: 'subscription-plans/create',
-            Component: CreateSubscriptionPlanPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/CreateSubscriptionPlanPage')).default }),
           },
           {
             path: 'subscription-plans/:id',
-            Component: SubscriptionPlanDetailPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/SubscriptionPlanDetailPage')).default }),
           },
           {
             path: 'subscription-plans/:id/edit',
-            Component: EditSubscriptionPlanPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/EditSubscriptionPlanPage')).default }),
           },
           {
             path: 'users/:id',
-            Component: UserDetailPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/UserDetailPage')).default }),
           },
           {
             path: 'users/:id/edit',
-            Component: EditUserPage,
+            lazy: async () => ({ Component: (await import('../pages/admin/EditUserPage')).default }),
           },
         ],
       },
