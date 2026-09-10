@@ -50,8 +50,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           'transition-transform duration-200 ease-out',
           isOpen
             ? 'translate-x-0'
-            : 'rtl:translate-x-full ltr:-translate-x-full',
-          'lg:z-50 lg:translate-x-0',
+            : 'max-lg:rtl:translate-x-full max-lg:ltr:-translate-x-full',
+          'lg:z-50',
         ].join(' ')}
       >
         <div className="flex min-h-16 items-center justify-between border-b border-border px-6 py-4">
