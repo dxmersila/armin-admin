@@ -46,9 +46,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <aside
         className={[
-          'fixed inset-y-0 right-0 z-50 flex w-64 shrink-0 flex-col border-s border-border bg-surface',
+          'fixed inset-y-0 start-0 z-50 flex w-64 shrink-0 flex-col border-e border-border bg-surface',
           'transition-transform duration-200 ease-out',
-          isOpen ? 'translate-x-0' : 'translate-x-full',
+          isOpen
+            ? 'translate-x-0'
+            : 'rtl:translate-x-full ltr:-translate-x-full',
           'lg:z-50 lg:translate-x-0',
         ].join(' ')}
       >

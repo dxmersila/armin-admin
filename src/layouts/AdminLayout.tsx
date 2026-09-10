@@ -11,13 +11,13 @@ export default function AdminLayout() {
   }
 
   return (
-    <div dir="rtl" className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={closeSidebar}
       />
 
-      <div className="flex min-h-screen min-w-0 flex-col lg:mr-64">
+      <div className="flex min-h-screen min-w-0 flex-col lg:ms-64">
         <Header
           onMenuClick={() => setIsSidebarOpen(true)}
         />
