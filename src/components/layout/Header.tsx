@@ -25,7 +25,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
         </button>
 
         <Link
-          to="/admin/dashboard"
+          to="/admin"
           className="truncate text-sm font-medium text-muted-foreground transition hover:text-foreground"
         >
           {t('navigation.dashboard')}

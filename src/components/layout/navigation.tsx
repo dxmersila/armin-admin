@@ -25,7 +25,7 @@ export interface NavigationItem {
 export const adminNavigation: NavigationItem[] = [
   {
     key: 'dashboard',
-    to: '/admin/dashboard',
+    to: '/admin',
     icon: LayoutDashboard,
   },
   {
