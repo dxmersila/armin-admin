@@ -3,11 +3,11 @@ import { ArrowRight } from 'lucide-react'
 import { Link, type LinkProps } from 'react-router'
 
 interface BackButtonProps extends LinkProps {
-  children?: ReactNode
+  children: ReactNode
 }
 
 export default function BackButton({
-  children = 'بازگشت',
+  children,
   className = '',
   ...props
 }: BackButtonProps) {
