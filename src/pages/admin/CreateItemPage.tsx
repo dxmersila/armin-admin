@@ -158,7 +158,7 @@ export default function CreateItemPage() {
         description={t('items.create.description')}
         actions={
           <BackButton to="/admin/items">
-            {t('items.create.back')}
+            {t('common.back')}
           </BackButton>
         }
       />

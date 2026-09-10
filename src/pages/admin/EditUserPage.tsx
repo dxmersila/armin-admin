@@ -144,7 +144,7 @@ export default function EditUserPage() {
         />
 
         <BackButton to="/admin/users">
-          {t('users.edit.backToUsers')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -191,7 +191,7 @@ export default function EditUserPage() {
         description={t('users.edit.description')}
         actions={
           <BackButton to={`/admin/users/${user.id}`}>
-            {t('users.edit.backToUser')}
+            {t('common.back')}
           </BackButton>
         }
       />

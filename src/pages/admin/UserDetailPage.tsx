@@ -84,7 +84,7 @@ export default function UserDetailPage() {
         </Alert>
 
         <BackButton to="/admin/users">
-          {t('users.detail.backToUsers')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -122,7 +122,7 @@ export default function UserDetailPage() {
         actions={
           <>
             <BackButton to="/admin/users">
-              {t('users.detail.backToUsers')}
+              {t('common.back')}
             </BackButton>
 
             <Link to={`/admin/users/${user.id}/edit`}>

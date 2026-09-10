@@ -132,7 +132,7 @@ export default function EditSubscriptionPlanPage() {
         />
 
         <BackButton to="/admin/subscription-plans">
-          {t('subscriptionPlans.edit.backToSubscriptions')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -181,7 +181,7 @@ export default function EditSubscriptionPlanPage() {
           <BackButton
             to={`/admin/subscription-plans/${plan.id}`}
           >
-            {t('subscriptionPlans.edit.backToSubscription')}
+            {t('common.back')}
           </BackButton>
         }
       />

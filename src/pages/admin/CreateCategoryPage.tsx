@@ -70,7 +70,7 @@ export default function CreateCategoryPage() {
         description={t('categories.create.description')}
         actions={
           <BackButton to="/admin/categories">
-            {t('categories.create.back')}
+            {t('common.back')}
           </BackButton>
         }
       />

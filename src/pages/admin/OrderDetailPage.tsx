@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from 'react'
+import { useParams } from 'react-router'
+import { ShoppingCart } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useLanguage } from '../../i18n/useLanguage'
-import { ArrowRight, ShoppingCart } from 'lucide-react'
-import { Link, useParams } from 'react-router'
 import BackButton from '../../components/ui/BackButton'
 import Card from '../../components/ui/Card'
 import PageHeader from '../../components/ui/PageHeader'
@@ -62,7 +62,7 @@ export default function OrderDetailPage() {
         />
 
         <BackButton to="/admin/orders">
-          {t('orders.detail.backToOrders')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -95,7 +95,7 @@ export default function OrderDetailPage() {
           </button>
 
           <BackButton to="/admin/orders">
-            {t('orders.detail.backToOrders')}
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -110,7 +110,7 @@ export default function OrderDetailPage() {
         description={t('orders.detail.description')}
         actions={
           <BackButton to="/admin/orders">
-            {t('orders.detail.backToOrders')}
+            {t('common.back')}
           </BackButton>
         }
       />
@@ -330,15 +330,6 @@ export default function OrderDetailPage() {
         </Card>
       )}
 
-      <div className="flex justify-start">
-        <Link
-          to="/admin/orders"
-          className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
-        >
-          <ArrowRight className="size-4" />
-          {t('orders.detail.backToOrderList')}
-        </Link>
-      </div>
     </section>
   )
 }

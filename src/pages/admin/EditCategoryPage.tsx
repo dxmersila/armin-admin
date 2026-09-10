@@ -120,7 +120,7 @@ export default function EditCategoryPage() {
         />
 
         <BackButton to="/admin/categories">
-          {t('categories.edit.backToCategories')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -152,7 +152,7 @@ export default function EditCategoryPage() {
           </Button>
 
           <BackButton to="/admin/categories">
-            {t('categories.edit.back')}
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -167,7 +167,7 @@ export default function EditCategoryPage() {
         description={t('categories.edit.description')}
         actions={
           <BackButton to="/admin/categories">
-            {t('categories.edit.backToCategories')}
+            {t('common.back')}
           </BackButton>
         }
       />

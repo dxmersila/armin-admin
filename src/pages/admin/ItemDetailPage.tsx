@@ -77,7 +77,7 @@ export default function ItemDetailPage() {
         </Alert>
 
         <BackButton to="/admin/items">
-          {t('items.detail.backToProducts')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -125,7 +125,7 @@ export default function ItemDetailPage() {
           </Button>
 
           <BackButton to="/admin/items">
-            بازگشت
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -141,7 +141,7 @@ export default function ItemDetailPage() {
         actions={
           <>
             <BackButton to="/admin/items">
-              {t('items.detail.backToProducts')}
+              {t('common.back')}
             </BackButton>
 
             <div className="flex items-center gap-1">

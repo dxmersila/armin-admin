@@ -70,7 +70,7 @@ export default function SubscriptionPlanDetailPage() {
         />
 
         <BackButton to="/admin/subscription-plans">
-          {t('subscriptionPlans.detail.backToSubscriptions')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -110,7 +110,7 @@ export default function SubscriptionPlanDetailPage() {
         actions={
           <>
             <BackButton to="/admin/subscription-plans">
-              {t('subscriptionPlans.detail.backToSubscriptions')}
+              {t('common.back')}
             </BackButton>
 
             <Link

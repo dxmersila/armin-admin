@@ -77,7 +77,7 @@ export default function CreateSubscriptionPlanPage() {
         description={t('subscriptionPlans.create.description')}
         actions={
           <BackButton to="/admin/subscription-plans">
-            {t('subscriptionPlans.create.back')}
+            {t('common.back')}
           </BackButton>
         }
       />

@@ -67,7 +67,7 @@ export default function CategoryDetailPage() {
         </Alert>
 
         <BackButton to="/admin/categories">
-          {t('categories.detail.backToCategories')}
+          {t('common.back')}
         </BackButton>
       </section>
     )
@@ -115,7 +115,7 @@ export default function CategoryDetailPage() {
           </Button>
 
           <BackButton to="/admin/categories">
-            {t('categories.detail.back')}
+            {t('common.back')}
           </BackButton>
         </div>
       </section>
@@ -131,7 +131,7 @@ export default function CategoryDetailPage() {
         actions={
           <>
             <BackButton to="/admin/categories">
-              {t('categories.detail.backToCategories')}
+              {t('common.back')}
             </BackButton>
 
             <div className="flex items-center gap-1">

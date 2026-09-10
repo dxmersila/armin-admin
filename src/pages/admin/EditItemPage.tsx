@@ -194,7 +194,7 @@ export default function EditItemPage() {
         />
 
         <BackButton to="/admin/items">
-          {t('items.edit.back')}
+          {t('common.back')}
         </BackButton>
       </div>
     )
@@ -240,7 +240,7 @@ export default function EditItemPage() {
         description={t('items.edit.description')}
         actions={
           <BackButton to="/admin/items">
-            {t('items.edit.back')}
+            {t('common.back')}
           </BackButton>
         }
       />
