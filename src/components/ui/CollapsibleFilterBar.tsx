@@ -33,6 +33,8 @@ export default function CollapsibleFilterBar({
         type="button"
         className="flex w-full items-center justify-between gap-3 text-start"
         onClick={() => setIsOpen((value) => !value)}
+        aria-expanded={isOpen}
+        aria-controls="filter-content"
       >
         <div className="flex items-center gap-2">
           <Filter className="size-5 text-muted-foreground" />
@@ -65,7 +67,10 @@ export default function CollapsibleFilterBar({
       </button>
 
       {isOpen && (
-        <div className="mt-5">
+        <div
+          id="filter-content"
+          className="mt-5"
+        >
           <FilterBar>
             {children}
           </FilterBar>
