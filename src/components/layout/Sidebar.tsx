@@ -78,6 +78,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <NavLink
                   key={item.to}
                   to={item.to}
+                  end
                   onClick={onClose}
                   className={({ isActive }) =>
                     [
