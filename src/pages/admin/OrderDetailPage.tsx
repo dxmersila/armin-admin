@@ -259,7 +259,7 @@ export default function OrderDetailPage() {
           <dl className="grid gap-4 sm:grid-cols-3">
             <div>
               <dt className="text-sm text-muted-foreground">
-                نام
+                {t('orders.detail.name')}
               </dt>
               <dd className="mt-1 font-medium text-foreground">
                 {order.subscription_plan.name}
