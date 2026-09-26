@@ -1,75 +1,136 @@
-# React + TypeScript + Vite
+# Armin Admin
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Armin Admin is the administrative interface of the Armin Template ecosystem.
 
-Currently, two official plugins are available:
+It is a separate React application used by administrators to manage the application through the Armin API.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Role in the Armin Ecosystem
 
-## React Compiler
+Armin consists of three independent applications:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Armin API** — Laravel backend and source of truth for business rules, authorization, data, orders, payments, and subscriptions.
+* **Armin Admin** — React-based administrative interface for management workflows.
+* **Armin Web** — Next.js public-facing web application.
 
-## Expanding the ESLint configuration
+The Admin application does not contain authoritative business rules. It consumes the API and provides the administrative user interface.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* React 19
+* TypeScript
+* Vite 8
+* Tailwind CSS 4
+* React Router
+* Axios
+* i18next / react-i18next
+* Lucide React
+* SweetAlert2
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Requirements
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* Node.js
+* npm
+* A running Armin API instance
 
+## Environment
+
+Create a local environment file:
+
+```bash
+cp .env.example .env.local
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+The default development configuration is:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```env
+VITE_API_BASE_URL=http://localhost:8080/api/v1
 ```
+
+Set `VITE_API_BASE_URL` to the base URL of the Armin API used by the Admin application.
+
+## Development
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The Vite development server will display the local URL in the terminal.
+
+## Validation
+
+Run the production build:
+
+```bash
+npm run build
+```
+
+Run ESLint:
+
+```bash
+npm run lint
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+## Repository Structure
+
+The application source code is located in:
+
+```text
+src/
+```
+
+The Admin application is intentionally maintained as an independent frontend repository. It does not depend on the implementation details of the Web application.
+
+## Relationship to the API
+
+The Armin API is the authoritative backend.
+
+The Admin application is responsible for:
+
+* Administrative navigation
+* Tables and data presentation
+* Forms and filters
+* Pagination
+* Administrative workflows
+* Feedback and UI state
+* Localization and RTL/LTR presentation
+* Responsive administrative UX
+
+Business rules and authorization remain enforced by the API.
+
+## Armin Template
+
+Armin Admin is part of the reusable Armin Template ecosystem.
+
+The central Armin Template documentation is maintained separately in the API repository. Product-specific work belongs to the product instance created from the Template.
+
+For example:
+
+```text
+Armin Template
+      ↓
+Product Instance
+      ↓
+Armin Admin
+      ↓
+Product-specific administration
+```
+
+## Status
+
+**Complete / Stable**
+
+The current Admin application represents the stable administrative baseline of the Armin Template.
