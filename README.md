@@ -115,7 +115,7 @@ Business rules and authorization remain enforced by the API.
 
 Armin Admin is part of the reusable Armin Template ecosystem.
 
-The central Armin Template documentation is maintained separately in the API repository. Product-specific work belongs to the product instance created from the Template.
+The central Armin Template documentation is maintained separately in the API repository. It documents the shared Template architecture and ecosystem. Product-specific work belongs to the corresponding product instance.
 
 For example:
 
