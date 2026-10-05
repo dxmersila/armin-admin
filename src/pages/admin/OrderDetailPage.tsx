@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { ShoppingCart } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +23,8 @@ export default function OrderDetailPage() {
   const { id } = useParams()
   const { t } = useTranslation()
 
+  const [hasLoaded, setHasLoaded] = useState(false)
+
   const {
     data: order,
     error,
@@ -30,18 +32,22 @@ export default function OrderDetailPage() {
     execute,
   } = useAsync<AdminOrder>()
 
-  const loadOrder = useCallback(() => {
+  const loadOrder = useCallback(async () => {
     if (!id) {
-      return Promise.resolve(undefined)
+      return
     }
 
     const orderId = Number(id)
 
     if (!Number.isInteger(orderId) || orderId <= 0) {
-      return Promise.resolve(undefined)
+      return
     }
 
-    return execute(() => getAdminOrder(orderId))
+    try {
+      await execute(() => getAdminOrder(orderId))
+    } finally {
+      setHasLoaded(true)
+    }
   }, [execute, id])
 
   useEffect(() => {
@@ -68,7 +74,7 @@ export default function OrderDetailPage() {
     )
   }
 
-  if (isLoading) {
+  if (isLoading || !hasLoaded) {
     return (
       <section className="flex min-h-64 items-center justify-center">
         <Spinner size="lg" />
