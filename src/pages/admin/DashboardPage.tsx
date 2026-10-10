@@ -1,6 +1,9 @@
 import { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
+  Activity,
+  Copy,
+  Eye,
   FolderKanban,
   LayoutDashboard,
   Package,
@@ -19,6 +22,20 @@ interface DashboardCardProps {
   title: string
   value: number | string
   icon: typeof Users
+}
+
+interface AnalyticsPeriodCardProps {
+  title: string
+  visits: number
+  uniqueVisitors: number
+  itemAccess: number
+  itemCopies: number
+  labels: {
+    visits: string
+    uniqueVisitors: string
+    itemAccess: string
+    itemCopies: string
+  }
 }
 
 function DashboardCard({
@@ -47,6 +64,44 @@ function DashboardCard({
   )
 }
 
+function AnalyticsPeriodCard({
+  title,
+  visits,
+  uniqueVisitors,
+  itemAccess,
+  itemCopies,
+  labels,
+}: AnalyticsPeriodCardProps) {
+  const metrics = [
+    { label: labels.visits, value: visits, Icon: Activity },
+    { label: labels.uniqueVisitors, value: uniqueVisitors, Icon: Users },
+    { label: labels.itemAccess, value: itemAccess, Icon: Eye },
+    { label: labels.itemCopies, value: itemCopies, Icon: Copy },
+  ]
+
+  return (
+    <Card className="min-w-0 p-4 sm:p-5 xl:p-6">
+      <h3 className="text-start text-base font-semibold text-foreground">
+        {title}
+      </h3>
+
+      <dl className="mt-5 grid grid-cols-1 gap-y-4">
+        {metrics.map(({ label, value, Icon }) => (
+          <div key={label} className="min-w-0">
+            <dt className="flex min-w-0 items-start gap-2 text-start text-sm text-muted-foreground">
+              <Icon className="mt-0.5 size-4 shrink-0" />
+              <span className="min-w-0 break-words">{label}</span>
+            </dt>
+            <dd className="mt-1 break-words text-start text-2xl font-semibold tabular-nums tracking-tight text-foreground">
+              {value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </Card>
+  )
+}
+
 export default function DashboardPage() {
   const { t } = useTranslation()
 
@@ -64,6 +119,13 @@ export default function DashboardPage() {
   useEffect(() => {
     void loadDashboard()
   }, [loadDashboard])
+
+  const analyticsLabels = {
+    visits: t('dashboard.visits'),
+    uniqueVisitors: t('dashboard.uniqueVisitors'),
+    itemAccess: t('dashboard.itemAccess'),
+    itemCopies: t('dashboard.itemCopies'),
+  }
 
   return (
     <section className="space-y-6">
@@ -115,6 +177,52 @@ export default function DashboardPage() {
           </>
         )}
       </div>
+
+      {stats !== null && stats !== undefined && (
+        <section className="space-y-4">
+          <h2 className="text-lg font-semibold text-foreground">
+            {t('dashboard.analytics')}
+          </h2>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+            <AnalyticsPeriodCard
+              title={t('dashboard.today')}
+              visits={stats.analytics.today.visits}
+              uniqueVisitors={stats.analytics.today.unique_visitors}
+              itemAccess={stats.analytics.today.item_access}
+              itemCopies={stats.analytics.today.item_copies}
+              labels={analyticsLabels}
+            />
+
+            <AnalyticsPeriodCard
+              title={t('dashboard.week')}
+              visits={stats.analytics.week.visits}
+              uniqueVisitors={stats.analytics.week.unique_visitors}
+              itemAccess={stats.analytics.week.item_access}
+              itemCopies={stats.analytics.week.item_copies}
+              labels={analyticsLabels}
+            />
+
+            <AnalyticsPeriodCard
+              title={t('dashboard.month')}
+              visits={stats.analytics.month.visits}
+              uniqueVisitors={stats.analytics.month.unique_visitors}
+              itemAccess={stats.analytics.month.item_access}
+              itemCopies={stats.analytics.month.item_copies}
+              labels={analyticsLabels}
+            />
+
+            <AnalyticsPeriodCard
+              title={t('dashboard.year')}
+              visits={stats.analytics.year.visits}
+              uniqueVisitors={stats.analytics.year.unique_visitors}
+              itemAccess={stats.analytics.year.item_access}
+              itemCopies={stats.analytics.year.item_copies}
+              labels={analyticsLabels}
+            />
+          </div>
+        </section>
+      )}
     </section>
   )
 }

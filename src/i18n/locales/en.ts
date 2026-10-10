@@ -66,6 +66,15 @@ const en = {
     users: 'Users',
     items: 'Items',
     categories: 'Categories',
+    analytics: 'Analytics',
+    today: 'Today',
+    week: 'This Week',
+    month: 'This Month',
+    year: 'This Year',
+    visits: 'Visits',
+    uniqueVisitors: 'Unique Visitors',
+    itemAccess: 'Item Access',
+    itemCopies: 'Item Copies',
   },
 
   categories: {

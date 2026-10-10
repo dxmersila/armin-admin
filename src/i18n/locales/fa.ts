@@ -66,6 +66,15 @@ const fa = {
     users: 'کاربران',
     items: 'محصولات',
     categories: 'دسته‌بندی‌ها',
+    analytics: 'آمار',
+    today: 'امروز',
+    week: 'این هفته',
+    month: 'این ماه',
+    year: 'امسال',
+    visits: 'بازدیدها',
+    uniqueVisitors: 'بازدیدکنندگان یکتا',
+    itemAccess: 'دسترسی به آیتم',
+    itemCopies: 'کپی آیتم',
   },
 
   categories: {
