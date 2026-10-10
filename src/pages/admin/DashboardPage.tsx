@@ -184,7 +184,7 @@ export default function DashboardPage() {
             {t('dashboard.analytics')}
           </h2>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <AnalyticsPeriodCard
               title={t('dashboard.today')}
               visits={stats.analytics.today.visits}
